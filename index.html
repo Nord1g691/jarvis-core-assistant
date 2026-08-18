@@ -800,6 +800,157 @@ color:var(--red)
 color:var(--orange)
 }
 
+.visualModal{
+position:fixed;
+inset:0;
+z-index:50;
+display:block;
+padding:0;
+background:transparent;
+opacity:1;
+pointer-events:none;
+}
+
+.visualWindow{
+position:absolute;
+width:min(520px,calc(100vw - 24px));
+min-width:280px;
+min-height:180px;
+max-width:calc(100vw - 24px);
+max-height:min(86vh,760px);
+overflow:auto;
+resize:both;
+pointer-events:auto;
+background:linear-gradient(145deg,rgba(5,25,45,.97),rgba(1,8,18,.98));
+border:1px solid rgba(0,234,255,.55);
+box-shadow:0 0 35px rgba(0,180,255,.22),inset 0 0 35px rgba(0,180,255,.05);
+animation:visualWindowIn .25s ease both
+}
+
+.visualWindow:before,
+.visualWindow:after{
+content:"";
+position:absolute;
+width:18px;
+height:18px;
+pointer-events:none
+}
+
+.visualWindow:before{
+top:-1px;
+left:-1px;
+border-top:2px solid var(--cyan);
+border-left:2px solid var(--cyan)
+}
+
+.visualWindow:after{
+right:-1px;
+bottom:-1px;
+border-right:2px solid var(--cyan);
+border-bottom:2px solid var(--cyan)
+}
+
+.visualHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+padding:14px 16px;
+border-bottom:1px solid rgba(0,200,255,.2);
+cursor:move;
+user-select:none
+}
+
+.visualTitle{
+font-family:"Orbitron",sans-serif;
+font-size:13px;
+letter-spacing:2px;
+color:#e8fcff;
+text-shadow:0 0 9px var(--cyan)
+}
+
+.visualClose{
+min-width:38px;
+min-height:32px;
+font-size:18px;
+line-height:1
+}
+
+.visualBody{
+padding:16px
+}
+
+.visualStatus{
+font-size:12px;
+letter-spacing:1px;
+color:#9ddff0
+}
+
+.visualMedia{
+display:block;
+width:100%;
+max-height:58vh;
+object-fit:contain;
+background:#000;
+border:1px solid rgba(0,234,255,.25)
+}
+
+.visualGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+margin-top:14px
+}
+
+.visualStat{
+padding:12px;
+border:1px solid rgba(0,190,255,.25);
+background:rgba(0,15,28,.55)
+}
+
+.visualStatLabel{
+font-size:10px;
+letter-spacing:1.5px;
+color:#76bad0;
+text-transform:uppercase
+}
+
+.visualStatValue{
+display:block;
+margin-top:5px;
+font-family:"Orbitron",sans-serif;
+font-size:20px;
+color:var(--text)
+}
+
+.visualMap{
+width:100%;
+height:360px;
+border:1px solid rgba(0,234,255,.25);
+background:#06121c
+}
+
+@keyframes visualWindowIn{
+from{opacity:0;transform:translateY(12px) scale(.96)}
+to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+@media(max-width:600px){
+
+.visualWindow{
+max-height:92vh
+}
+
+.visualBody{
+padding:11px
+}
+
+.visualMap{
+height:280px
+}
+
+}
+
 @keyframes rotate1{
 to{transform:rotate(360deg)}
 }
@@ -1218,6 +1369,8 @@ Initialisation JARVIS V5...
 
 </div>
 
+<div class="visualModal" id="visualModal" aria-live="polite"></div>
+
 
 <script>
 
@@ -1243,6 +1396,12 @@ production:"sensor.envoy_122323101280_production_solaire_instantanee",
 consumption:"sensor.envoy_122323101280_consommation_electrique_actuelle",
 import:"sensor.puissance_import_reseau",
 export:"sensor.puissance_export_reseau"
+};
+
+const VISUAL_DOMAINS={
+camera:"camera",
+person:"person",
+weather:"weather"
 };
 
 
@@ -2562,12 +2721,381 @@ catch(err){}
 
 
 /* ============================================================
+   PANNEAU VISUEL
+============================================================ */
+
+function visualText(value){
+
+return String(value||"")
+.toLocaleLowerCase("fr-FR")
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"");
+
+}
+
+function visualMatch(text,entities){
+
+const query=visualText(text);
+
+return entities.find(entity=>{
+
+const name=visualText(entity.attributes?.friendly_name);
+const id=visualText(entity.entity_id);
+
+return (name && query.includes(name)) || query.includes(id);
+
+}) || entities[0];
+
+}
+
+let visualWindowCount=0;
+let visualZIndex=60;
+
+function bringVisualToFront(windowElement){
+
+visualZIndex+=1;
+windowElement.style.zIndex=visualZIndex;
+
+}
+
+function closeVisualWindow(button){
+
+button.closest(".visualWindow")?.remove();
+
+}
+
+function makeVisualDraggable(windowElement,header){
+
+let dragging=false;
+let offsetX=0;
+let offsetY=0;
+
+header.addEventListener("pointerdown",event=>{
+
+if(event.target.closest("button"))return;
+
+dragging=true;
+bringVisualToFront(windowElement);
+offsetX=event.clientX-windowElement.offsetLeft;
+offsetY=event.clientY-windowElement.offsetTop;
+header.setPointerCapture(event.pointerId);
+
+});
+
+header.addEventListener("pointermove",event=>{
+
+if(!dragging)return;
+
+const maxX=Math.max(0,window.innerWidth-windowElement.offsetWidth-8);
+const maxY=Math.max(0,window.innerHeight-windowElement.offsetHeight-8);
+windowElement.style.left=Math.max(8,Math.min(maxX,event.clientX-offsetX))+"px";
+windowElement.style.top=Math.max(8,Math.min(maxY,event.clientY-offsetY))+"px";
+
+});
+
+header.addEventListener("pointerup",()=>{
+
+dragging=false;
+
+});
+
+}
+
+function openVisualPanel(title,content,windowId){
+
+let windowElement=windowId?document.getElementById(windowId):null;
+
+if(!windowElement){
+
+visualWindowCount+=1;
+const offset=(visualWindowCount-1)%5*28;
+windowElement=document.createElement("section");
+windowElement.className="visualWindow";
+windowElement.id=`visual-window-${visualWindowCount}`;
+windowElement.setAttribute("role","dialog");
+windowElement.setAttribute("aria-modal","false");
+windowElement.style.left=`${Math.min(24+offset,Math.max(8,window.innerWidth-300))}px`;
+windowElement.style.top=`${Math.min(90+offset,Math.max(8,window.innerHeight-220))}px`;
+windowElement.style.zIndex=++visualZIndex;
+windowElement.innerHTML=`<div class="visualHeader"><div class="visualTitle"></div><button class="visualClose" onclick="closeVisualWindow(this)" aria-label="Fermer la fenêtre visuelle">×</button></div><div class="visualBody"></div>`;
+$("visualModal").appendChild(windowElement);
+makeVisualDraggable(windowElement,windowElement.querySelector(".visualHeader"));
+windowElement.addEventListener("pointerdown",()=>bringVisualToFront(windowElement));
+
+}
+
+windowElement.querySelector(".visualTitle").innerText=title;
+windowElement.querySelector(".visualBody").innerHTML=content;
+bringVisualToFront(windowElement);
+return windowElement.id;
+
+}
+
+function closeVisualPanel(){
+
+document.querySelectorAll(".visualWindow").forEach(windowElement=>windowElement.remove());
+
+}
+
+async function fetchHAStates(){
+
+const response=await fetch(`${HA_URL}/api/states`,{
+headers:{
+"Authorization":`Bearer ${HA_TOKEN}`,
+"Content-Type":"application/json"
+}
+});
+
+if(!response.ok)
+throw new Error("HTTP "+response.status);
+
+return response.json();
+
+}
+
+function visualLoading(label){
+
+return openVisualPanel(label,`<div class="visualStatus">Analyse de Home Assistant en cours...</div>`);
+
+}
+
+async function showCameraVisual(text){
+
+const windowId=visualLoading("JARVIS / CAMÉRA");
+
+try{
+
+const states=await fetchHAStates();
+const cameras=states.filter(item=>item.entity_id.startsWith(`${VISUAL_DOMAINS.camera}.`));
+const query=visualText(text);
+const selectedCameras=/\b(cameras|toutes|ensemble)\b/.test(query)
+?cameras
+:[visualMatch(text,cameras)];
+
+if(!selectedCameras.length || !selectedCameras[0]){
+openVisualPanel("JARVIS / CAMÉRA",`<div class="visualStatus">Aucune entité caméra n'est configurée dans Home Assistant.</div>`,windowId);
+return;
+}
+
+const images=await Promise.all(selectedCameras.map(async camera=>{
+
+const imageResponse=await fetch(`${HA_URL}/api/camera_proxy/${camera.entity_id}`,{
+headers:{"Authorization":`Bearer ${HA_TOKEN}`}
+});
+
+if(!imageResponse.ok)
+throw new Error("Image caméra indisponible (HTTP "+imageResponse.status+")");
+
+const imageUrl=URL.createObjectURL(await imageResponse.blob());
+const name=camera.attributes?.friendly_name||camera.entity_id;
+return `<div class="visualStat"><img class="visualMedia" src="${imageUrl}" alt="Image de ${escapeHTML(name)}"><div class="visualStatus" style="margin-top:8px">${escapeHTML(name)}</div></div>`;
+
+}));
+
+openVisualPanel(
+selectedCameras.length>1?"JARVIS / CAMÉRAS":"JARVIS / CAMÉRA",
+`<div class="visualGrid">${images.join("")}</div><div class="visualStatus" style="margin-top:10px">Instantanés Home Assistant</div>`,windowId
+);
+
+}
+catch(error){
+
+openVisualPanel("JARVIS / CAMÉRA",`<div class="visualStatus">Impossible d'afficher la caméra : ${escapeHTML(error.message)}</div>`,windowId);
+
+}
+
+}
+
+async function showPersonVisual(text){
+
+const windowId=visualLoading("JARVIS / POSITION");
+
+try{
+
+const states=await fetchHAStates();
+const people=states.filter(item=>item.entity_id.startsWith(`${VISUAL_DOMAINS.person}.`));
+const person=visualMatch(text,people);
+const latitude=Number(person?.attributes?.latitude);
+const longitude=Number(person?.attributes?.longitude);
+
+if(!person || !Number.isFinite(latitude) || !Number.isFinite(longitude)){
+openVisualPanel("JARVIS / POSITION",`<div class="visualStatus">Aucune personne avec une position GPS disponible dans Home Assistant.</div>`,windowId);
+return;
+}
+
+const delta=.02;
+const mapUrl=`https://www.openstreetmap.org/export/embed.html?bbox=${longitude-delta}%2C${latitude-delta}%2C${longitude+delta}%2C${latitude+delta}&layer=mapnik&marker=${latitude}%2C${longitude}`;
+openVisualPanel(
+`JARVIS / ${person.attributes?.friendly_name||person.entity_id}`,
+`<iframe class="visualMap" title="Position de ${escapeHTML(person.attributes?.friendly_name||person.entity_id)}" src="${mapUrl}" loading="lazy"></iframe><div class="visualGrid"><div class="visualStat"><span class="visualStatLabel">Latitude</span><strong class="visualStatValue">${latitude.toFixed(5)}</strong></div><div class="visualStat"><span class="visualStatLabel">Longitude</span><strong class="visualStatValue">${longitude.toFixed(5)}</strong></div></div>`,windowId
+);
+
+}
+catch(error){
+
+openVisualPanel("JARVIS / POSITION",`<div class="visualStatus">Impossible d'afficher la position : ${escapeHTML(error.message)}</div>`,windowId);
+
+}
+
+}
+
+async function showWeatherVisual(text){
+
+const windowId=visualLoading("JARVIS / MÉTÉO");
+
+try{
+
+const states=await fetchHAStates();
+const weatherStates=states.filter(item=>item.entity_id.startsWith(`${VISUAL_DOMAINS.weather}.`));
+const weather=visualMatch(text,weatherStates);
+
+if(!weather){
+openVisualPanel("JARVIS / MÉTÉO",`<div class="visualStatus">Aucune entité météo n'est configurée dans Home Assistant.</div>`,windowId);
+return;
+}
+
+const attributes=weather.attributes||{};
+const temperature=attributes.temperature===undefined?"--":`${attributes.temperature} ${attributes.temperature_unit||"°C"}`;
+const humidity=attributes.humidity===undefined?"--":`${attributes.humidity} %`;
+openVisualPanel(
+`JARVIS / ${attributes.friendly_name||weather.entity_id}`,
+`<div class="visualStatus">Condition actuelle : ${escapeHTML(weather.state)}</div><div class="visualGrid"><div class="visualStat"><span class="visualStatLabel">Température</span><strong class="visualStatValue">${escapeHTML(temperature)}</strong></div><div class="visualStat"><span class="visualStatLabel">Humidité</span><strong class="visualStatValue">${escapeHTML(humidity)}</strong></div><div class="visualStat"><span class="visualStatLabel">Pression</span><strong class="visualStatValue">${escapeHTML(attributes.pressure===undefined?"--":attributes.pressure+" hPa")}</strong></div><div class="visualStat"><span class="visualStatLabel">Vent</span><strong class="visualStatValue">${escapeHTML(attributes.wind_speed===undefined?"--":attributes.wind_speed+" "+(attributes.wind_speed_unit||"km/h"))}</strong></div></div>`,windowId
+);
+
+}
+catch(error){
+
+openVisualPanel("JARVIS / MÉTÉO",`<div class="visualStatus">Impossible d'afficher la météo : ${escapeHTML(error.message)}</div>`,windowId);
+
+}
+
+}
+
+async function showEnergyVisual(){
+
+const windowId=visualLoading("JARVIS / PRODUCTION");
+
+try{
+
+const entries=await Promise.all(Object.entries(ENERGY_SENSORS).map(async([key,entityId])=>{
+const data=await fetchSensorState(entityId);
+return {key,data};
+}));
+
+const cards=entries.map(({key,data})=>{
+const value=data?.state&&!["unknown","unavailable"].includes(data.state)?data.state:"--";
+const unit=data?.attributes?.unit_of_measurement||"W";
+const labels={production:"Production solaire",consumption:"Consommation totale",import:"Import réseau",export:"Export réseau"};
+return `<div class="visualStat"><span class="visualStatLabel">${labels[key]||key}</span><strong class="visualStatValue">${escapeHTML(value)} <small>${escapeHTML(unit)}</small></strong></div>`;
+}).join("");
+
+openVisualPanel("JARVIS / ÉNERGIE",`<div class="visualStatus">Mesures en direct depuis les capteurs Envoy configurés.</div><div class="visualGrid">${cards}</div>`,windowId);
+
+}
+catch(error){
+
+openVisualPanel("JARVIS / ÉNERGIE",`<div class="visualStatus">Impossible d'afficher la production : ${escapeHTML(error.message)}</div>`,windowId);
+
+}
+
+}
+
+async function showDevicesVisual(){
+
+const windowId=visualLoading("JARVIS / CONSOMMATION");
+
+try{
+
+const states=await fetchHAStates();
+const domains=["light","switch","fan","media_player","climate"];
+const devices=states.filter(item=>domains.some(domain=>item.entity_id.startsWith(`${domain}.`)));
+const cards=devices.map(device=>{
+const name=device.attributes?.friendly_name||device.entity_id;
+const power=device.attributes?.current_power_w??device.attributes?.power??device.attributes?.current_consumption;
+const unit=power===undefined?"":` ${device.attributes?.power_unit||"W"}`;
+const state=power===undefined?device.state:`${power}${unit}`;
+return `<div class="visualStat"><span class="visualStatLabel">${escapeHTML(name)}</span><strong class="visualStatValue">${escapeHTML(state)}</strong></div>`;
+}).join("");
+
+openVisualPanel("JARVIS / APPAREILS",cards?`<div class="visualStatus">Appareils suivis par Home Assistant.</div><div class="visualGrid">${cards}</div>`:`<div class="visualStatus">Aucun appareil compatible n'est disponible.</div>`,windowId);
+
+}
+catch(error){
+
+openVisualPanel("JARVIS / APPAREILS",`<div class="visualStatus">Impossible d'afficher les appareils : ${escapeHTML(error.message)}</div>`,windowId);
+
+}
+
+}
+
+async function showDoorsVisual(){
+
+const windowId=visualLoading("JARVIS / ACCÈS");
+
+try{
+
+const states=await fetchHAStates();
+const doors=states.filter(item=>item.entity_id.startsWith("binary_sensor.")&&["door","window","opening","garage_door"].includes(item.attributes?.device_class));
+const cards=doors.map(door=>{
+const open=["on","open"].includes(door.state);
+const label=open?"OUVERTE":"FERMÉE";
+return `<div class="visualStat"><span class="visualStatLabel">${escapeHTML(door.attributes?.friendly_name||door.entity_id)}</span><strong class="visualStatValue">${open?"⚠️":"✓"} ${label}</strong></div>`;
+}).join("");
+
+openVisualPanel("JARVIS / PORTES & FENÊTRES",cards?`<div class="visualStatus">État des accès surveillés.</div><div class="visualGrid">${cards}</div>`:`<div class="visualStatus">Aucun capteur de porte ou fenêtre n'est configuré.</div>`,windowId);
+
+}
+catch(error){
+
+openVisualPanel("JARVIS / ACCÈS",`<div class="visualStatus">Impossible d'afficher les accès : ${escapeHTML(error.message)}</div>`,windowId);
+
+}
+
+}
+
+function detectVisualRequest(text){
+
+const query=visualText(text);
+
+if(/\b(camera|cameras|cam|surveillance|voir la camera)\b/.test(query))
+return showCameraVisual(text);
+
+if(/\b(femme|ma femme|position|localisation|ou est)\b/.test(query))
+return showPersonVisual(text);
+
+if(/\b(meteo|temperature|temps qu'il fait|previsions?)\b/.test(query))
+return showWeatherVisual(text);
+
+if(/\b(production|solaire|panneaux|envoy|energie)\b/.test(query))
+return showEnergyVisual();
+
+if(/\b(appareils?|consomment|consommation|electrique|watts?)\b/.test(query))
+return showDevicesVisual();
+
+if(/\b(portes?|fenetres?|ouvertes?|fermees?|acces|garage)\b/.test(query))
+return showDoorsVisual();
+
+return null;
+
+}
+
+window.addEventListener("keydown",event=>{
+
+if(event.key==="Escape")
+closeVisualPanel();
+
+});
+
+
+/* ============================================================
    ASSIST
 ============================================================ */
 
 async function sendToAssist(text){
 
 if(!text)return;
+
+detectVisualRequest(text);
 
 automaticListening=false;
 
