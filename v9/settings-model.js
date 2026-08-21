@@ -26,7 +26,14 @@
     catch { return clone(defaults); }
   };
   const patch = changes => {
-    const next = sanitize({ ...read(), ...changes, dashboard: { ...read().dashboard, ...(changes?.dashboard || {}) }, account: { ...read().account, ...(changes?.account || {}) }, updateControl: { ...read().updateControl, ...(changes?.updateControl || {}) } });
+    const current = read();
+    const next = sanitize({
+      ...current,
+      ...changes,
+      dashboard: { ...current.dashboard, ...(changes?.dashboard || {}) },
+      account: { ...current.account, ...(changes?.account || {}) },
+      updateControl: { ...current.updateControl, ...(changes?.updateControl || {}) }
+    });
     localStorage.setItem(KEY, JSON.stringify(next));
     window.dispatchEvent(new CustomEvent('jarvis:v9-settings-changed', { detail: next }));
     return next;
