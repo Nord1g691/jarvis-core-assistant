@@ -14,7 +14,7 @@
     const realFetch = window.fetch;
     window.HA_URL = window.location.origin;
     window.HA_TOKEN = 'v9-self-test';
-    window.fetch = async (input) => {
+    window.fetch = async input => {
       const url = String(input);
       if (url.endsWith('/api/states')) return new Response('[]', { status: 200, headers: { 'Content-Type': 'application/json' } });
       if (url.includes('/api/services/')) return new Response('[]', { status: 200, headers: { 'Content-Type': 'application/json' } });
@@ -25,15 +25,19 @@
       el.className = result.ok ? 'ok' : 'fail';
       el.textContent = JSON.stringify(result, null, 2);
     };
-    const selfTestScript = document.createElement('script');
-    selfTestScript.src = 'v9-self-test.js';
-    selfTestScript.onload = () => window.JARVIS_V9_LOAD_ALL().then(() => show(window.JARVIS_V9_SELF_TEST.run())).catch(error => show({ ok:false, error:String(error?.message || error) }));
-    selfTestScript.onerror = () => show({ ok:false, error:'Impossible de charger v9-self-test.js' });
-    document.head.appendChild(selfTestScript);
+    const loadSelfTest = () => {
+      const script = document.createElement('script');
+      script.src = 'v9-self-test.js';
+      script.onload = () => window.JARVIS_V9_LOAD_ALL().then(() => show(window.JARVIS_V9_SELF_TEST.run())).catch(error => show({ ok:false, error:String(error?.message || error) }));
+      script.onerror = () => show({ ok:false, error:'Impossible de charger v9-self-test.js' });
+      document.head.appendChild(script);
+    };
     const loader = document.createElement('script');
     loader.src = 'loader.js';
     loader.async = false;
     loader.dataset.jarvisV9 = 'loader.js';
+    loader.onload = loadSelfTest;
+    loader.onerror = () => show({ ok:false, error:'Impossible de charger loader.js' });
     document.head.appendChild(loader);
   </script>
 </body>
