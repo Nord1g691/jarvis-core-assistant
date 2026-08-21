@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>JARVIS V9 — Offline self-test</title>
+  <style>body{font-family:system-ui,sans-serif;max-width:900px;margin:40px auto;padding:0 20px}pre{white-space:pre-wrap;background:#111;color:#eee;padding:16px;border-radius:8px}.ok{color:#16803c}.fail{color:#b42318}</style>
+</head>
+<body>
+  <h1>JARVIS V9 — Offline self-test</h1>
+  <p>Ce test ne contacte pas Home Assistant. Il valide le chargement, la policy, le state store, la sélection, le dashboard, le bridge et le bootstrap HUD.</p>
+  <pre id="result">Chargement…</pre>
+  <script>
+    const realFetch = window.fetch;
+    window.HA_URL = window.location.origin;
+    window.HA_TOKEN = 'v9-self-test';
+    window.fetch = async input => {
+      const url = String(input);
+      if (url.endsWith('/api/states')) return new Response('[]', { status: 200, headers: { 'Content-Type': 'application/json' } });
+      if (url.includes('/api/services/')) return new Response('[]', { status: 200, headers: { 'Content-Type': 'application/json' } });
+      return realFetch(input);
+    };
+    const show = result => {
+      const el = document.getElementById('result');
+      el.className = result.ok ? 'ok' : 'fail';
+      el.textContent = JSON.stringify(result, null, 2);
+    };
+    const loadSelfTest = () => {
+      const script = document.createElement('script');
+      script.src = 'v9-self-test.js';
+      script.onload = () => window.JARVIS_V9_LOAD_ALL().then(() => show(window.JARVIS_V9_SELF_TEST.run())).catch(error => show({ ok:false, error:String(error?.message || error) }));
+      script.onerror = () => show({ ok:false, error:'Impossible de charger v9-self-test.js' });
+      document.head.appendChild(script);
+    };
+    const loader = document.createElement('script');
+    loader.src = 'loader.js';
+    loader.async = false;
+    loader.dataset.jarvisV9 = 'loader.js';
+    loader.onload = loadSelfTest;
+    loader.onerror = () => show({ ok:false, error:'Impossible de charger loader.js' });
+    document.head.appendChild(loader);
+  </script>
+</body>
+</html>
