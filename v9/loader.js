@@ -1,4 +1,4 @@
-/** Minimal V9 loader: append-only, loaded by the existing HUD when wired. */
+/** V9 loader: append-only, loaded by the existing HUD when wired. */
 (() => {
   const base = 'v9/';
   const files = [
@@ -10,9 +10,12 @@
     'ha-state-store.js',
     'card-model.js',
     'category-actions.js',
+    'action-policy.js',
     'entity-discovery.js',
     'dashboard-model.js',
-    'v9-bridge.js'
+    'v9-bridge.js',
+    'manual-menu.js',
+    'hud-bootstrap.js'
   ];
 
   const load = (file) => new Promise((resolve, reject) => {
