@@ -2,21 +2,25 @@
 (() => {
   const start = () => {
     const bridge = window.JARVIS_V9_BRIDGE;
-    if (!bridge) return;
+    if (!bridge || window.JARVIS_V9_HUD) return;
+
+    const emit = () => window.dispatchEvent(new CustomEvent('jarvis:v9-dashboard-update', {
+      detail: bridge.buildDashboard()
+    }));
 
     window.JARVIS_V9_HUD = Object.freeze({
-      refresh() {
-        window.dispatchEvent(new CustomEvent('jarvis:v9-dashboard-update', {
-          detail: bridge.buildDashboard()
-        }));
-      },
-      getState() {
-        return bridge.buildDashboard();
-      }
+      refresh: emit,
+      getState: () => bridge.buildDashboard(),
+      getEntities: () => bridge.getEntities(),
+      getMenu: () => bridge.getMenu(),
+      getLayout: () => bridge.getLayout(),
+      validateAction: descriptor => bridge.validateAction(descriptor)
     });
 
-    bridge.subscribe(() => window.JARVIS_V9_HUD.refresh());
-    window.JARVIS_V9_HUD.refresh();
+    bridge.subscribe(emit);
+    window.addEventListener('jarvis:v9-layout-changed', emit);
+    window.addEventListener('jarvis:v9-menu-changed', emit);
+    emit();
     window.dispatchEvent(new CustomEvent('jarvis:v9-hud-ready'));
   };
 
