@@ -11,11 +11,13 @@
       getMenu: () => bridge.getMenu(),
       getSettings: () => bridge.getSettings(),
       getLayout: () => bridge.getLayout(),
+      routeContext: request => bridge.routeContext(request),
+      getRuntime: () => bridge.getRuntime(),
       validateAction: descriptor => bridge.validateAction(descriptor),
       executeAction: (descriptor, transport) => bridge.executeAction(descriptor, transport)
     });
     bridge.subscribe(emit);
-    ['jarvis:v9-layout-changed','jarvis:v9-menu-changed','jarvis:v9-settings-changed'].forEach(name => window.addEventListener(name, emit));
+    ['jarvis:v9-layout-changed','jarvis:v9-menu-changed','jarvis:v9-settings-changed','jarvis:v9:entities','jarvis:v9:error'].forEach(name => window.addEventListener(name, emit));
     emit();
     window.dispatchEvent(new CustomEvent('jarvis:v9-hud-ready'));
   };
