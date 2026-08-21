@@ -30,9 +30,15 @@ V9 is built as an additive layer over the existing JARVIS visual interface.
 
 ## Runtime contract
 
-`v9/v9-runtime.js` discovers `/api/states`, classifies entities dynamically and exposes `window.JARVIS_V9_RUNTIME` with category/entity lookup, capability-based state summaries and Home Assistant service calls. It also emits `jarvis:v9:entities` and `jarvis:v9:error` events.
+`v9/v9-runtime.js` discovers `/api/states`, classifies entities dynamically and exposes `window.JARVIS_V9_RUNTIME` with category/entity lookup, capability-based state summaries and guarded Home Assistant service calls. It also emits `jarvis:v9:entities` and `jarvis:v9:error` events.
 
-The final UI wiring must load this runtime from the existing HUD and bind the existing navigation/cards to these events. The visual layer itself should not be replaced.
+The UI wiring loads this runtime from the existing HUD and binds the existing navigation/cards to these events. The visual layer itself is not replaced.
+
+## Test gate
+
+Run `v9/v9-test.html` first. It is an offline smoke test: Home Assistant requests are mocked and no secret is required. The page reports whether the V9 modules, state flow, action policy, selection, dashboard, bridge and HUD bootstrap are coherent.
+
+Then follow `v9/TEST-CHECKLIST.md` against a real Home Assistant instance. Do not commit HA credentials or tokens. V9 should only be considered ready for broader rollout after both the offline smoke test and the real HA checks pass.
 
 ## Reserved for later phases
 
