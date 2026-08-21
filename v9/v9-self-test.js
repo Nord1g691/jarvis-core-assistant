@@ -15,6 +15,8 @@
     check('policy keeps multi-entity target', () => window.JARVIS_V9_ACTION_POLICY?.validate({ entity_id: ['light.a', 'light.b'], action: 'turn_off', data: {} })?.descriptor?.entity_id?.length === 2);
     check('selection sanitizes invalid ids', () => window.JARVIS_V9_SELECTION?.sanitize({ categories: { light: ['light.a', 'bad', 'light.a'] }, layout: 'orbital' })?.categories?.light?.length === 1);
     check('settings sanitizes invalid layout', () => window.JARVIS_V9_SETTINGS?.sanitize({ dashboard: { layout: 'invalid' } })?.dashboard?.layout === 'none');
+    check('layout accepts declared modes', () => ['none','bottom','orbital'].every(mode => window.JARVIS_V9_LAYOUT?.modes?.includes(mode)));
+    check('config exposes same layout modes', () => ['none','bottom','orbital'].includes(window.JARVIS_V9?.dashboard?.orbitalCards === false ? 'none' : 'orbital'));
     check('state store exists', () => typeof window.JARVIS_V9_HA?.replace === 'function' && typeof window.JARVIS_V9_HA?.subscribe === 'function');
     check('dashboard builds from entities', () => {
       const entity = { entity_id: 'light.test', state: 'on', attributes: { friendly_name: 'Test' } };
