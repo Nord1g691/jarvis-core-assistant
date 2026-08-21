@@ -6,21 +6,23 @@
     dashboard: { showCategories: true, layout: 'none' },
     updateControl: { enabled: true, position: 'fixed-bottom-right' }
   };
-
+  const clone = value => JSON.parse(JSON.stringify(value));
   const read = () => {
-    try {
-      return JSON.parse(localStorage.getItem(KEY) || JSON.stringify(defaults));
-    } catch {
-      return JSON.parse(JSON.stringify(defaults));
-    }
+    try { return { ...clone(defaults), ...JSON.parse(localStorage.getItem(KEY) || '{}') }; }
+    catch { return clone(defaults); }
   };
-
-  const patch = (changes) => {
-    const next = { ...read(), ...changes };
+  const patch = changes => {
+    const current = read();
+    const next = {
+      ...current,
+      ...changes,
+      dashboard: { ...current.dashboard, ...(changes?.dashboard || {}) },
+      account: { ...current.account, ...(changes?.account || {}) },
+      updateControl: { ...current.updateControl, ...(changes?.updateControl || {}) }
+    };
     localStorage.setItem(KEY, JSON.stringify(next));
     window.dispatchEvent(new CustomEvent('jarvis:v9-settings-changed', { detail: next }));
     return next;
   };
-
-  window.JARVIS_V9_SETTINGS = Object.freeze({ key: KEY, read, patch });
+  window.JARVIS_V9_SETTINGS = Object.freeze({ key: KEY, defaults: clone(defaults), read, patch });
 })();
