@@ -4,6 +4,7 @@
   const files = [
     'v9-config.js',
     'ha-state-store.js',
+    'state-presenter.js',
     'entity-adapter.js',
     'entity-selection.js',
     'settings-model.js',
