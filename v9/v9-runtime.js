@@ -3,7 +3,7 @@
   'use strict';
   const V9 = window.JARVIS_V9;
   if (!V9) return;
-  const state = { entities: [], index: {}, lastRefresh: 0 };
+  const state = { entities: [], index: {}, lastRefresh: 0, refreshing: null };
   const getConfig = () => ({ url: window.HA_URL || window.location.origin, token: window.HA_TOKEN || '' });
   async function api(path, options = {}) {
     const { url, token } = getConfig();
@@ -13,13 +13,18 @@
     return response.json();
   }
   async function refreshEntities() {
-    const entities = await api('/api/states');
-    state.entities = Array.isArray(entities) ? entities : [];
-    state.index = V9.buildEntityIndex(state.entities);
-    state.lastRefresh = Date.now();
-    window.JARVIS_V9_HA?.replace(state.entities);
-    window.dispatchEvent(new CustomEvent('jarvis:v9:entities', { detail: { entities: state.entities, index: state.index } }));
-    return state.index;
+    if (state.refreshing) return state.refreshing;
+    state.refreshing = (async () => {
+      const entities = await api('/api/states');
+      state.entities = Array.isArray(entities) ? entities : [];
+      state.index = V9.buildEntityIndex(state.entities);
+      state.lastRefresh = Date.now();
+      window.JARVIS_V9_HA?.replace(state.entities);
+      window.dispatchEvent(new CustomEvent('jarvis:v9:entities', { detail: { entities: state.entities, index: state.index } }));
+      return state.index;
+    })();
+    try { return await state.refreshing; }
+    finally { state.refreshing = null; }
   }
   const getCategory = categoryId => state.index[categoryId] || [];
   const getEntity = entityId => state.entities.find(entity => entity.entity_id === entityId) || null;
@@ -41,8 +46,9 @@
       method: 'POST', body: JSON.stringify({ ...safe.data, target: { entity_id: safe.entity_id } })
     }));
   }
-  const apiPublic = Object.freeze({ refreshEntities, getCategory, getEntity, getStateSummary, getCategories, callService, get lastRefresh() { return state.lastRefresh; } });
+  const apiPublic = Object.freeze({ refreshEntities, getCategory, getEntity, getStateSummary, getCategories, callService, get lastRefresh() { return state.lastRefresh; }, get refreshing() { return Boolean(state.refreshing); } });
   window.JARVIS_V9_RUNTIME = apiPublic;
-  window.addEventListener('jarvis:v9:refresh', () => refreshEntities().catch(error => window.dispatchEvent(new CustomEvent('jarvis:v9:error', { detail: error }))));
-  window.addEventListener('load', () => refreshEntities().catch(error => window.dispatchEvent(new CustomEvent('jarvis:v9:error', { detail: error }))), { once: true });
+  const refresh = () => refreshEntities().catch(error => window.dispatchEvent(new CustomEvent('jarvis:v9:error', { detail: error })));
+  window.addEventListener('jarvis:v9:refresh', refresh);
+  window.addEventListener('load', refresh, { once: true });
 })();
