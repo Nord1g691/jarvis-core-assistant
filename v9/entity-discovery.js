@@ -10,12 +10,17 @@
   };
   const ingestEvent = event => {
     const store = window.JARVIS_V9_HA;
-    const entity = normalize(event?.data?.new_state || event?.new_state || event);
-    if (!store || !entity) return null;
-    if (event?.data?.new_state === null || event?.new_state === null) { store.remove(event?.data?.entity_id || event?.entity_id || entity.entity_id); return null; }
+    if (!store) return null;
+    const oldState = event?.data?.old_state ?? event?.old_state;
+    const newState = event?.data?.new_state ?? event?.new_state;
+    const entityId = event?.data?.entity_id || event?.entity_id || newState?.entity_id || oldState?.entity_id;
+    if (!entityId) return null;
+    if (newState === null) { store.remove(entityId); return null; }
+    const entity = normalize(newState);
+    if (!entity) return null;
     store.update(entity);
     return entity;
   };
   const ingestEventBatch = events => (Array.isArray(events) ? events.map(ingestEvent).filter(Boolean) : []);
-  window.JARVIS_V9_DISCOVERY = Object.freeze({ ingestStates, ingestEvent, ingestEventBatch });
+  window.JARVIS_V9_DISCOVERY = Object.freeze({ ingestStates, ingestEvent, ingestEventBatch, normalize });
 })();
