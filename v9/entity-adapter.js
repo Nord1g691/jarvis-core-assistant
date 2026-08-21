@@ -27,7 +27,8 @@
     name: entity.attributes?.friendly_name || entity.entity_id,
     state: entity.state,
     displayState: displayState(entity),
-    attributes: entity.attributes || {}
+    attributes: entity.attributes || {},
+    presentation: window.JARVIS_V9_STATE_PRESENTER?.summarize(entity) || { state: entity.state }
   });
 
   window.JARVIS_V9_ENTITY_ADAPTER = Object.freeze({ value, displayState, cardModel });
