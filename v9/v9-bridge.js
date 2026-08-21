@@ -14,8 +14,10 @@
   api.executeAction = (descriptor, transport) => window.JARVIS_V9_ACTION_GATEWAY?.execute?.(descriptor, transport);
   api.subscribe = fn => {
     const store = window.JARVIS_V9_HA;
-    return store?.subscribe ? store.subscribe(() => fn(dashboard())) : () => {};
+    if (!store?.subscribe || typeof fn !== 'function') return () => {};
+    return store.subscribe(() => fn(dashboard()));
   };
+  api.refresh = () => window.dispatchEvent(new CustomEvent('jarvis:v9:refresh'));
   window.JARVIS_V9_BRIDGE = Object.freeze(api);
   window.dispatchEvent(new CustomEvent('jarvis:v9-bridge-ready', { detail: api }));
 })();
