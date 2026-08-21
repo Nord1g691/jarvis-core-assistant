@@ -32,10 +32,15 @@
   }
   const getCategories = () => V9.categories.map(category => ({ ...category, entities: getCategory(category.id), count: getCategory(category.id).length }));
   async function callService(domain, service, serviceData = {}, target = {}) {
-    const descriptor = { entity_id: target.entity_id || target.entity_id?.[0], action: service, data: serviceData };
+    const entityIds = Array.isArray(target.entity_id) ? target.entity_id : [target.entity_id];
+    const validEntityIds = entityIds.filter(id => typeof id === 'string' && /^[a-z0-9_]+\.[a-z0-9_]+$/i.test(id));
+    if (!validEntityIds.length) throw new Error('JARVIS V9: cible Home Assistant invalide');
     const gateway = window.JARVIS_V9_ACTION_GATEWAY;
-    if (gateway && descriptor.entity_id) return gateway.execute(descriptor, safe => api(`/api/services/${encodeURIComponent(domain)}/${encodeURIComponent(safe.action)}`, { method: 'POST', body: JSON.stringify({ ...safe.data, target: { entity_id: safe.entity_id } }) }));
-    throw new Error('JARVIS V9 action gateway unavailable');
+    if (!gateway) throw new Error('JARVIS V9 action gateway unavailable');
+    const action = service === 'set_temperature' || service === 'set_hvac_mode' ? service : service;
+    return gateway.execute({ entity_id: validEntityIds[0], action, data: serviceData }, safe => api(`/api/services/${encodeURIComponent(domain)}/${encodeURIComponent(safe.action)}`, {
+      method: 'POST', body: JSON.stringify({ ...safe.data, target: { entity_id: safe.entity_id } })
+    }));
   }
   const apiPublic = Object.freeze({ refreshEntities, getCategory, getEntity, getStateSummary, getCategories, callService, get lastRefresh() { return state.lastRefresh; } });
   window.JARVIS_V9_RUNTIME = apiPublic;
