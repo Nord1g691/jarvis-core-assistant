@@ -3,11 +3,11 @@
   const base = 'v9/';
   const files = [
     'v9-config.js',
+    'ha-state-store.js',
     'entity-adapter.js',
     'entity-selection.js',
     'settings-model.js',
     'card-layout.js',
-    'ha-state-store.js',
     'card-model.js',
     'category-actions.js',
     'action-policy.js',
@@ -19,9 +19,11 @@
   ];
 
   const load = (file) => new Promise((resolve, reject) => {
+    if (document.querySelector(`script[data-jarvis-v9="${file}"]`)) return resolve();
     const script = document.createElement('script');
     script.src = base + file;
     script.async = false;
+    script.dataset.jarvisV9 = file;
     script.onload = resolve;
     script.onerror = () => reject(new Error(`JARVIS V9: failed to load ${file}`));
     document.head.appendChild(script);
