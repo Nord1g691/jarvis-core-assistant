@@ -5,7 +5,7 @@
     if (!bridge || window.JARVIS_V9_HUD) return;
     const emit = () => window.dispatchEvent(new CustomEvent('jarvis:v9-dashboard-update', { detail: bridge.buildDashboard() }));
     window.JARVIS_V9_HUD = Object.freeze({
-      refresh: emit,
+      refresh: () => bridge.refresh(),
       getState: () => bridge.buildDashboard(),
       getEntities: () => bridge.getEntities(),
       getMenu: () => bridge.getMenu(),
