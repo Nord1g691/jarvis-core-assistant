@@ -5,7 +5,7 @@
     'v9-config.js','ha-state-store.js','state-presenter.js','entity-adapter.js',
     'entity-selection.js','settings-model.js','card-layout.js','card-model.js',
     'category-actions.js','action-policy.js','action-gateway.js','entity-discovery.js',
-    'context-router.js','dashboard-model.js','v9-bridge.js','manual-menu.js','hud-bootstrap.js'
+    'v9-runtime.js','context-router.js','dashboard-model.js','v9-bridge.js','manual-menu.js','hud-bootstrap.js'
   ];
   const load = (file) => new Promise((resolve, reject) => {
     if (document.querySelector(`script[data-jarvis-v9="${file}"]`)) return resolve();
