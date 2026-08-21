@@ -12,6 +12,7 @@
     'card-model.js',
     'category-actions.js',
     'action-policy.js',
+    'action-gateway.js',
     'entity-discovery.js',
     'dashboard-model.js',
     'v9-bridge.js',
