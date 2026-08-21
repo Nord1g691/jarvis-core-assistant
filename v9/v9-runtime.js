@@ -37,8 +37,7 @@
     if (!validEntityIds.length) throw new Error('JARVIS V9: cible Home Assistant invalide');
     const gateway = window.JARVIS_V9_ACTION_GATEWAY;
     if (!gateway) throw new Error('JARVIS V9 action gateway unavailable');
-    const action = service === 'set_temperature' || service === 'set_hvac_mode' ? service : service;
-    return gateway.execute({ entity_id: validEntityIds[0], action, data: serviceData }, safe => api(`/api/services/${encodeURIComponent(domain)}/${encodeURIComponent(safe.action)}`, {
+    return gateway.execute({ entity_id: validEntityIds, action: service, data: serviceData }, safe => api(`/api/services/${encodeURIComponent(domain)}/${encodeURIComponent(safe.action)}`, {
       method: 'POST', body: JSON.stringify({ ...safe.data, target: { entity_id: safe.entity_id } })
     }));
   }
