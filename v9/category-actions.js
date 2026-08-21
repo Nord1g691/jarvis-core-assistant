@@ -8,17 +8,13 @@
     media_player: ['play_media', 'media_play_pause', 'media_stop', 'volume_set'],
     switch: ['turn_on', 'turn_off', 'toggle']
   });
-
-  const getActions = (entityId) => {
+  const getActions = entityId => {
     const domain = String(entityId || '').split('.')[0];
-    return domainActions[domain] || [];
+    return domainActions[domain] ? [...domainActions[domain]] : [];
   };
-
-  const descriptor = (entityId, action, data = {}) => ({
-    entity_id: entityId,
-    action,
-    data: { ...data }
-  });
-
+  const descriptor = (entityId, action, data = {}) => {
+    const entityIds = Array.isArray(entityId) ? entityId : [entityId];
+    return { entity_id: [...entityIds], action, data: { ...data } };
+  };
   window.JARVIS_V9_ACTIONS = Object.freeze({ domainActions, getActions, descriptor });
 })();
