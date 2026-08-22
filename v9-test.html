@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JARVIS V9</title>
+<style>
+:root{--cyan:#00eaff;--bg:#01050c;--text:#d9faff}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);overflow:hidden;font-family:Rajdhani,Arial,sans-serif;color:var(--text)}
+iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#01050c}
+#v9-menu{position:fixed;top:12px;right:12px;z-index:50;width:min(330px,calc(100vw - 24px));padding:14px;border:1px solid rgba(0,234,255,.38);border-radius:12px;background:rgba(1,9,18,.94);backdrop-filter:blur(14px);box-shadow:0 0 30px rgba(0,234,255,.14);transform:translateX(calc(100% + 28px));transition:transform .22s ease}
+#v9-menu.open{transform:translateX(0)}
+.v9-title{font:700 14px Orbitron,Arial,sans-serif;letter-spacing:2px;color:#e8fcff;margin-bottom:12px}.v9-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.v9-btn{min-height:42px;border:1px solid rgba(0,200,255,.3);border-radius:8px;background:rgba(0,120,180,.08);color:var(--text);font-weight:700;letter-spacing:1px}.v9-btn:active{transform:scale(.97);background:rgba(0,220,255,.18)}#v9-status{font-size:11px;color:#76bad0;margin:8px 0 12px}.ok{color:#39ff88}.err{color:#ff3158}
+#v9-menu-btn{position:fixed;top:12px;left:12px;z-index:60;width:48px;height:48px;border-radius:10px;border:1px solid rgba(0,234,255,.4);background:rgba(1,9,18,.72);color:var(--cyan);font-size:24px;box-shadow:0 0 18px rgba(0,234,255,.14);backdrop-filter:blur(10px)}
+#v9-conn{position:fixed;top:12px;right:72px;z-index:60;min-height:48px;padding:0 13px;border-radius:10px;border:1px solid rgba(0,234,255,.35);background:rgba(1,9,18,.72);color:var(--text);font-weight:700;letter-spacing:1px;backdrop-filter:blur(10px)}
+#v9-toast{position:fixed;left:50%;bottom:18px;z-index:70;transform:translate(-50%,20px);opacity:0;padding:9px 14px;border:1px solid rgba(0,234,255,.3);border-radius:20px;background:rgba(1,9,18,.92);color:var(--text);transition:.2s;pointer-events:none;font-size:11px;letter-spacing:1px}#v9-toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<iframe id="jarvis" src="./index.html" title="JARVIS"></iframe>
+<button id="v9-menu-btn" aria-label="Menu">☰</button>
+<button id="v9-conn">⟳ CONNEXION</button>
+<div id="v9-menu">
+  <div class="v9-title">JARVIS V9</div>
+  <div id="v9-status">Initialisation de l’interface V9…</div>
+  <div class="v9-row">
+    <button class="v9-btn" onclick="callJarvis('testHA')">📡 TEST HA</button>
+    <button class="v9-btn" onclick="callJarvis('tV')">🎤 ÉCOUTER</button>
+    <button class="v9-btn" onclick="callJarvis('activateJarvisSatellite')">🎙️ IPHONE</button>
+    <button class="v9-btn" onclick="callJarvis('tM')">🔇 MUTE</button>
+    <button class="v9-btn" onclick="callJarvis('musicToggle')">🎵 MUSIQUE</button>
+    <button class="v9-btn" onclick="callJarvis('clearLog')">🧹 CONSOLE</button>
+  </div>
+  <div class="v9-row">
+    <button class="v9-btn" onclick="callJarvis('setCoreState','idle')">AUTO</button>
+    <button class="v9-btn" onclick="callJarvis('setCoreState','listening')">ÉCOUTE</button>
+    <button class="v9-btn" onclick="callJarvis('setCoreState','processing')">RÉFLEXION</button>
+    <button class="v9-btn" onclick="callJarvis('setCoreState','responding')">RÉPONSE</button>
+  </div>
+</div>
+<div id="v9-toast"></div>
+<script>
+const frame=document.getElementById('jarvis');
+const menu=document.getElementById('v9-menu');
+const status=document.getElementById('v9-status');
+const toast=document.getElementById('v9-toast');
+function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)}
+document.getElementById('v9-menu-btn').onclick=()=>menu.classList.toggle('open');
+document.getElementById('v9-conn').onclick=()=>{menu.classList.add('open');callJarvis('testHA')};
+function callJarvis(fn,...args){
+  try{
+    const w=frame.contentWindow;
+    if(typeof w[fn]!=='function'){showToast('Fonction V9 non disponible');return}
+    const result=w[fn](...args);
+    if(result&&typeof result.then==='function') result.then(()=>updateStatus()).catch(e=>showToast(e.message||'Erreur'));
+    else updateStatus();
+  }catch(e){showToast(e.message||'Erreur')}
+}
+function updateStatus(){
+  try{
+    const w=frame.contentWindow;
+    const online=w.document.getElementById('connectionStatus')?.classList.contains('online');
+    status.innerHTML=online?'<span class="ok">● Home Assistant EN LIGNE</span>':'<span>● Interface prête — connexion HA à tester</span>';
+  }catch(e){status.textContent='Interface prête'}
+}
+frame.addEventListener('load',()=>{updateStatus();showToast('V9 prête à tester')});
+</script>
+</body>
+</html>
