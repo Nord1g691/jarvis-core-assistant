@@ -1,14 +1,2 @@
-/** V9 context router: prepares explicit requests for later contextual surfaces without changing the renderer. */
-(() => {
-  const normalize = value => String(value || '').trim().toLowerCase();
-  const route = request => {
-    const text = normalize(request);
-    if (!text) return { type: 'none', query: '' };
-    if (/\b(news|actualit|nouvelles?)\b/.test(text)) return { type: 'news', query: request };
-    if (/\b(cam(é|e)ra|caméras?|camera|cameras|surveillance)\b/.test(text)) return { type: 'cameras', query: request };
-    if (/\b(musique|music|clip|chanson|vidéo|video)\b/.test(text)) return { type: 'media', query: request };
-    if (/\b(solaire|solaire|panneaux|énergie|energie)\b/.test(text)) return { type: 'energy', query: request };
-    return { type: 'general', query: request };
-  };
-  window.JARVIS_V9_CONTEXT = Object.freeze({ route });
-})();
+/** V9 context router: deterministic routing for contextual surfaces. */
+(()=>{'use strict';const normalize=value=>String(value??'').trim().toLowerCase();const rules=[['news',/\b(news|actualit(?:é|e)|nouvelles?)\b/],['cameras',/\b(cam(?:é|e)ra|caméras?|camera|cameras|surveillance)\b/],['media',/\b(musique|music|clip|chanson|vid(?:é|e)o)\b/],['energy',/\b(solaire|panneaux|énergie|energie|production|consommation)\b/],['sport',/\b(sport|match|score|résultat|resultat)\b/],['pool',/\b(piscine|pompe|filtration|chlore)\b/],['climate',/\b(chauffage|clim|climatisation|température|temperature)\b/]];const route=request=>{const text=normalize(request);if(!text)return{type:'none',query:''};const hit=rules.find(([,pattern])=>pattern.test(text));return{type:hit?.[0]||'general',query:String(request)};};window.JARVIS_V9_CONTEXT=Object.freeze({route})})();
