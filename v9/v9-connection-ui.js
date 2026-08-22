@@ -1,12 +1,2 @@
 /** JARVIS V9 — connection form controller. Credentials stay in memory only. */
-(() => {
-  'use strict';
-  const core=()=>window.JARVIS_V9_CORE;
-  const state=()=>core()?.getConnection?.()||{status:'disconnected',url:'',error:''};
-  const view=()=>{const s=state();return {status:s.status,url:s.url,error:s.error,label:s.status==='connected'?'Connecté':s.status==='connecting'?'Connexion…':s.status==='error'?'Erreur':'Déconnecté',ok:s.status==='connected'}};
-  const connect=async(url,token)=>{const u=String(url||'').trim(),t=String(token||'').trim();if(!u||!t)throw new Error('URL et token Home Assistant requis');try{return await core().connect(u,t)}catch(e){window.dispatchEvent(new CustomEvent('jarvis:v9:connection-invalid',{detail:{message:e.message}}));throw e}};
-  const submit=form=>{const data=new FormData(form);return connect(data.get('url'),data.get('token'))};
-  const api=Object.freeze({view,connect,submit,disconnect:()=>core()?.disconnect?.()});
-  window.JARVIS_V9_CONNECTION_UI=api;
-  window.addEventListener('jarvis:v9-connection',()=>window.dispatchEvent(new CustomEvent('jarvis:v9:connection-view',{detail:view()})));
-})();
+(()=>{'use strict';const core=()=>window.JARVIS_V9_CORE;const state=()=>core()?.getConnection?.()||{status:'disconnected',url:'',error:''};const view=()=>{const s=state();return {status:s.status,url:s.url,error:s.error,label:s.status==='connected'?'Connecté':s.status==='connecting'?'Connexion…':s.status==='error'?'Erreur':'Déconnecté',ok:s.status==='connected'}};const connect=async(url,token)=>{const u=String(url||'').trim().replace(/\/$/,''),t=String(token||'').trim();if(!/^https?:\/\//i.test(u))throw new Error('URL Home Assistant invalide');if(!t)throw new Error('Token Home Assistant requis');try{return await core().connect(u,t)}catch(e){window.dispatchEvent(new CustomEvent('jarvis:v9:connection-invalid',{detail:{message:e.message}}));throw e}};const submit=form=>{const data=new FormData(form);return connect(data.get('url'),data.get('token'))};const api=Object.freeze({view,connect,submit,disconnect:()=>core()?.disconnect?.()});window.JARVIS_V9_CONNECTION_UI=api;window.addEventListener('jarvis:v9-connection',()=>window.dispatchEvent(new CustomEvent('jarvis:v9:connection-view',{detail:view()})));})();
