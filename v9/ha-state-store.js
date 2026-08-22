@@ -1,20 +1,2 @@
 /** V9 Home Assistant state store: framework-neutral event/state bridge. */
-(() => {
-  const entities = new Map();
-  const listeners = new Set();
-  let revision = 0;
-  const emit = () => {
-    revision += 1;
-    const snapshot = [...entities.values()];
-    listeners.forEach(fn => { try { fn(snapshot); } catch (_) {} });
-    window.dispatchEvent(new CustomEvent('jarvis:v9-state-changed', { detail: { entities: snapshot, revision } }));
-  };
-  const replace = (states = []) => { entities.clear(); states.forEach(entity => { if (entity?.entity_id) entities.set(entity.entity_id, entity); }); emit(); };
-  const update = entity => { if (!entity?.entity_id) return; entities.set(entity.entity_id, { ...(entities.get(entity.entity_id) || {}), ...entity }); emit(); };
-  const remove = entityId => { if (!entities.has(entityId)) return false; entities.delete(entityId); emit(); return true; };
-  const get = entityId => entities.get(entityId) || null;
-  const all = () => [...entities.values()];
-  const subscribe = fn => { if (typeof fn !== 'function') return () => {}; listeners.add(fn); return () => listeners.delete(fn); };
-  const getRevision = () => revision;
-  window.JARVIS_V9_HA = Object.freeze({ replace, update, remove, get, all, subscribe, getRevision });
-})();
+(()=>{'use strict';const entities=new Map(),listeners=new Set();let revision=0;const emit=()=>{revision+=1;const snapshot=[...entities.values()];listeners.forEach(fn=>{try{fn(snapshot)}catch(_){}});window.dispatchEvent(new CustomEvent('jarvis:v9-state-changed',{detail:{entities:snapshot,revision}}))};const replace=states=>{entities.clear();(Array.isArray(states)?states:[]).forEach(e=>{if(e?.entity_id)entities.set(e.entity_id,e)});emit()};const update=e=>{if(!e?.entity_id)return;entities.set(e.entity_id,{...(entities.get(e.entity_id)||{}),...e});emit()};const remove=id=>{if(!entities.has(id))return false;entities.delete(id);emit();return true};const get=id=>entities.get(id)||null;const all=()=>[...entities.values()];const getAll=all;const subscribe=fn=>{if(typeof fn!=='function')return()=>{};listeners.add(fn);return()=>listeners.delete(fn)};window.JARVIS_V9_HA=Object.freeze({replace,update,remove,get,all,getAll,subscribe,getRevision:()=>revision})})();
