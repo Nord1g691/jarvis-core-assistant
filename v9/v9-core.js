@@ -2,108 +2,21 @@
 (() => {
   'use strict';
   const KEY = 'jarvis_v9_settings';
-  const state = {
-    connection: { url: '', token: '', status: 'disconnected', error: '' },
-    menu: { open: false, category: null, selected: [] },
-    settings: { account: {}, voice: {}, system: {}, general: {} },
-    log: [],
-    listeners: new Set()
-  };
-
-  const emit = name => window.dispatchEvent(new CustomEvent(name, { detail: snapshot() }));
-  const notify = () => state.listeners.forEach(fn => { try { fn(snapshot()); } catch (_) {} });
-  const snapshot = () => ({ connection: { ...state.connection, token: undefined }, menu: { ...state.menu, selected: [...state.menu.selected] }, settings: structuredClone(state.settings), log: [...state.log] });
-
-  function log(level, message, data) {
-    const entry = { time: new Date().toISOString(), level, message: String(message), ...(data === undefined ? {} : { data }) };
-    state.log.push(entry);
-    if (state.log.length > 300) state.log.splice(0, state.log.length - 300);
-    window.dispatchEvent(new CustomEvent('jarvis:v9:log', { detail: entry }));
-    notify();
-    return entry;
-  }
-
-  function loadSettings() {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) state.settings = { ...state.settings, ...JSON.parse(raw) };
-    } catch (_) { log('warn', 'Impossible de charger les réglages locaux'); }
-  }
-  function saveSettings() {
-    try { localStorage.setItem(KEY, JSON.stringify(state.settings)); } catch (_) { log('warn', 'Impossible de sauvegarder les réglages'); }
-    emit('jarvis:v9-settings-changed'); notify();
-  }
-
-  const normalizeUrl = url => String(url || '').trim().replace(/\/$/, '');
-  async function request(path, options = {}) {
-    if (!state.connection.url || !state.connection.token) throw new Error('Connexion Home Assistant non configurée');
-    const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
-    headers.Authorization = `Bearer ${state.connection.token}`;
-    const response = await fetch(`${state.connection.url}${path}`, { ...options, headers });
-    if (!response.ok) throw new Error(`Home Assistant HTTP ${response.status}`);
-    return response.status === 204 ? null : response.json();
-  }
-
-  async function connect(url, token) {
-    const nextUrl = normalizeUrl(url);
-    const nextToken = String(token || '').trim();
-    if (!nextUrl || !nextToken) throw new Error('URL et token Home Assistant requis');
-    state.connection = { url: nextUrl, token: nextToken, status: 'connecting', error: '' };
-    emit('jarvis:v9-connection'); notify();
-    try {
-      await request('/api/');
-      state.connection.status = 'connected';
-      state.connection.error = '';
-      state.settings.account.url = nextUrl;
-      saveSettings();
-      log('info', 'Connexion Home Assistant établie');
-      emit('jarvis:v9-connection'); notify();
-      window.dispatchEvent(new CustomEvent('jarvis:v5:connection', { detail: { request, url: nextUrl } }));
-      await window.JARVIS_V9_RUNTIME?.refreshEntities?.();
-      return true;
-    } catch (error) {
-      state.connection.status = 'error';
-      state.connection.error = error.message;
-      log('error', 'Échec de connexion Home Assistant', error.message);
-      emit('jarvis:v9-connection'); notify();
-      throw error;
-    }
-  }
-
-  function disconnect() {
-    state.connection = { url: '', token: '', status: 'disconnected', error: '' };
-    log('info', 'Connexion Home Assistant fermée');
-    emit('jarvis:v9-connection'); notify();
-  }
-
-  function setCategory(id, selected = []) {
-    state.menu.category = id;
-    state.menu.selected = [...selected];
-    emit('jarvis:v9-menu-changed'); emit('jarvis:v9-selection-changed'); notify();
-  }
-  function clearSelection() { state.menu.category = null; state.menu.selected = []; emit('jarvis:v9-selection-changed'); notify(); }
-  function setOpen(open) { state.menu.open = Boolean(open); emit('jarvis:v9-menu-changed'); notify(); }
-
-  const api = Object.freeze({
-    version: '9.0',
-    connect, disconnect, request,
-    getConnection: () => ({ ...state.connection, token: undefined }),
-    getSecretToken: () => state.connection.token,
-    getLog: () => [...state.log],
-    clearLog: () => { state.log.length = 0; emit('jarvis:v9:log'); notify(); },
-    copyLog: async () => navigator.clipboard.writeText(state.log.map(e => `[${e.time}] ${e.level.toUpperCase()} ${e.message}`).join('\n')),
-    log,
-    getMenu: () => ({ ...state.menu, selected: [...state.menu.selected] }),
-    setCategory, clearSelection, setOpen,
-    readSettings: () => structuredClone(state.settings),
-    setSetting: (section, key, value) => { if (!state.settings[section]) state.settings[section] = {}; state.settings[section][key] = value; saveSettings(); },
-    subscribe: fn => { state.listeners.add(fn); return () => state.listeners.delete(fn); }
-  });
-
-  loadSettings();
-  window.JARVIS_V9_CORE = api;
-  window.JARVIS_V9_MENU = Object.freeze({ read: api.getMenu, setCategory, clear: clearSelection, open: () => setOpen(true), close: () => setOpen(false) });
-  window.JARVIS_V9_SETTINGS = Object.freeze({ read: api.readSettings, set: api.setSetting });
-  window.addEventListener('jarvis:v9:error', e => log('error', e.detail?.message || e.detail || 'Erreur V9'));
-  window.dispatchEvent(new CustomEvent('jarvis:v9-core-ready'));
+  const state = { connection:{url:'',token:'',status:'disconnected',error:''},menu:{open:false,category:null,selected:[]},settings:{account:{},voice:{},system:{},general:{}},log:[],listeners:new Set() };
+  const emit=name=>window.dispatchEvent(new CustomEvent(name,{detail:snapshot()}));
+  const notify=()=>state.listeners.forEach(fn=>{try{fn(snapshot())}catch(_){}});
+  const snapshot=()=>({connection:{...state.connection,token:undefined},menu:{...state.menu,selected:[...state.menu.selected]},settings:structuredClone(state.settings),log:[...state.log]});
+  const log=(level,message,data)=>{const entry={time:new Date().toISOString(),level,message:String(message),...(data===undefined?{}:{data})};state.log.push(entry);if(state.log.length>300)state.log.splice(0,state.log.length-300);window.dispatchEvent(new CustomEvent('jarvis:v9:log',{detail:entry}));notify();return entry};
+  function loadSettings(){try{const raw=localStorage.getItem(KEY);if(raw)state.settings={...state.settings,...JSON.parse(raw)}}catch(_){log('warn','Impossible de charger les réglages locaux')}}
+  function saveSettings(){try{localStorage.setItem(KEY,JSON.stringify(state.settings))}catch(_){log('warn','Impossible de sauvegarder les réglages')}emit('jarvis:v9-settings-changed');notify()}
+  const normalizeUrl=url=>String(url||'').trim().replace(/\/$/,'');
+  async function request(path,options={}){if(!state.connection.url||!state.connection.token)throw new Error('Connexion Home Assistant non configurée');const headers={'Content-Type':'application/json',...(options.headers||{})};headers.Authorization=`Bearer ${state.connection.token}`;const response=await fetch(`${state.connection.url}${path}`,{...options,headers});if(!response.ok)throw new Error(`Home Assistant HTTP ${response.status}`);return response.status===204?null:response.json()}
+  async function connect(url,token){const nextUrl=normalizeUrl(url),nextToken=String(token||'').trim();if(!nextUrl||!nextToken)throw new Error('URL et token Home Assistant requis');state.connection={url:nextUrl,token:nextToken,status:'connecting',error:''};emit('jarvis:v9-connection');notify();try{await request('/api/');state.connection.status='connected';state.connection.error='';state.settings.account.url=nextUrl;saveSettings();log('info','Connexion Home Assistant établie');emit('jarvis:v9-connection');notify();window.dispatchEvent(new CustomEvent('jarvis:v5:connection',{detail:{request,url:nextUrl}}));await window.JARVIS_V9_RUNTIME?.refreshEntities?.();return true}catch(error){state.connection.status='error';state.connection.error=error.message;log('error','Échec de connexion Home Assistant',error.message);emit('jarvis:v9-connection');notify();throw error}}
+  function disconnect(){state.connection={url:'',token:'',status:'disconnected',error:''};window.JARVIS_V9_RUNTIME?.clearConnection?.();log('info','Connexion Home Assistant fermée');emit('jarvis:v9-connection');notify()}
+  function setCategory(id,selected=[]){state.menu.category=id;state.menu.selected=[...selected];emit('jarvis:v9-menu-changed');emit('jarvis:v9-selection-changed');notify()}
+  function clearSelection(){state.menu.category=null;state.menu.selected=[];emit('jarvis:v9-selection-changed');notify()}
+  function setOpen(open){state.menu.open=Boolean(open);emit('jarvis:v9-menu-changed');notify()}
+  const copyLog=async()=>{const text=state.log.map(e=>`[${e.time}] ${String(e.level).toUpperCase()} ${e.message}${e.data===undefined?'':' '+JSON.stringify(e.data)}`).join('\n');if(!text)throw new Error('Log vide');if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);else{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}};
+  const api=Object.freeze({version:'9.0',connect,disconnect,request,getConnection:()=>({...state.connection,token:undefined}),getSecretToken:()=>state.connection.token,getLog:()=>[...state.log],clearLog:()=>{state.log.length=0;emit('jarvis:v9:log');notify()},copyLog,log,getMenu:()=>({...state.menu,selected:[...state.menu.selected]}),setCategory,clearSelection,setOpen,readSettings:()=>structuredClone(state.settings),setSetting:(section,key,value)=>{if(!state.settings[section])state.settings[section]={};state.settings[section][key]=value;saveSettings()},subscribe:fn=>{state.listeners.add(fn);return()=>state.listeners.delete(fn)}});
+  loadSettings();window.JARVIS_V9_CORE=api;window.JARVIS_V9_MENU=Object.freeze({read:api.getMenu,setCategory,clear:clearSelection,open:()=>setOpen(true),close:()=>setOpen(false)});window.JARVIS_V9_SETTINGS=Object.freeze({read:api.readSettings,set:api.setSetting});window.addEventListener('jarvis:v9:error',e=>log('error',e.detail?.message||e.detail||'Erreur V9'));window.dispatchEvent(new CustomEvent('jarvis:v9-core-ready'));
 })();
