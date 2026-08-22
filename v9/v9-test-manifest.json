@@ -1,9 +1,0 @@
-{
-  "version": "9.0",
-  "branch": "dev-v9",
-  "runner": "v9-test-runner.html",
-  "selfTest": "v9-self-test.js",
-  "modules": ["v9-config.js","ha-state-store.js","state-presenter.js","entity-adapter.js","entity-selection.js","settings-model.js","card-layout.js","card-model.js","category-actions.js","action-policy.js","action-gateway.js","entity-discovery.js","v9-runtime.js","context-router.js","dashboard-model.js","v9-bridge.js","manual-menu.js","hud-bootstrap.js"],
-  "network": false,
-  "purpose": "offline smoke-test manifest"
-}
