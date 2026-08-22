@@ -7,7 +7,7 @@
     'v9/ha-state-store.js','v9/action-policy.js','v9/action-gateway.js','v9/category-actions.js','v9/card-model.js',
     'v9/card-layout.js','v9/dashboard-model.js','v9/context-router.js','v9/v9-bridge.js','v9/hud-bootstrap.js',
     'v9/v9-runtime.js','v9/v9-self-test.js','v9/v9-action-presets.js','v9/v9-category-view.js','v9/v9-action-dispatcher.js',
-    'v9/v9-settings-panel.js','v9/v9-quick-actions.js','v9/v9-connection-ui.js','v9/v9-ui-controller.js'
+    'v9/v9-settings-panel.js','v9/v9-quick-actions.js','v9/v9-connection-ui.js','v9/v9-log-controller.js','v9/v9-ui-controller.js'
   ];
   const loaded=new Set();
   const load=src=>new Promise((resolve,reject)=>{if(loaded.has(src)||document.querySelector(`script[data-jarvis-v9="${src}"]`)){loaded.add(src);resolve();return}const s=document.createElement('script');s.src=new URL(src,document.baseURI).href;s.dataset.jarvisV9=src;s.onload=()=>{loaded.add(src);resolve()};s.onerror=()=>reject(new Error(`Impossible de charger ${src}`));document.head.appendChild(s)});
