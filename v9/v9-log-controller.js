@@ -1,0 +1,8 @@
+/** JARVIS V9 — log controller for compact header/menu controls. */
+(() => {
+  'use strict';
+  const core=()=>window.JARVIS_V9_CORE;
+  const format=()=> (core()?.getLog?.()||[]).map(e=>`[${e.time}] ${String(e.level).toUpperCase()} ${e.message}${e.data===undefined?'':' '+JSON.stringify(e.data)}`).join('\n');
+  const api=Object.freeze({read:()=>core()?.getLog?.()||[],format,copy:()=>core()?.copyLog?.(),clear:()=>core()?.clearLog?.(),count:()=>core()?.getLog?.()?.length||0});
+  window.JARVIS_V9_LOG=api;
+})();
