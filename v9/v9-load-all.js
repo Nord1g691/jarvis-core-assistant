@@ -20,6 +20,8 @@
   });
   window.JARVIS_V9_LOAD_ALL = async () => {
     for (const file of files) await load(file);
+    const result = window.JARVIS_V9_SELF_TEST?.run?.();
+    window.dispatchEvent(new CustomEvent('jarvis:v9-ready', { detail: result || null }));
     return true;
   };
 })();
