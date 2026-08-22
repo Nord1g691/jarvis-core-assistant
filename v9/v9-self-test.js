@@ -8,6 +8,8 @@
     check('core/log/connection API',()=>['connect','disconnect','copyLog','getLog'].every(k=>typeof window.JARVIS_V9_CORE?.[k]==='function'));
     check('connection form loaded',()=>typeof window.JARVIS_V9_CONNECTION_FORM?.render==='function');
     check('loader includes connection form',()=>document.querySelector('script[data-jarvis-v9="v9/v9-connection-form.js"]')||typeof window.JARVIS_V9_CONNECTION_FORM?.render==='function');
+    check('V5 compatibility bridge loaded',()=>typeof window.JARVIS_V9_V5_BRIDGE?.sync==='function');
+    check('V5 bridge exposes no token',()=>{const s=window.JARVIS_V9_CORE?.getConnection?.()||{};return !Object.prototype.hasOwnProperty.call(s,'token')});
     check('action policy accepts light',()=>window.JARVIS_V9_ACTION_POLICY?.validate({entity_id:['light.test'],action:'turn_on',data:{}})?.ok===true);
     check('policy rejects domain mismatch',()=>window.JARVIS_V9_ACTION_POLICY?.validate({entity_id:['light.test'],action:'lock',data:{}})?.reason==='action-domain-mismatch');
     check('policy rejects invalid temperature',()=>window.JARVIS_V9_ACTION_POLICY?.validate({entity_id:['climate.test'],action:'set_temperature',data:{temperature:999}})?.ok===false);
