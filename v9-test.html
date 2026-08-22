@@ -1,69 +1,16 @@
-<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>JARVIS V9</title>
-<style>
-:root{--cyan:#00eaff;--bg:#01050c;--text:#d9faff}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);overflow:hidden;font-family:Rajdhani,Arial,sans-serif;color:var(--text)}
-iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#01050c}
-#v9-menu{position:fixed;top:12px;right:12px;z-index:50;width:min(330px,calc(100vw - 24px));padding:14px;border:1px solid rgba(0,234,255,.38);border-radius:12px;background:rgba(1,9,18,.94);backdrop-filter:blur(14px);box-shadow:0 0 30px rgba(0,234,255,.14);transform:translateX(calc(100% + 28px));transition:transform .22s ease}
-#v9-menu.open{transform:translateX(0)}
-.v9-title{font:700 14px Orbitron,Arial,sans-serif;letter-spacing:2px;color:#e8fcff;margin-bottom:12px}.v9-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.v9-btn{min-height:42px;border:1px solid rgba(0,200,255,.3);border-radius:8px;background:rgba(0,120,180,.08);color:var(--text);font-weight:700;letter-spacing:1px}.v9-btn:active{transform:scale(.97);background:rgba(0,220,255,.18)}#v9-status{font-size:11px;color:#76bad0;margin:8px 0 12px}.ok{color:#39ff88}.err{color:#ff3158}
-#v9-menu-btn{position:fixed;top:12px;left:12px;z-index:60;width:48px;height:48px;border-radius:10px;border:1px solid rgba(0,234,255,.4);background:rgba(1,9,18,.72);color:var(--cyan);font-size:24px;box-shadow:0 0 18px rgba(0,234,255,.14);backdrop-filter:blur(10px)}
-#v9-conn{position:fixed;top:12px;right:72px;z-index:60;min-height:48px;padding:0 13px;border-radius:10px;border:1px solid rgba(0,234,255,.35);background:rgba(1,9,18,.72);color:var(--text);font-weight:700;letter-spacing:1px;backdrop-filter:blur(10px)}
-#v9-toast{position:fixed;left:50%;bottom:18px;z-index:70;transform:translate(-50%,20px);opacity:0;padding:9px 14px;border:1px solid rgba(0,234,255,.3);border-radius:20px;background:rgba(1,9,18,.92);color:var(--text);transition:.2s;pointer-events:none;font-size:11px;letter-spacing:1px}#v9-toast.show{opacity:1;transform:translate(-50%,0)}
-</style>
-</head>
-<body>
-<iframe id="jarvis" src="./index.html" title="JARVIS"></iframe>
-<button id="v9-menu-btn" aria-label="Menu">☰</button>
-<button id="v9-conn">⟳ CONNEXION</button>
-<div id="v9-menu">
-  <div class="v9-title">JARVIS V9</div>
-  <div id="v9-status">Initialisation de l’interface V9…</div>
-  <div class="v9-row">
-    <button class="v9-btn" onclick="callJarvis('testHA')">📡 TEST HA</button>
-    <button class="v9-btn" onclick="callJarvis('tV')">🎤 ÉCOUTER</button>
-    <button class="v9-btn" onclick="callJarvis('activateJarvisSatellite')">🎙️ IPHONE</button>
-    <button class="v9-btn" onclick="callJarvis('tM')">🔇 MUTE</button>
-    <button class="v9-btn" onclick="callJarvis('musicToggle')">🎵 MUSIQUE</button>
-    <button class="v9-btn" onclick="callJarvis('clearLog')">🧹 CONSOLE</button>
-  </div>
-  <div class="v9-row">
-    <button class="v9-btn" onclick="callJarvis('setCoreState','idle')">AUTO</button>
-    <button class="v9-btn" onclick="callJarvis('setCoreState','listening')">ÉCOUTE</button>
-    <button class="v9-btn" onclick="callJarvis('setCoreState','processing')">RÉFLEXION</button>
-    <button class="v9-btn" onclick="callJarvis('setCoreState','responding')">RÉPONSE</button>
-  </div>
-</div>
-<div id="v9-toast"></div>
-<script>
-const frame=document.getElementById('jarvis');
-const menu=document.getElementById('v9-menu');
-const status=document.getElementById('v9-status');
-const toast=document.getElementById('v9-toast');
-function showToast(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)}
-document.getElementById('v9-menu-btn').onclick=()=>menu.classList.toggle('open');
-document.getElementById('v9-conn').onclick=()=>{menu.classList.add('open');callJarvis('testHA')};
-function callJarvis(fn,...args){
-  try{
-    const w=frame.contentWindow;
-    if(typeof w[fn]!=='function'){showToast('Fonction V9 non disponible');return}
-    const result=w[fn](...args);
-    if(result&&typeof result.then==='function') result.then(()=>updateStatus()).catch(e=>showToast(e.message||'Erreur'));
-    else updateStatus();
-  }catch(e){showToast(e.message||'Erreur')}
-}
-function updateStatus(){
-  try{
-    const w=frame.contentWindow;
-    const online=w.document.getElementById('connectionStatus')?.classList.contains('online');
-    status.innerHTML=online?'<span class="ok">● Home Assistant EN LIGNE</span>':'<span>● Interface prête — connexion HA à tester</span>';
-  }catch(e){status.textContent='Interface prête'}
-}
-frame.addEventListener('load',()=>{updateStatus();showToast('V9 prête à tester')});
-</script>
-</body>
-</html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>JARVIS V9 — test</title><style>:root{--c:#00eaff;--g:#39ff88;--r:#ff3158;--bg:#01050c;--t:#d9faff}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--t);font-family:Arial,sans-serif}iframe{position:fixed;inset:0;width:100%;height:100%;border:0}button,input{font:inherit}#menuBtn,#connBtn{position:fixed;z-index:20;top:12px;height:46px;border:1px solid #00eaff66;border-radius:10px;background:#010912cc;color:var(--t);backdrop-filter:blur(10px);font-weight:700}#menuBtn{left:12px;width:46px;font-size:22px;color:var(--c)}#connBtn{right:12px;padding:0 13px}.panel{position:fixed;z-index:30;top:12px;right:12px;width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;padding:16px;border:1px solid #00eaff55;border-radius:14px;background:#010912f2;backdrop-filter:blur(16px);box-shadow:0 0 30px #00eaff1f;transform:translateX(110%);transition:.2s}.panel.open{transform:none}.title{font-size:16px;font-weight:800;letter-spacing:2px;margin-bottom:10px}.status{font-size:12px;margin:8px 0 12px;color:#79b7c8}.ok{color:var(--g)}.err{color:var(--r)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.b{min-height:40px;border:1px solid #00c8ff4d;border-radius:8px;background:#0078b012;color:var(--t);font-weight:700}.b:active{transform:scale(.97)}.field{width:100%;margin:5px 0;padding:10px;border:1px solid #00eaff44;border-radius:8px;background:#000811;color:var(--t)}.small{font-size:10px;color:#6d9aaa}.cats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.cat{padding:9px;border:1px solid #00eaff26;border-radius:7px;background:#00132199;font-size:11px;text-align:left}.cat span{float:right;color:var(--c)}pre{white-space:pre-wrap;font-size:10px;max-height:180px;overflow:auto;background:#00060c;padding:9px;border-radius:8px}#toast{position:fixed;z-index:40;left:50%;bottom:15px;transform:translate(-50%,20px);opacity:0;padding:9px 14px;border:1px solid #00eaff44;border-radius:20px;background:#010912f2;font-size:11px;transition:.2s}#toast.show{opacity:1;transform:translate(-50%,0)}</style></head><body><iframe id="app" src="./index.html"></iframe><button id="menuBtn">☰</button><button id="connBtn">CONNEXION</button><section id="panel" class="panel"><div class="title">JARVIS V9</div><div id="status" class="status">Initialisation…</div><div class="grid"><button class="b" id="connect">📡 CONNECTER</button><button class="b" id="self">🧪 SELF-TEST</button><button class="b" id="refresh">↻ ACTUALISER</button><button class="b" id="clear">✕ DÉCONNECTER</button></div><input id="url" class="field" placeholder="URL Home Assistant — https://..."><input id="token" class="field" type="password" placeholder="Token longue durée Home Assistant"><div class="small">Les identifiants restent dans le stockage local de ce navigateur.</div><div class="title" style="margin-top:16px">Catégories V9</div><div id="cats" class="cats"></div><pre id="log">Aucun test exécuté.</pre></section><div id="toast"></div><script>
+const $=id=>document.getElementById(id), app=$('app'), panel=$('panel'), status=$('status'), log=$('log'), cats=$('cats'), toast=$('toast');
+const KEY='jarvis-v9-ha'; const files=['loader.js','v9-self-test.js'];
+function note(x){toast.textContent=x;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1800)}
+function cfg(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return{}}}
+function save(){localStorage.setItem(KEY,JSON.stringify({url:$('url').value.trim().replace(/\\/$/,''),token:$('token').value.trim()}))}
+function setStatus(text,cls=''){status.className='status '+cls;status.textContent=text}
+function inject(src){return new Promise((res,rej)=>{if(app.contentWindow.document.querySelector('script[data-v9="'+src+'"]'))return res();const s=app.contentWindow.document.createElement('script');s.src='./v9/'+src;s.async=false;s.dataset.v9=src;s.onload=res;s.onerror=()=>rej(new Error('Chargement V9 impossible: '+src));app.contentWindow.document.head.appendChild(s)})}
+async function bootV9(){await inject('loader.js');await app.contentWindow.JARVIS_V9_LOAD_ALL();await inject('v9-self-test.js')}
+async function connect(){save();const c=cfg();if(!c.url||!c.token)return setStatus('URL + token requis','err');setStatus('Connexion Home Assistant…');try{const r=await fetch(c.url+'/api/',{headers:{Authorization:'Bearer '+c.token}});if(!r.ok)throw new Error('HTTP '+r.status);const w=app.contentWindow;w.HA_URL=c.url;w.HA_TOKEN=c.token;await bootV9();await w.JARVIS_V9_RUNTIME.refreshEntities();render();setStatus('Home Assistant connecté — '+(w.JARVIS_V9_RUNTIME.getCategories().reduce((n,c)=>n+c.count,0)||w.JARVIS_V9_RUNTIME.getCategories().reduce((n,c)=>n+c.entities.length,0))+' entités','ok');note('Connexion réussie')}catch(e){setStatus('Connexion impossible: '+e.message,'err');note(e.message)}}
+async function selfTest(){try{await bootV9();const r=app.contentWindow.JARVIS_V9_SELF_TEST.run();log.textContent=JSON.stringify(r,null,2);setStatus(r.ok?'Self-test V9 OK: '+r.passed+'/'+r.total:'Self-test: '+r.passed+'/'+r.total,(r.ok?'ok':'err'));note(r.ok?'Self-test OK':'Self-test incomplet')}catch(e){setStatus(e.message,'err');log.textContent=e.stack||e.message}}
+async function refresh(){try{const w=app.contentWindow;await w.JARVIS_V9_RUNTIME.refreshEntities();render();setStatus('États HA actualisés','ok')}catch(e){setStatus(e.message,'err')}}
+function render(){const w=app.contentWindow;if(!w.JARVIS_V9_RUNTIME)return;cats.innerHTML='';for(const c of w.JARVIS_V9_RUNTIME.getCategories()){const d=document.createElement('button');d.className='cat';d.textContent=c.label;const n=document.createElement('span');n.textContent=c.count;d.appendChild(n);d.onclick=()=>{const es=c.entities||[];log.textContent=es.length?es.map(e=>e.entity_id+' — '+e.state).join('\\n'):'Aucune entité détectée';};cats.appendChild(d)}}
+$('menuBtn').onclick=()=>panel.classList.toggle('open');$('connBtn').onclick=()=>panel.classList.add('open');$('connect').onclick=connect;$('self').onclick=selfTest;$('refresh').onclick=refresh;$('clear').onclick=()=>{localStorage.removeItem(KEY);$('token').value='';setStatus('Déconnecté');note('Identifiants locaux supprimés')};
+const c=cfg();$('url').value=c.url||'';$('token').value=c.token||'';app.addEventListener('load',()=>{setStatus('Interface visuelle chargée — V9 prête');note('V9 prête à tester')});
+</script></body></html>
