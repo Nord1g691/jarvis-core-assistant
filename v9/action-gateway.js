@@ -1,11 +1,2 @@
 /** V9 action gateway: final guard before a Home Assistant service call is delegated. */
-(() => {
-  const execute = async (descriptor, transport) => {
-    const policy = window.JARVIS_V9_ACTION_POLICY;
-    const result = policy?.validate?.(descriptor);
-    if (!result?.ok) throw new Error(`JARVIS V9 action rejected: ${result?.reason || 'invalid'}`);
-    if (typeof transport !== 'function') throw new Error('JARVIS V9 action transport unavailable');
-    return transport(result.descriptor);
-  };
-  window.JARVIS_V9_ACTION_GATEWAY = Object.freeze({ execute });
-})();
+(()=>{'use strict';const execute=async(descriptor,transport)=>{const policy=window.JARVIS_V9_ACTION_POLICY,result=policy?.validate?.(descriptor);if(!result?.ok)throw new Error(`JARVIS V9 action rejected: ${result?.reason||'invalid'}`);if(typeof transport!=='function')throw new Error('JARVIS V9 action transport unavailable');const d=result.descriptor||descriptor;if(!d?.entity_id)throw new Error('JARVIS V9 action target missing');return transport(Object.freeze({...d,entity_id:Array.isArray(d.entity_id)?[...d.entity_id]:d.entity_id}))};window.JARVIS_V9_ACTION_GATEWAY=Object.freeze({execute})})();
