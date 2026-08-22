@@ -6,7 +6,7 @@
     'v9/v9-config.js', 'v9/v9-core.js', 'v9/entity-adapter.js', 'v9/entity-discovery.js',
     'v9/entity-selection.js', 'v9/ha-state-store.js', 'v9/action-policy.js', 'v9/action-gateway.js',
     'v9/category-actions.js', 'v9/card-model.js', 'v9/card-layout.js', 'v9/dashboard-model.js',
-    'v9/context-router.js', 'v9/v9-bridge.js', 'v9/hud-bootstrap.js', 'v9/v9-runtime.js'
+    'v9/context-router.js', 'v9/v9-bridge.js', 'v9/hud-bootstrap.js', 'v9/v9-runtime.js', 'v9/v9-self-test.js'
   ];
   const loaded = new Set();
   const load = src => new Promise((resolve, reject) => {
