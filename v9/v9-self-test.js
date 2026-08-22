@@ -6,6 +6,8 @@
     check('config loaded',()=>window.JARVIS_V9?.version==='9.0');
     check('12 categories declared',()=>window.JARVIS_V9?.categories?.length>=12);
     check('core/log/connection API',()=>['connect','disconnect','copyLog','getLog'].every(k=>typeof window.JARVIS_V9_CORE?.[k]==='function'));
+    check('connection form loaded',()=>typeof window.JARVIS_V9_CONNECTION_FORM?.render==='function');
+    check('loader includes connection form',()=>document.querySelector('script[data-jarvis-v9="v9/v9-connection-form.js"]')||typeof window.JARVIS_V9_CONNECTION_FORM?.render==='function');
     check('action policy accepts light',()=>window.JARVIS_V9_ACTION_POLICY?.validate({entity_id:['light.test'],action:'turn_on',data:{}})?.ok===true);
     check('policy rejects domain mismatch',()=>window.JARVIS_V9_ACTION_POLICY?.validate({entity_id:['light.test'],action:'lock',data:{}})?.reason==='action-domain-mismatch');
     check('policy rejects invalid temperature',()=>window.JARVIS_V9_ACTION_POLICY?.validate({entity_id:['climate.test'],action:'set_temperature',data:{temperature:999}})?.ok===false);
