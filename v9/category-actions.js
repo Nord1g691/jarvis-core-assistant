@@ -1,20 +1,2 @@
 /** V9 safe action descriptor. UI/voice layer can use this to request HA service calls. */
-(() => {
-  const domainActions = Object.freeze({
-    light: ['turn_on', 'turn_off', 'toggle'],
-    climate: ['set_temperature', 'set_hvac_mode', 'turn_on', 'turn_off'],
-    lock: ['lock', 'unlock'],
-    cover: ['open_cover', 'close_cover', 'stop_cover', 'set_cover_position'],
-    media_player: ['play_media', 'media_play_pause', 'media_stop', 'volume_set'],
-    switch: ['turn_on', 'turn_off', 'toggle']
-  });
-  const getActions = entityId => {
-    const domain = String(entityId || '').split('.')[0];
-    return domainActions[domain] ? [...domainActions[domain]] : [];
-  };
-  const descriptor = (entityId, action, data = {}) => {
-    const entityIds = Array.isArray(entityId) ? entityId : [entityId];
-    return { entity_id: [...entityIds], action, data: { ...data } };
-  };
-  window.JARVIS_V9_ACTIONS = Object.freeze({ domainActions, getActions, descriptor });
-})();
+(()=>{'use strict';const domainActions=Object.freeze({light:Object.freeze(['turn_on','turn_off','toggle']),climate:Object.freeze(['set_temperature','set_hvac_mode','turn_on','turn_off']),lock:Object.freeze(['lock','unlock']),cover:Object.freeze(['open_cover','close_cover','stop_cover','set_cover_position']),media_player:Object.freeze(['play_media','media_play_pause','media_stop','volume_set']),switch:Object.freeze(['turn_on','turn_off','toggle'])});const validEntity=id=>typeof id==='string'&&/^[a-z0-9_]+\.[a-z0-9_]+$/i.test(id);const getActions=entityId=>{const domain=String(entityId||'').split('.')[0];return domainActions[domain]?[...domainActions[domain]]:[]};const descriptor=(entityId,action,data={})=>{const ids=(Array.isArray(entityId)?entityId:[entityId]).filter(validEntity);if(!ids.length)throw new Error('Entité Home Assistant invalide');const domain=ids[0].split('.')[0],allowed=domainActions[domain];if(!allowed?.includes(action))throw new Error('Action Home Assistant non autorisée pour ce domaine');if(ids.some(id=>id.split('.')[0]!==domain))throw new Error('Les entités doivent appartenir au même domaine');return Object.freeze({entity_id:[...ids],action,data:data&&typeof data==='object'?{...data}:{}})};window.JARVIS_V9_ACTIONS=Object.freeze({domainActions,getActions,descriptor,validEntity})})();
