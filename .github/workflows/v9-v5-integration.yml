@@ -1,0 +1,39 @@
+name: Wire JARVIS V9 into V5
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  wire-v9:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject additive V9 loader and UI
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = 'JARVIS_V9_V5_WIRED'
+          if marker in s:
+              raise SystemExit(0)
+          injection = '''\n<!-- JARVIS_V9_V5_WIRED: additive only; existing V5 HUD remains untouched -->\n<script src="v9/loader.js"></script>\n<script>window.JARVIS_V9_LOAD_ALL?.().catch(e=>window.dispatchEvent(new CustomEvent('jarvis:v9:error',{detail:e})));</script>\n<script src="v9/v9-v5-ui.js"></script>\n'''
+          if '</body>' not in s:
+              raise SystemExit('index.html has no closing body tag')
+          s = s.replace('</body>', injection + '</body>', 1)
+          p.write_text(s, encoding='utf-8')
+
+      - name: Commit integration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "feat(v9): wire V9 runtime and compact controls into V5 [skip ci]"
+          git push
