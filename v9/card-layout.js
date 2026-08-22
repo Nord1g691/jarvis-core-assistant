@@ -1,16 +1,2 @@
-/** JARVIS V9 card layout preferences: bottom / none now, orbital reserved. */
-(() => {
-  const KEY = 'jarvis-v9-card-layout';
-  const VALID = new Set(['none', 'bottom', 'orbital']);
-  const read = () => {
-    const value = localStorage.getItem(KEY) || 'none';
-    return VALID.has(value) ? value : 'none';
-  };
-  const set = (layout) => {
-    if (!VALID.has(layout)) throw new Error(`Unsupported layout: ${layout}`);
-    localStorage.setItem(KEY, layout);
-    window.dispatchEvent(new CustomEvent('jarvis:v9-layout-changed', { detail: layout }));
-    return layout;
-  };
-  window.JARVIS_V9_LAYOUT = Object.freeze({ read, set, modes: [...VALID] });
-})();
+/** JARVIS V9 card layout preferences: validated local preference with event contract. */
+(()=>{'use strict';const KEY='jarvis-v9-card-layout',VALID=Object.freeze(new Set(['none','bottom','orbital']));const read=()=>{try{const value=localStorage.getItem(KEY)||'none';return VALID.has(value)?value:'none'}catch(_){return'none'}};const set=layout=>{if(!VALID.has(layout))throw new Error(`Unsupported layout: ${layout}`);try{localStorage.setItem(KEY,layout)}catch(_){throw new Error('Impossible de sauvegarder la disposition V9')}window.dispatchEvent(new CustomEvent('jarvis:v9-layout-changed',{detail:layout}));return layout};window.JARVIS_V9_LAYOUT=Object.freeze({read,set,modes:[...VALID]})})();
