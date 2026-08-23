@@ -1,22 +1,2 @@
-/** V9 loader: append-only, loaded by the existing HUD when wired. */
-(() => {
-  const base = 'v9/';
-  const files = [
-    'v9-config.js','ha-state-store.js','state-presenter.js','entity-adapter.js',
-    'entity-selection.js','settings-model.js','card-layout.js','card-model.js',
-    'category-actions.js','action-policy.js','action-gateway.js','entity-discovery.js',
-    'v9-runtime.js','context-router.js','dashboard-model.js','v9-bridge.js','manual-menu.js','hud-bootstrap.js'
-  ];
-  const load = (file) => new Promise((resolve, reject) => {
-    if (document.querySelector(`script[data-jarvis-v9="${file}"]`)) return resolve();
-    const script = document.createElement('script');
-    script.src = base + file;
-    script.async = false;
-    script.dataset.jarvisV9 = file;
-    script.onload = resolve;
-    script.onerror = () => reject(new Error(`JARVIS V9: failed to load ${file}`));
-    document.head.appendChild(script);
-  });
-  window.JARVIS_V9_LOAD = load;
-  window.JARVIS_V9_LOAD_ALL = () => files.reduce((p, file) => p.then(() => load(file)), Promise.resolve());
-})();
+/** JARVIS V9 loader: one canonical dependency-aware entry point. */
+(()=>{'use strict';const files=['v9-config.js','v9-core.js','ha-state-store.js','state-presenter.js','entity-adapter.js','entity-discovery.js','entity-selection.js','settings-model.js','action-policy.js','action-gateway.js','category-actions.js','card-model.js','card-layout.js','dashboard-model.js','context-router.js','v9-bridge.js','v9-runtime.js','v9-action-presets.js','v9-category-view.js','v9-action-dispatcher.js','v9-settings-panel.js','v9-quick-actions.js','v9-connection-ui.js','v9-connection-form.js','v9-log-controller.js','v9-v5-bridge.js','v9-ui-controller.js','hud-bootstrap.js','v9-self-test.js'];const base=()=>new URL('./',document.currentScript?.src||document.baseURI);const load=file=>new Promise((resolve,reject)=>{const key=`v9/${file}`;if(document.querySelector(`script[data-jarvis-v9="${file}"],script[data-jarvis-v9="${key}"]`))return resolve();const s=document.createElement('script');s.src=new URL(file,base()).href;s.async=false;s.dataset.jarvisV9=file;s.onload=resolve;s.onerror=()=>reject(new Error(`JARVIS V9: failed to load ${file}`));document.head.appendChild(s)});let running=null;const run=async()=>{if(running)return running;running=(async()=>{for(const file of files)await load(file);return window.JARVIS_V9_SELF_TEST?.run?.()||true})().finally(()=>{running=null});return running};window.JARVIS_V9_LOAD=load;window.JARVIS_V9_LOAD_ALL=run})();
