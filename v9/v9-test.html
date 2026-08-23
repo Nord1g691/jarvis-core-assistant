@@ -49,14 +49,15 @@ button{cursor:pointer;touch-action:manipulation}.danger{border-color:rgba(255,49
 <script>
 const frame=document.getElementById('hud'),drawer=document.getElementById('drawer'),toast=document.getElementById('toast');
 const $=id=>document.getElementById(id);
-let token=localStorage.getItem('jarvis_v9_token')||'';
-let url=localStorage.getItem('jarvis_v9_url')||'';
-$('haToken').value=token;$('haUrl').value=url;
+let token='';
+let url=sessionStorage.getItem('jarvis_v9_url')||'';
+$('haUrl').value=url;
 function msg(t){toast.textContent=t;toast.classList.add('show');clearTimeout(msg.t);msg.t=setTimeout(()=>toast.classList.remove('show'),2600)}
 function win(){return frame.contentWindow}
 async function ha(path,opts={}){if(!url||!token)throw Error('URL et token Home Assistant requis');const r=await fetch(url.replace(/\/$/,'')+path,{...opts,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json',...(opts.headers||{})}});if(!r.ok)throw Error('Home Assistant HTTP '+r.status);return r.status===204?null:r.json()}
-async function connect(){url=$('haUrl').value.trim().replace(/\/$/,'');token=$('haToken').value.trim();if(!url||!token){$('conn').textContent='URL + token requis';$('conn').className='err';return}try{await ha('/api/');localStorage.setItem('jarvis_v9_url',url);localStorage.setItem('jarvis_v9_token',token);$('conn').textContent='✓ HOME ASSISTANT CONNECTÉ';$('conn').className='ok';patchFrameFetch();await loadV9();msg('Connexion Home Assistant OK')}catch(e){$('conn').textContent='✕ '+e.message;$('conn').className='err';msg('Connexion impossible : '+e.message)}}
-function patchFrameFetch(){try{const w=win();const native=w.fetch.bind(w);w.fetch=async(input,opts={})=>{let u=String(input);if(u.startsWith('/api/'))u=w.location.origin+u; if(u.startsWith(url)){opts={...opts,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json',...(opts.headers||{})}}}return native(u,opts)}}catch(e){}}
+function forgetSecrets(){token='';$('haToken').value=''}
+async function connect(){url=$('haUrl').value.trim().replace(/\/$/,'');token=$('haToken').value.trim();if(!url||!token){$('conn').textContent='URL + token requis';$('conn').className='err';forgetSecrets();return}try{await ha('/api/');sessionStorage.setItem('jarvis_v9_url',url);$('conn').textContent='✓ HOME ASSISTANT CONNECTÉ';$('conn').className='ok';patchFrameFetch();await loadV9();msg('Connexion Home Assistant OK')}catch(e){$('conn').textContent='✕ '+e.message;$('conn').className='err';forgetSecrets();msg('Connexion impossible : '+e.message)}}
+function patchFrameFetch(){try{const w=win();const native=w.fetch.bind(w);w.fetch=async(input,opts={})=>{let u=String(input);if(u.startsWith('/api/'))u=w.location.origin+u;if(u.startsWith(url)){opts={...opts,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json',...(opts.headers||{})}}}return native(u,opts)}}catch(e){}}
 async function loadV9(){const w=win();if(!w.JARVIS_V9_LOAD_ALL)return;try{await w.JARVIS_V9_LOAD_ALL();if(w.JARVIS_V9_RUNTIME?.refreshEntities)await w.JARVIS_V9_RUNTIME.refreshEntities();renderCats()}catch(e){msg('Runtime V9 : '+e.message)}}
 function renderCats(){const cats=win().JARVIS_V9_RUNTIME?.getCategories?.()||[];for(const c of cats){const b=document.querySelector(`[data-cat="${c.id}"]`);if(b){const s=b.querySelector('small');if(s)s.textContent=(c.count||0)+' entité'+((c.count||0)>1?'s':'')}}}
 $('toggle').onclick=()=>drawer.classList.toggle('open');
@@ -70,6 +71,7 @@ $('mute').onclick=()=>{try{win().tM?.();}catch(e){msg('Mute indisponible')}};
 $('clear').onclick=()=>{try{win().JARVIS_V9_MENU?.clear?.();renderCats();msg('Sélection V9 vidée')}catch(e){msg('Menu V9 indisponible')}};
 document.querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{const id=b.dataset.cat;const c=win().JARVIS_V9_RUNTIME?.getCategory?.(id)||[];win().JARVIS_V9_MENU?.setCategory?.(id,c.map(e=>e.entity_id));msg(id.toUpperCase()+' : '+c.length+' entités sélectionnées')});
 frame.onload=async()=>{patchFrameFetch();if(url&&token)await connect();else msg('Ouvre ☰ pour configurer Home Assistant')};
+window.addEventListener('pagehide',forgetSecrets);
 </script>
 </body>
 </html>
