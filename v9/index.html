@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JARVIS V9</title>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#01050c;color:#d9faff;font-family:system-ui,sans-serif}#jarvis-v9{position:fixed;inset:0;padding:24px;box-sizing:border-box;display:grid;place-items:center;text-align:center}.ring{width:180px;height:180px;border:1px solid #00eaff;border-radius:50%;box-shadow:0 0 35px rgba(0,234,255,.25);display:grid;place-items:center}.status{font-size:12px;opacity:.7;margin-top:18px}</style>
+</head>
+<body>
+<main id="jarvis-v9"><div><div class="ring">JARVIS<br>V9</div><div id="status" class="status">Initialisation…</div></div></main>
+<script src="v9-load-all.js"></script>
+<script>
+window.addEventListener('jarvis:v9-ready',e=>{document.getElementById('status').textContent='JARVIS V9 prêt — WebSocket disponible';document.dispatchEvent(new Event('jarvis-v9-ready'))});
+window.addEventListener('jarvis:v9:error',e=>{document.getElementById('status').textContent='Erreur V9 : '+(e.detail?.message||'inconnue')});
+</script>
+</body>
+</html>
