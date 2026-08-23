@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JARVIS V9 — HA Test</title>
+<style>
+html,body{margin:0;width:100%;height:100%;background:#01050c;color:#d9faff;font-family:system-ui,sans-serif}body{padding:16px;box-sizing:border-box}main{max-width:520px;margin:auto}h1{font-size:20px;letter-spacing:2px}section{border:1px solid #16465b;border-radius:10px;padding:12px;margin:10px 0;background:#03111c}label{display:block;font-size:11px;margin:8px 0 4px;color:#8fd7e8}input{width:100%;box-sizing:border-box;height:40px;background:#02080d;border:1px solid #28566a;border-radius:7px;color:#fff;padding:0 9px}button{width:100%;height:42px;margin-top:8px;background:#062335;border:1px solid #16708e;border-radius:7px;color:#d9faff;font-weight:700}#status{margin-top:10px;font-size:12px}#hud{position:fixed;left:0;right:0;bottom:0;height:0;width:0;border:0}#log{white-space:pre-wrap;font-size:11px;max-height:180px;overflow:auto;color:#9ed9e8}
+</style>
+</head>
+<body>
+<main>
+<h1>JARVIS V9 — TEST HA RÉEL</h1>
+<section>
+<label>URL Home Assistant</label>
+<input id="url" type="url" autocomplete="off" placeholder="https://xxxx.ui.nabu.casa">
+<label>Token longue durée</label>
+<input id="token" type="password" autocomplete="off" placeholder="Token — jamais enregistré">
+<button id="connect">CONNECTER + CHARGER JARVIS</button>
+<div id="status">En attente</div>
+</section>
+<section><div id="log">Aucun test lancé.</div></section>
+</main>
+<iframe id="hud" title="JARVIS V5/V9"></iframe>
+<script>
+const $=id=>document.getElementById(id),frame=$('hud');
+let haUrl=sessionStorage.getItem('jarvis_v9_url')||'';
+$('url').value=haUrl;
+const log=t=>{$('log').textContent+=`\n${new Date().toLocaleTimeString()} — ${t}`};
+function setStatus(t,ok=false){$('status').textContent=t;$('status').style.color=ok?'#39ff88':'#ffb000'}
+async function connect(){
+ const url=$('url').value.trim().replace(/\/$/,'');
+ const token=$('token').value.trim();
+ if(!url||!token){setStatus('URL + token requis');return}
+ try{
+  const r=await fetch(url+'/api/',{headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'}});
+  if(!r.ok)throw Error('Home Assistant HTTP '+r.status);
+  sessionStorage.setItem('jarvis_v9_url',url);haUrl=url;
+  log('✓ API Home Assistant OK');
+  const source=await (await fetch('../index.html',{cache:'no-store'})).text();
+  if(!/const HA_URL\s*=\s*window\.location\.origin\s*;/.test(source))throw Error('Configuration HA_URL introuvable dans index.html');
+  if(!/const HA_TOKEN\s*=\s*["']ton_token_ici["']\s*;?/.test(source))throw Error('Emplacement HA_TOKEN introuvable dans index.html');
+  const patched=source
+   .replace(/<head>/i,'<head><base href="'+location.origin+location.pathname.replace(/\/v9\/v9-ha-test\.html$/,'/')+'">')
+   .replace(/const HA_URL\s*=\s*window\.location\.origin\s*;/,'const HA_URL = '+JSON.stringify(url)+';')
+   .replace(/const HA_TOKEN\s*=\s*["']ton_token_ici["']\s*;?/,'const HA_TOKEN = '+JSON.stringify(token)+';');
+  frame.onload=()=>{setStatus('✓ JARVIS chargé avec HA connecté',true);log('✓ V5/V9 chargé sur '+url);setTimeout(()=>{try{frame.contentWindow.JARVIS_V9_LOAD_ALL?.().then(()=>log('✓ V9 LOAD ALL OK')).catch(e=>log('✕ V9 LOAD ALL: '+e.message))}catch(e){log('✕ V9: '+e.message)}},500)};
+  frame.srcdoc=patched;
+  setStatus('Chargement JARVIS…');
+ }catch(e){setStatus('✕ '+e.message);log('✕ '+e.message)}
+}
+$('connect').onclick=connect;
+window.addEventListener('pagehide',()=>{$('token').value=''});
+</script>
+</body>
+</html>
