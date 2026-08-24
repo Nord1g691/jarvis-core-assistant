@@ -7,7 +7,7 @@
 <style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden;background:#01050c}</style>
 </head>
 <body>
-<iframe id="hud" src="v9-live.html?native=1&v=9.3.4"></iframe>
+<iframe id="hud" src="v9-live.html?native=1&v=9.3.5"></iframe>
 <script>
 (()=>{
   'use strict';
@@ -16,17 +16,14 @@
   const pending=new Map();
   try{localStorage.setItem('jarvis-v9-ha',JSON.stringify({url:location.origin,token:'__JARVIS_NATIVE_HA__',native:true}));}catch(_){}
 
-  // V9 native bridge -> Home Assistant panel.
   window.addEventListener('message',ev=>{
     if(ev.source!==frame.contentWindow)return;
     const m=ev.data;
     if(!m||m.source!=='jarvis-v9'||m.type!=='request')return;
     const id=m.id ?? (++seq);
-    pending.set(id,true);
     window.parent.postMessage({source:'jarvis-v9',type:'request',id,message:m.message},'*');
   });
 
-  // Home Assistant panel -> V9 native bridge.
   window.addEventListener('message',ev=>{
     if(ev.source!==window.parent)return;
     const m=ev.data;
@@ -36,7 +33,13 @@
       return;
     }
     if(m.type!=='result')return;
+    const p=m.id!=null?pending.get(m.id):null;
     if(m.id!=null)pending.delete(m.id);
+    if(p){
+      if(m.error)p.reject(new Error(typeof m.error==='string'?m.error:(m.error.message||'Home Assistant error')));
+      else p.resolve(m.result);
+      return;
+    }
     frame.contentWindow.postMessage({source:'jarvis-ha',type:'result',id:m.id,result:m.result,error:m.error},'*');
   });
 
@@ -45,8 +48,6 @@
       const w=frame.contentWindow;
       w.document.getElementById('connectBtn')?.remove();
       w.JARVIS_NATIVE_HA=true;
-
-      // Route legacy V5 REST calls through the native HA connection.
       const originalFetch=w.fetch.bind(w);
       w.fetch=async function(input,init={}){
         let raw=typeof input==='string'?input:input?.url||'';
@@ -62,7 +63,8 @@
         const result=new Promise((resolve,reject)=>pending.set(id,{resolve,reject}));
         window.parent.postMessage({source:'jarvis-v9',type:'request',id,message:{type:'http_request',path:url.pathname+url.search,method,body:body||'',headers}},'*');
         const response=await result;
-        return new Response(response.body==null?'':JSON.stringify(response.body),{status:response.status||200,headers:{'Content-Type':'application/json'}});
+        const responseBody=response?.body==null?'':(typeof response.body==='string'?response.body:JSON.stringify(response.body));
+        return new Response(responseBody,{status:response.status||200,headers:{'Content-Type':'application/json'}});
       };
     }catch(error){console.error('JARVIS native wrapper:',error)}
   });
