@@ -7,60 +7,49 @@
 <style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden;background:#01050c}</style>
 </head>
 <body>
-<iframe id="hud" src="v9-live.html?native=1"></iframe>
+<iframe id="hud" src="v9-live.html?native=1&v=9.3.3"></iframe>
 <script>
 (()=>{
   'use strict';
   const frame=document.getElementById('hud');
   let seq=0;
   const pending=new Map();
-
-  const sendToHA=(id,message)=>{
-    window.parent.postMessage({source:'jarvis-v9',type:'request',id,message},'*');
-  };
-
+  try{localStorage.setItem('jarvis-v9-ha',JSON.stringify({url:location.origin,token:'__JARVIS_NATIVE_HA__',native:true}));}catch(_){}
+  const sendToHA=(id,message)=>{window.parent.postMessage({source:'jarvis-v9',type:'request',id,message},'*');};
   window.addEventListener('message',ev=>{
     if(ev.source!==frame.contentWindow)return;
     const m=ev.data;
     if(!m||m.source!=='jarvis-v9-native')return;
     if(m.type==='request')sendToHA(m.id,m.message);
   });
-
   window.addEventListener('message',ev=>{
     if(ev.source!==window.parent)return;
     const m=ev.data;
     if(!m||m.source!=='jarvis-ha'||m.type!=='result')return;
     frame.contentWindow.postMessage({source:'jarvis-v9-native',type:'result',id:m.id,result:m.result,error:m.error},'*');
   });
-
   frame.addEventListener('load',()=>{
     try{
       const w=frame.contentWindow;
+      w.document.getElementById('connectBtn')?.remove();
+      w.JARVIS_NATIVE_HA=true;
       const originalFetch=w.fetch.bind(w);
       w.fetch=async function(input,init={}){
         let raw=typeof input==='string'?input:input?.url||'';
         let url;
         try{url=new URL(raw,w.location.href)}catch(_){return originalFetch(input,init)}
         if(!url.pathname.startsWith('/api/'))return originalFetch(input,init);
-
         const method=String(init.method||'GET').toUpperCase();
         let body=init.body;
-        if(body&&typeof body!=='string'){
-          try{body=JSON.stringify(body)}catch(_){body=String(body)}
-        }
+        if(body&&typeof body!=='string'){try{body=JSON.stringify(body)}catch(_){body=String(body)}}
         const headers={};
         try{new Headers(init.headers||{}).forEach((v,k)=>headers[k]=v)}catch(_){}
         const id=++seq;
         const result=new Promise((resolve,reject)=>pending.set(id,{resolve,reject}));
         sendToHA(id,{type:'http_request',path:url.pathname+url.search,method,body:body||'',headers});
         const response=await result;
-        return new Response(response.body==null?'':JSON.stringify(response.body),{
-          status:response.status||200,
-          headers:{'Content-Type':'application/json'}
-        });
+        return new Response(response.body==null?'':JSON.stringify(response.body),{status:response.status||200,headers:{'Content-Type':'application/json'}});
       };
-
-      const originalPost=w.postMessage.bind(w);
       w.addEventListener('message',ev=>{
         const m=ev.data;
         if(!m||m.source!=='jarvis-v9-native'||m.type!=='result')return;
@@ -68,7 +57,6 @@
         pending.delete(m.id);
         if(m.error)p.reject(new Error(m.error));else p.resolve(m.result);
       });
-      w.JARVIS_NATIVE_HA=true;
     }catch(error){console.error('JARVIS native wrapper:',error)}
   });
 })();
