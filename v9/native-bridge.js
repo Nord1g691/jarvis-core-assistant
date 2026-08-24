@@ -19,4 +19,29 @@
     removeEventListener(){}
   }
   window.WebSocket=NativeWebSocket;
+
+  // The legacy V5 HUD still uses Home Assistant's HTTP REST paths.  When it
+  // runs inside the native panel iframe, proxy those calls through the parent
+  // panel instead of sending them to GitHub Pages (which caused HTTP 404).
+  const nativeFetch=window.fetch?.bind(window);
+  if(nativeFetch){
+    window.fetch=async(input,init={})=>{
+      const url=typeof input==='string'?input:(input?.url||'');
+      let parsed;
+      try{parsed=new URL(url,window.location.href)}catch{return nativeFetch(input,init)}
+      if(!parsed.pathname.startsWith('/api/'))return nativeFetch(input,init);
+      if(!nativeReady)await new Promise(resolve=>window.addEventListener('jarvis:ha-native-ready',resolve,{once:true}));
+      const method=String(init?.method||input?.method||'GET').toUpperCase();
+      let body=init?.body;
+      if(body instanceof URLSearchParams)body=body.toString();
+      if(body instanceof Blob)body=await body.text();
+      const id=++seq;
+      const promise=new Promise((resolve,reject)=>pending.set(id,{resolve,reject}));
+      send({type:'request',id,message:{type:'http_request',path:parsed.pathname+parsed.search,method,body:body??null}});
+      const result=await promise;
+      const responseBody=result?.body;
+      const status=result?.status??200;
+      return new Response(typeof responseBody==='string'?responseBody:JSON.stringify(responseBody),{status,headers:{'Content-Type':'application/json'}});
+    };
+  }
 })();
