@@ -9,14 +9,17 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.typing import ConfigType
 
 from .const import DOMAIN, PLATFORMS
+from .websocket import async_register as async_register_websocket
 
 STATIC_URL = "/jarvis_static"
-JARVIS_VERSION = "9.3.3"
+JARVIS_VERSION = "9.3.6"
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the JARVIS integration."""
     hass.data.setdefault(DOMAIN, {})
+    async_register_websocket(hass)
+
     static_path = Path(__file__).parent / "www"
     await hass.http.async_register_static_paths(
         [StaticPathConfig(STATIC_URL, str(static_path), cache_headers=False)]
