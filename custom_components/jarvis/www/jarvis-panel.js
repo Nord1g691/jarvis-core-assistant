@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/native.html?v=9.3.8";
+  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/native.html?v=9.3.9";
   const HUD_ORIGIN = "https://nord1g691.github.io";
 
   class JarvisPanel extends HTMLElement {
