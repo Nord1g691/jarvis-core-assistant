@@ -10,8 +10,7 @@ from .const import DOMAIN, PLATFORMS
 from .websocket import async_register as async_register_websocket
 
 STATIC_URL = "/jarvis_static"
-PANEL_STATIC_URL = "/jarvis_panel"
-JARVIS_VERSION = "9.6.2"
+JARVIS_VERSION = "9.6.3"
 PANEL_NAME = "jarvis-panel"
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -20,7 +19,6 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     www_path = Path(__file__).parent / "www"
     await hass.http.async_register_static_paths([
         StaticPathConfig(STATIC_URL, str(www_path), cache_headers=False),
-        StaticPathConfig(PANEL_STATIC_URL, str(www_path), cache_headers=False),
     ])
     if frontend.async_panel_exists(hass, DOMAIN):
         frontend.async_remove_panel(hass, DOMAIN)
@@ -28,7 +26,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         hass=hass,
         webcomponent_name=PANEL_NAME,
         frontend_url_path=DOMAIN,
-        module_url=f"{PANEL_STATIC_URL}/jarvis-panel.js?v={JARVIS_VERSION}",
+        module_url=f"{STATIC_URL}/jarvis-panel.js?v={JARVIS_VERSION}",
         sidebar_title="JARVIS",
         sidebar_icon="mdi:robot-outline",
         require_admin=False,
