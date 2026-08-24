@@ -10,14 +10,19 @@ from .const import DOMAIN, PLATFORMS
 from .websocket import async_register as async_register_websocket
 
 STATIC_URL = "/jarvis_static"
-JARVIS_VERSION = "9.5.7"
+V5_URL = "/jarvis_v5"
+JARVIS_VERSION = "9.5.8"
 PANEL_NAME = "jarvis-panel"
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     hass.data.setdefault(DOMAIN, {})
     async_register_websocket(hass)
     www_path = Path(__file__).parent / "www"
-    await hass.http.async_register_static_paths([StaticPathConfig(STATIC_URL, str(www_path), cache_headers=False)])
+    repo_root = Path(__file__).resolve().parents[2]
+    await hass.http.async_register_static_paths([
+        StaticPathConfig(STATIC_URL, str(www_path), cache_headers=False),
+        StaticPathConfig(V5_URL, str(repo_root), cache_headers=False),
+    ])
     if frontend.async_panel_exists(hass, DOMAIN):
         frontend.async_remove_panel(hass, DOMAIN)
     await panel_custom.async_register_panel(
