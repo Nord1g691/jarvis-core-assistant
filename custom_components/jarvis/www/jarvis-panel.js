@@ -1,7 +1,9 @@
 (() => {
   "use strict";
 
-  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/native.html?v=9.3.4";
+  // JARVIS remains visually unchanged. The data path is now native to HA:
+  // panel -> hass WebSocket -> jarvis/get_panel_data -> HUD.
+  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/native.html?v=9.3.6";
   const HUD_ORIGIN = "https://nord1g691.github.io";
 
   class JarvisPanel extends HTMLElement {
@@ -32,18 +34,14 @@
       this._frame = this.querySelector("iframe");
 
       this._onMessage = async (ev) => {
-        // JARVIS uses nested iframes. The request may therefore originate
-        // from a child iframe inside native.html, not from the direct frame.
         if (ev.origin !== HUD_ORIGIN) return;
         if (ev.data?.source !== "jarvis-v9") return;
 
         const m = ev.data;
-
         if (m.type === "hello") {
           this._sync();
           return;
         }
-
         if (m.type !== "request" || !this._hass) return;
 
         try {
@@ -82,36 +80,29 @@
       const path = String(msg.path || "");
       const method = String(msg.method || "GET").toUpperCase();
 
-      if (path === "/api/" && method === "GET") {
-        return {
-          status: 200,
-          body: await this._hass.callWS({ type: "get_config" })
-        };
+      if (method === "GET" && path === "/api/") {
+        return { status: 200, body: await this._hass.callWS({ type: "get_config" }) };
       }
-
-      if (path === "/api/states" && method === "GET") {
-        return {
-          status: 200,
-          body: Object.values(this._hass.states || {})
-        };
+      if (method === "GET" && path === "/api/config") {
+        return { status: 200, body: await this._hass.callWS({ type: "get_config" }) };
       }
-
-      if (path === "/api/services" && method === "GET") {
-        return {
-          status: 200,
-          body: await this._hass.callWS({ type: "get_services" })
-        };
+      if (method === "GET" && path === "/api/states") {
+        return { status: 200, body: Object.values(this._hass.states || {}) };
+      }
+      if (method === "GET" && path.startsWith("/api/states/")) {
+        const entityId = decodeURIComponent(path.slice("/api/states/".length));
+        const state = this._hass.states?.[entityId];
+        if (!state) return { status: 404, body: { message: "Entity not found", entity_id: entityId } };
+        return { status: 200, body: state };
+      }
+      if (method === "GET" && path === "/api/services") {
+        return { status: 200, body: await this._hass.callWS({ type: "get_services" }) };
       }
 
       const match = path.match(/^\/api\/services\/([^/]+)\/([^/?]+)(?:\?.*)?$/);
       if (match && method === "POST") {
         let data = {};
-        try {
-          data = msg.body ? JSON.parse(msg.body) : {};
-        } catch (_) {
-          data = {};
-        }
-
+        try { data = msg.body ? JSON.parse(msg.body) : {}; } catch (_) {}
         const serviceData = data.service_data || data.data || data || {};
         return {
           status: 200,
@@ -125,11 +116,7 @@
 
       return {
         status: 404,
-        body: {
-          message: "API Home Assistant non supportée",
-          path,
-          method
-        }
+        body: { message: "API Home Assistant non supportée", path, method }
       };
     }
 
@@ -141,23 +128,34 @@
       );
     }
 
-    _sync() {
+    async _sync() {
       if (!this._frame?.contentWindow || !this._hass) return;
 
+      // Sam-style native WebSocket path: the panel talks to HA directly.
+      // The fallback to hass.states keeps the panel compatible with older HA.
+      let payload;
+      try {
+        payload = await this._hass.callWS({ type: "jarvis/get_panel_data" });
+      } catch (_) {
+        const states = this._hass.states || {};
+        payload = { entity_count: Object.keys(states).length, states };
+      }
+
+      const states = payload?.states || this._hass.states || {};
+      const stateList = Array.isArray(states) ? states : Object.values(states);
       this._frame.contentWindow.postMessage(
         {
           source: "jarvis-ha",
           type: "ready",
-          entity_count: Object.keys(this._hass.states || {}).length
+          entity_count: payload?.entity_count ?? stateList.length,
+          states: stateList
         },
         HUD_ORIGIN
       );
     }
 
     disconnectedCallback() {
-      if (this._onMessage) {
-        window.removeEventListener("message", this._onMessage);
-      }
+      if (this._onMessage) window.removeEventListener("message", this._onMessage);
     }
   }
 
