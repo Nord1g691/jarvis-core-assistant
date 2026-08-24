@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/native.html?v=9.3.2";
+  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/native.html?v=9.3.3";
   class JarvisPanel extends HTMLElement {
     set hass(value) { this._hass=value; this._sync(); }
     set narrow(value) { this._narrow=value; }
