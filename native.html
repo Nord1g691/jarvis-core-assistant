@@ -7,7 +7,7 @@
 <style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden;background:#01050c}</style>
 </head>
 <body>
-<iframe id="hud" src="v9-live.html?native=1&v=9.3.5"></iframe>
+<iframe id="hud" src="v9-live.html?native=1&v=9.3.6"></iframe>
 <script>
 (()=>{
   'use strict';
@@ -19,7 +19,12 @@
   window.addEventListener('message',ev=>{
     if(ev.source!==frame.contentWindow)return;
     const m=ev.data;
-    if(!m||m.source!=='jarvis-v9'||m.type!=='request')return;
+    if(!m||m.source!=='jarvis-v9')return;
+    if(m.type==='hello'){
+      window.parent.postMessage({source:'jarvis-v9',type:'hello'},'*');
+      return;
+    }
+    if(m.type!=='request')return;
     const id=m.id ?? (++seq);
     window.parent.postMessage({source:'jarvis-v9',type:'request',id,message:m.message},'*');
   });
@@ -29,7 +34,7 @@
     const m=ev.data;
     if(!m||m.source!=='jarvis-ha')return;
     if(m.type==='ready'){
-      frame.contentWindow.postMessage({source:'jarvis-ha',type:'ready'},'*');
+      frame.contentWindow.postMessage({source:'jarvis-ha',type:'ready',entity_count:m.entity_count,states:m.states},'*');
       return;
     }
     if(m.type!=='result')return;
@@ -66,6 +71,33 @@
         const responseBody=response?.body==null?'':(typeof response.body==='string'?response.body:JSON.stringify(response.body));
         return new Response(responseBody,{status:response.status||200,headers:{'Content-Type':'application/json'}});
       };
+
+      // The HUD contains a second iframe (index.html). Its own fetch must use
+      // the native wrapper above instead of going directly to GitHub Pages.
+      const app=w.document.getElementById('app');
+      const bridgeAppFetch=()=>{
+        try{
+          const aw=app?.contentWindow;
+          if(!aw)return;
+          const appOriginalFetch=aw.fetch.bind(aw);
+          aw.fetch=async function(input,init={}){
+            let raw=typeof input==='string'?input:input?.url||'';
+            let url;
+            try{url=new URL(raw,aw.location.href)}catch(_){return appOriginalFetch(input,init)}
+            if(!url.pathname.startsWith('/api/'))return appOriginalFetch(input,init);
+            return w.fetch(url.pathname+url.search,init);
+          };
+        }catch(error){console.error('JARVIS nested iframe bridge:',error)}
+      };
+      if(app){
+        app.addEventListener('load',bridgeAppFetch,{once:false});
+        setTimeout(bridgeAppFetch,0);
+        setTimeout(bridgeAppFetch,500);
+        setTimeout(bridgeAppFetch,1500);
+      }
+
+      // Tell the HA panel that the V9 shell is alive so it can push states.
+      window.parent.postMessage({source:'jarvis-v9',type:'hello'},'*');
     }catch(error){console.error('JARVIS native wrapper:',error)}
   });
 })();
