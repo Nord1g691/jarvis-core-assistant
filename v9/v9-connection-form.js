@@ -1,2 +1,12 @@
-/** JARVIS V9 — actual connection form, mounted inside the V9 settings panel. */
-(()=>{'use strict';const ui=()=>window.JARVIS_V9_CONNECTION_UI;const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));function render(target){if(!target)return;const s=ui()?.view?.()||{status:'disconnected',url:'',error:''};target.innerHTML=`<form class="jv9-connection-form"><label>URL Home Assistant<input name="url" type="url" autocomplete="url" value="${esc(s.url)}" placeholder="https://…"></label><label>Token<input name="token" type="password" autocomplete="off" placeholder="Jeton Home Assistant"></label><button type="submit" ${s.status==='connecting'?'disabled':''}>${s.status==='connecting'?'Connexion…':'Valider la connexion'}</button><div class="jv9-connection-status" role="status" aria-live="polite">${esc(s.label||'Déconnecté')}${s.error?`<br><small>${esc(s.error)}</small>`:''}</div></form>`;const form=target.querySelector('.jv9-connection-form');if(!form)return;let busy=false;form.addEventListener('submit',async e=>{e.preventDefault();if(busy)return;busy=true;const b=form.querySelector('button[type="submit"]');if(b){b.disabled=true;b.textContent='Connexion…'}try{await ui()?.connect?.(form.elements.url.value,form.elements.token.value)}catch(_){}finally{busy=false;render(target)}})}window.JARVIS_V9_CONNECTION_FORM=Object.freeze({render})})();
+/** JARVIS V9 — native HA connection form. */
+(()=>{'use strict';
+const ui=()=>window.JARVIS_V9_CONNECTION_UI;
+function render(target){
+  if(!target)return;
+  const s=ui()?.view?.()||{status:'disconnected',error:''};
+  target.innerHTML=`<div class="jv9-connection-form"><div class="jv9-connection-status" role="status" aria-live="polite">${s.status==='connected'?'● Connecté directement à Home Assistant':s.status==='connecting'?'● Connexion à Home Assistant…':s.status==='error'?'● Erreur de connexion':'● Connexion native Home Assistant'}${s.error?`<br><small>${String(s.error)}</small>`:''}</div><button type="button" ${s.status==='connecting'?'disabled':''}>${s.status==='connected'?'✓ CONNECTÉ':'⚡ CONNECTER À HOME ASSISTANT'}</button></div>`;
+  const button=target.querySelector('button');
+  button?.addEventListener('click',async()=>{button.disabled=true;try{await ui()?.connect?.()}catch(_){}finally{render(target)}});
+}
+window.JARVIS_V9_CONNECTION_FORM=Object.freeze({render});
+})();
