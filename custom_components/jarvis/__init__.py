@@ -12,12 +12,12 @@ from .const import DOMAIN, PLATFORMS
 from .websocket import async_register as async_register_websocket
 
 STATIC_URL = "/jarvis_static"
-JARVIS_VERSION = "9.5.3"
+JARVIS_VERSION = "9.5.4"
 PANEL_NAME = "jarvis-panel"
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Set up the JARVIS integration and native Home Assistant panel."""
+    """Set up JARVIS and register its Home Assistant custom panel."""
     hass.data.setdefault(DOMAIN, {})
     async_register_websocket(hass)
 
@@ -26,11 +26,11 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         [StaticPathConfig(STATIC_URL, str(www_path), cache_headers=False)]
     )
 
-    # Remove a previous registration before registering the panel again.
-    frontend.async_remove_panel(hass, DOMAIN)
+    if frontend.async_panel_exists(hass, DOMAIN):
+        frontend.async_remove_panel(hass, DOMAIN)
 
     await panel_custom.async_register_panel(
-        hass,
+        hass=hass,
         webcomponent_name=PANEL_NAME,
         frontend_url_path=DOMAIN,
         module_url=f"{STATIC_URL}/jarvis-panel.js?v={JARVIS_VERSION}",
@@ -38,7 +38,6 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         sidebar_icon="mdi:robot-outline",
         require_admin=False,
         config={},
-        config_panel_domain=DOMAIN,
     )
     return True
 
