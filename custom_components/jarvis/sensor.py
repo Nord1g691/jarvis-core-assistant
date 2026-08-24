@@ -1,25 +1,27 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-import re
+import logging
 from typing import Any
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.const import UnitOfPower
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, CoordinatorEntity
-from homeassistant.config_entries import ConfigEntry
 
 from .const import DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
 
 ROLE_KEYWORDS = {
     "solar_production": ("production solaire", "solar production", "production", "pv", "photovolta"),
     "house_consumption": ("consommation", "consumption", "load", "maison", "home"),
     "grid_import": ("import réseau", "grid import", "import", "achat réseau"),
     "grid_export": ("export réseau", "grid export", "export", "injection", "vente réseau"),
-    "net_power": ("puissance nette", "net power", "net", "grid power", "puissance réseau"),
+    "net_power": ("puissance nette", "net power", "grid power", "puissance réseau"),
 }
 
 @dataclass
@@ -32,15 +34,12 @@ def _text(state) -> str:
     if not state:
         return ""
     attrs = state.attributes
-    return " ".join(
-        str(x).lower()
-        for x in (
-            state.entity_id,
-            attrs.get("friendly_name", ""),
-            attrs.get("device_class", ""),
-            attrs.get("unit_of_measurement", ""),
-        )
-    )
+    return " ".join(str(x).lower() for x in (
+        state.entity_id,
+        attrs.get("friendly_name", ""),
+        attrs.get("device_class", ""),
+        attrs.get("unit_of_measurement", ""),
+    ))
 
 
 def _number(state) -> float | None:
@@ -54,13 +53,10 @@ def _number(state) -> float | None:
 
 def _score(state, role: str) -> int:
     text = _text(state)
-    score = 0
-    for keyword in ROLE_KEYWORDS[role]:
-        if keyword in text:
-            score += 3
-    if state and state.attributes.get("unit_of_measurement") in ("W", "kW"):
+    score = sum(3 for keyword in ROLE_KEYWORDS[role] if keyword in text)
+    if state.attributes.get("unit_of_measurement") in ("W", "kW"):
         score += 2
-    if state and state.attributes.get("device_class") == "power":
+    if state.attributes.get("device_class") == "power":
         score += 2
     if role == "solar_production" and any(x in text for x in ("envoy", "enphase")):
         score += 5
@@ -70,12 +66,7 @@ def _score(state, role: str) -> int:
 class SolarCoordinator(DataUpdateCoordinator[SolarSnapshot]):
     def __init__(self, hass: HomeAssistant) -> None:
         self.hass = hass
-        super().__init__(
-            hass,
-            logger=__import__("logging").getLogger(__name__),
-            name="JARVIS solar",
-            update_interval=None,
-        )
+        super().__init__(hass, logger=_LOGGER, name="JARVIS solar", update_interval=None)
         self.data = self._build_snapshot()
 
     @callback
@@ -84,8 +75,7 @@ class SolarCoordinator(DataUpdateCoordinator[SolarSnapshot]):
         selected: dict[str, tuple[int, Any]] = {}
         for role in ROLE_KEYWORDS:
             for state in states:
-                value = _number(state)
-                if value is None:
+                if _number(state) is None:
                     continue
                 score = _score(state, role)
                 if score <= 0:
@@ -100,21 +90,14 @@ class SolarCoordinator(DataUpdateCoordinator[SolarSnapshot]):
             item = selected.get(role)
             values[role] = _number(item[1]) if item else None
             sources[role] = item[1].entity_id if item else None
-
-        # Normalize kW → W so every JARVIS sensor uses W.
-        for role, entity_id in sources.items():
-            if entity_id:
-                st = self.hass.states.get(entity_id)
-                if st and st.attributes.get("unit_of_measurement") == "kW" and values[role] is not None:
+            if item:
+                unit = item[1].attributes.get("unit_of_measurement")
+                if unit == "kW" and values[role] is not None:
                     values[role] *= 1000
 
         production = values["solar_production"]
         consumption = values["house_consumption"]
-        if production is not None and consumption is not None:
-            values["self_consumption"] = min(production, consumption)
-        else:
-            values["self_consumption"] = None
-
+        values["self_consumption"] = min(production, consumption) if production is not None and consumption is not None else None
         return SolarSnapshot(values, sources)
 
     @callback
@@ -124,23 +107,21 @@ class SolarCoordinator(DataUpdateCoordinator[SolarSnapshot]):
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
     coordinator = SolarCoordinator(hass)
-    hass.data.setdefault(DOMAIN, {}).setdefault(entry.entry_id, {})["solar_coordinator"] = coordinator
+    data = hass.data.setdefault(DOMAIN, {}).setdefault(entry.entry_id, {})
+    data["solar_coordinator"] = coordinator
 
-    entities = [
-        ("solar_production", "Production solaire", "☀️"),
-        ("house_consumption", "Consommation maison", "🏠"),
-        ("grid_import", "Import réseau", "↙️"),
-        ("grid_export", "Export réseau", "↗️"),
-        ("net_power", "Puissance réseau", "⚡"),
-        ("self_consumption", "Autoconsommation solaire", "🌱"),
+    definitions = [
+        ("solar_production", "Production solaire"),
+        ("house_consumption", "Consommation maison"),
+        ("grid_import", "Import réseau"),
+        ("grid_export", "Export réseau"),
+        ("net_power", "Puissance réseau"),
+        ("self_consumption", "Autoconsommation solaire"),
     ]
-    async_add_entities([JarvisSolarSensor(coordinator, role, name, icon) for role, name, icon in entities])
+    async_add_entities([JarvisSolarSensor(coordinator, role, name) for role, name in definitions])
 
-    async def refresh(_event=None):
-        coordinator.refresh_from_state_change(_event)
-
-    unsub = async_track_state_change_event(hass, [s.entity_id for s in hass.states.async_all()], refresh)
-    hass.data[DOMAIN][entry.entry_id]["solar_unsub"] = unsub
+    # Track all HA state changes so new/renamed Enphase entities are detected too.
+    data["solar_unsub"] = async_track_state_change_event(hass, None, coordinator.refresh_from_state_change)
 
 
 class JarvisSolarSensor(CoordinatorEntity[SolarCoordinator], SensorEntity):
@@ -148,13 +129,12 @@ class JarvisSolarSensor(CoordinatorEntity[SolarCoordinator], SensorEntity):
     _attr_state_class = "measurement"
     _attr_device_class = "power"
 
-    def __init__(self, coordinator: SolarCoordinator, role: str, name: str, icon: str) -> None:
+    def __init__(self, coordinator: SolarCoordinator, role: str, name: str) -> None:
         super().__init__(coordinator)
         self.role = role
         self._attr_name = f"JARVIS {name}"
         self._attr_unique_id = f"jarvis_{role}"
-        self._attr_icon = "mdi:solar-power" if "solar" in role else "mdi:flash"
-        self._attr_extra_state_attributes = {"role": role, "source_entity": None, "icon_hint": icon}
+        self._attr_icon = "mdi:solar-power" if role in ("solar_production", "self_consumption") else "mdi:flash"
 
     @property
     def native_value(self):
