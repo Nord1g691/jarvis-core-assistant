@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JARVIS V5</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden;background:#01050c}iframe{display:block}</style></head><body>
+<iframe id="jarvis-v5" src="/jarvis_static/v5-original.html?v=9.5.7" allow="microphone;camera;autoplay"></iframe>
+<script>
+(() => {
+  const frame=document.getElementById('jarvis-v5');
+  const ORIGIN=location.origin;
+  frame.addEventListener('load',()=>{
+    const w=frame.contentWindow;
+    const s=w.document.createElement('script');
+    s.src='/jarvis_static/v9/native-bridge.js?v=9.5.7';
+    w.document.head.appendChild(s);
+  });
+  window.addEventListener('message',e=>{
+    if(e.source===frame.contentWindow) window.parent.postMessage(e.data,'*');
+    else if(e.source===window.parent) frame.contentWindow.postMessage(e.data,'*');
+  });
+})();
+</script></body></html>
