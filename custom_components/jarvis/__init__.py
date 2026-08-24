@@ -12,7 +12,7 @@ from .const import DOMAIN, PLATFORMS
 from .websocket import async_register as async_register_websocket
 
 STATIC_URL = "/jarvis_static"
-JARVIS_VERSION = "9.4.1"
+JARVIS_VERSION = "9.5.0"
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
