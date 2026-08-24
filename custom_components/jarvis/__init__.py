@@ -12,7 +12,7 @@ from .const import DOMAIN, PLATFORMS
 from .websocket import async_register as async_register_websocket
 
 STATIC_URL = "/jarvis_static"
-JARVIS_VERSION = "9.5.0"
+JARVIS_VERSION = "9.5.2"
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -24,23 +24,21 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     await hass.http.async_register_static_paths(
         [StaticPathConfig(STATIC_URL, str(static_path), cache_headers=False)]
     )
-    if DOMAIN not in hass.data.get("frontend_panels", {}):
-        async_register_built_in_panel(
-            hass,
-            component_name="custom",
-            sidebar_title="JARVIS",
-            sidebar_icon="mdi:robot-outline",
-            frontend_url_path=DOMAIN,
-            config={
-                "_panel_custom": {
-                    "name": "jarvis-panel",
-                    "embed_iframe": False,
-                    "trust_external": False,
-                    "js_url": f"{STATIC_URL}/jarvis-panel.js?v={JARVIS_VERSION}",
-                }
-            },
-            require_admin=False,
-        )
+
+    async_register_built_in_panel(
+        hass,
+        component_name="custom",
+        sidebar_title="JARVIS",
+        sidebar_icon="mdi:robot-outline",
+        frontend_url_path=DOMAIN,
+        config={
+            "name": "jarvis-panel",
+            "embed_iframe": False,
+            "trust_external": False,
+            "js_url": f"{STATIC_URL}/jarvis-panel.js?v={JARVIS_VERSION}",
+        },
+        require_admin=False,
+    )
     return True
 
 
