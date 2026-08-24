@@ -17,12 +17,13 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 ROLE_KEYWORDS = {
-    "solar_production": ("production solaire", "solar production", "production", "pv", "photovolta"),
-    "house_consumption": ("consommation", "consumption", "load", "maison", "home"),
-    "grid_import": ("import réseau", "grid import", "import", "achat réseau"),
-    "grid_export": ("export réseau", "grid export", "export", "injection", "vente réseau"),
-    "net_power": ("puissance nette", "net power", "grid power", "puissance réseau"),
+    "solar_production": ("production solaire", "solar production", "production solaire instant", "solar", "pv", "photovolta", "enphase", "envoy"),
+    "house_consumption": ("consommation nette de puissance", "consommation instant", "consommation", "consumption", "load", "maison", "home"),
+    "grid_import": ("import réseau", "grid import", "import", "achat réseau", "grid consumption"),
+    "grid_export": ("export réseau", "grid export", "export", "injection", "vente réseau", "grid return"),
+    "net_power": ("puissance nette", "net power", "grid power", "puissance réseau", "consommation nette de puissance"),
 }
+
 
 @dataclass
 class SolarSnapshot:
@@ -53,12 +54,18 @@ def _number(state) -> float | None:
 
 def _score(state, role: str) -> int:
     text = _text(state)
+    unit = state.attributes.get("unit_of_measurement")
+    device_class = state.attributes.get("device_class")
+    if unit not in ("W", "kW") and device_class != "power":
+        return 0
     score = sum(3 for keyword in ROLE_KEYWORDS[role] if keyword in text)
-    if state.attributes.get("unit_of_measurement") in ("W", "kW"):
+    if device_class == "power":
+        score += 3
+    if unit in ("W", "kW"):
         score += 2
-    if state.attributes.get("device_class") == "power":
-        score += 2
-    if role == "solar_production" and any(x in text for x in ("envoy", "enphase")):
+    if any(x in text for x in ("enphase", "envoy")):
+        score += 4
+    if role == "solar_production" and any(x in text for x in ("production", "pv", "solar", "photovolta")):
         score += 5
     return score
 
@@ -75,7 +82,8 @@ class SolarCoordinator(DataUpdateCoordinator[SolarSnapshot]):
         selected: dict[str, tuple[int, Any]] = {}
         for role in ROLE_KEYWORDS:
             for state in states:
-                if _number(state) is None:
+                value = _number(state)
+                if value is None:
                     continue
                 score = _score(state, role)
                 if score <= 0:
@@ -90,14 +98,18 @@ class SolarCoordinator(DataUpdateCoordinator[SolarSnapshot]):
             item = selected.get(role)
             values[role] = _number(item[1]) if item else None
             sources[role] = item[1].entity_id if item else None
-            if item:
-                unit = item[1].attributes.get("unit_of_measurement")
-                if unit == "kW" and values[role] is not None:
-                    values[role] *= 1000
+            if item and item[1].attributes.get("unit_of_measurement") == "kW" and values[role] is not None:
+                values[role] *= 1000
 
         production = values["solar_production"]
+        export = values["grid_export"]
         consumption = values["house_consumption"]
-        values["self_consumption"] = min(production, consumption) if production is not None and consumption is not None else None
+        if production is not None and export is not None:
+            values["self_consumption"] = max(0.0, production - max(0.0, export))
+        elif production is not None and consumption is not None:
+            values["self_consumption"] = min(max(0.0, production), max(0.0, consumption))
+        else:
+            values["self_consumption"] = None
         return SolarSnapshot(values, sources)
 
     @callback
@@ -120,8 +132,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     ]
     async_add_entities([JarvisSolarSensor(coordinator, role, name) for role, name in definitions])
 
-    # Track all HA state changes so new/renamed Enphase entities are detected too.
-    data["solar_unsub"] = async_track_state_change_event(hass, None, coordinator.refresh_from_state_change)
+    sensor_ids = [s.entity_id for s in hass.states.async_all() if s.entity_id.startswith("sensor.")]
+    data["solar_unsub"] = async_track_state_change_event(hass, sensor_ids, coordinator.refresh_from_state_change)
 
 
 class JarvisSolarSensor(CoordinatorEntity[SolarCoordinator], SensorEntity):
