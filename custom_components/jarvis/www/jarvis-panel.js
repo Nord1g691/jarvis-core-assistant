@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/?native=1&v=9.3.1";
+  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/native.html?v=9.3.2";
   class JarvisPanel extends HTMLElement {
     set hass(value) { this._hass=value; this._sync(); }
     set narrow(value) { this._narrow=value; }
@@ -26,11 +26,27 @@
           else if(msg.type==="get_config") result=await this._hass.callWS({type:"get_config"});
           else if(msg.type==="get_services") result=await this._hass.callWS({type:"get_services"});
           else if(msg.type==="call_service") result=await this._hass.callService(msg.domain,msg.service,msg.service_data||{});
+          else if(msg.type==="http_request") result=await this._httpRequest(msg);
           else throw new Error(`Commande HA non supportée: ${msg.type}`);
           this._reply(m.id,{result});
         }catch(e){this._reply(m.id,{error:e?.message||String(e)})}
       };
       window.addEventListener("message",this._onMessage); this._frame.src=HUD;
+    }
+    async _httpRequest(msg){
+      const path=String(msg.path||"");
+      const method=String(msg.method||"GET").toUpperCase();
+      if(path==="/api/" && method==="GET") return {status:200,body:await this._hass.callWS({type:"get_config"})};
+      if(path==="/api/states" && method==="GET") return {status:200,body:Object.values(this._hass.states||{})};
+      if(path==="/api/services" && method==="GET") return {status:200,body:await this._hass.callWS({type:"get_services"})};
+      const match=path.match(/^\/api\/services\/([^/]+)\/([^/?]+)(?:\?.*)?$/);
+      if(match && method==="POST"){
+        let data={};
+        try{data=msg.body?JSON.parse(msg.body):{}}catch(_){data={}};
+        const serviceData=data.service_data||data.data||data||{};
+        return {status:200,body:await this._hass.callService(decodeURIComponent(match[1]),decodeURIComponent(match[2]),serviceData)};
+      }
+      return {status:404,body:{message:"API Home Assistant non supportée",path,method}};
     }
     _reply(id,payload){this._frame?.contentWindow?.postMessage({source:"jarvis-ha",type:"result",id,...payload},"*")}
     _sync(){if(this._frame?.contentWindow&&this._hass)this._frame.contentWindow.postMessage({source:"jarvis-ha",type:"ready"},"*")}
