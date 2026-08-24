@@ -11,9 +11,11 @@ from homeassistant.helpers.typing import ConfigType
 from .const import DOMAIN, PLATFORMS
 
 STATIC_URL = "/jarvis_static"
+JARVIS_VERSION = "9.3.3"
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the JARVIS integration."""
     hass.data.setdefault(DOMAIN, {})
     static_path = Path(__file__).parent / "www"
     await hass.http.async_register_static_paths(
@@ -31,7 +33,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
                     "name": "jarvis-panel",
                     "embed_iframe": False,
                     "trust_external": False,
-                    "js_url": f"{STATIC_URL}/jarvis-panel.js?v=9.3.1",
+                    "js_url": f"{STATIC_URL}/jarvis-panel.js?v={JARVIS_VERSION}",
                 }
             },
             require_admin=False,
@@ -40,12 +42,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Set up JARVIS from a config entry."""
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = entry.data
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload a JARVIS config entry."""
     unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unloaded:
         hass.data[DOMAIN].pop(entry.entry_id, None)
