@@ -1,0 +1,1 @@
+{"config":{"step":{"user":{"title":"JARVIS","description":"Active l'intégration JARVIS dans Home Assistant.","data":{"enabled":"Activer JARVIS"}}}},"options":{"step":{"init":{"title":"JARVIS","data":{"enabled":"Activer JARVIS"}}}}}
