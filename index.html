@@ -1,6 +1,14 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>JARVIS</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden;background:#01050c}#hud{position:fixed;inset:0;width:100%;height:100%;border:0}</style></head><body><iframe id="hud" src="v5-original.html"></iframe><script>if(window.parent!==window){const s=document.createElement('script');s.src='v9/native-bridge.js';document.head.appendChild(s)}</script><script src="v9/loader.js"></script><script src="v9/launcher.js"></script><script>window.JARVIS_V9_LOAD_ALL?.().catch(e=>window.dispatchEvent(new CustomEvent('jarvis:v9:error',{detail:e})));</script><script src="v9/v9-v5-ui.js"></script>
-<!-- JARVIS_V9_V5_WIRED: additive only; existing V5 HUD remains untouched -->
-<script src="v9/loader.js"></script>
-<script>window.JARVIS_V9_LOAD_ALL?.().catch(e=>window.dispatchEvent(new CustomEvent('jarvis:v9:error',{detail:e})));</script>
-<script src="v9/v9-v5-ui.js"></script>
-</body></html>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>JARVIS</title><style>html,body,iframe{margin:0;width:100%;height:100%;border:0;overflow:hidden;background:#01050c}#hud{position:fixed;inset:0;width:100%;height:100%;border:0}</style></head><body><iframe id="hud" src="v5-original.html"></iframe><script>
+const hud=document.getElementById('hud');
+hud.addEventListener('load',()=>{
+  try{
+    const w=hud.contentWindow;
+    if(w&&!w.document.getElementById('jarvis-native-bridge')){
+      const s=w.document.createElement('script');
+      s.id='jarvis-native-bridge';
+      s.src='v9/native-bridge.js?v=9.4.1';
+      w.document.head.appendChild(s);
+    }
+  }catch(e){console.error('JARVIS native bridge injection failed',e)}
+});
+</script><script>if(window.parent!==window){const s=document.createElement('script');s.src='v9/native-bridge.js?v=9.4.1';document.head.appendChild(s)}</script><script src="v9/loader.js?v=9.4.1"></script><script src="v9/launcher.js?v=9.4.1"></script><script>window.JARVIS_V9_LOAD_ALL?.().catch(e=>window.dispatchEvent(new CustomEvent('jarvis:v9:error',{detail:e})));</script><script src="v9/v9-v5-ui.js?v=9.4.1"></script></body></html>
