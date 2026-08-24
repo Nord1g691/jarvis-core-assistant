@@ -1,14 +1,24 @@
 (() => {
   "use strict";
-  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/?native=1&v=9.2.0";
+  const HUD = "https://nord1g691.github.io/jarvis-core-assistant/?native=1&v=9.2.1";
   class JarvisPanel extends HTMLElement {
     set hass(value) { this._hass=value; this._sync(); }
     set narrow(value) { this._narrow=value; }
     set panel(value) { this._panel=value; }
-    connectedCallback() { this.render(); }
+    connectedCallback() {
+      this.style.display="block";
+      this.style.width="100%";
+      this.style.height="calc(100vh - var(--header-height, 56px))";
+      this.style.minHeight="calc(100vh - var(--header-height, 56px))";
+      this.style.margin="0";
+      this.style.padding="0";
+      this.style.overflow="hidden";
+      this.style.position="relative";
+      this.render();
+    }
     render() {
       if (this._frame) return;
-      this.innerHTML = `<iframe title="JARVIS" style="width:100%;height:100%;border:0;display:block;background:#01050c" allow="microphone;camera;autoplay"></iframe>`;
+      this.innerHTML = `<iframe title="JARVIS" style="position:absolute;inset:0;width:100%;height:100%;min-height:100%;border:0;display:block;background:#01050c" allow="microphone;camera;autoplay" referrerpolicy="no-referrer"></iframe>`;
       this._frame=this.querySelector("iframe");
       this._onMessage=async ev=>{
         if(ev.source!==this._frame.contentWindow || ev.data?.source!=="jarvis-v9") return;
