@@ -19,7 +19,6 @@
       const hud = document.getElementById("hud");
       const version = "9.5.4";
 
-      // Keep the legacy V5 HUD untouched. The V9 loader is initialized once.
       const load = (src) => new Promise((resolve) => {
         if (document.querySelector(`script[data-jarvis-src="${src}"]`)) {
           resolve();
@@ -49,8 +48,6 @@
         window.dispatchEvent(new CustomEvent("jarvis:v9:error", { detail: error }));
       });
 
-      // The native bridge is also injected into the existing V5 iframe when
-      // same-origin access is available. The V5 itself is never modified.
       hud.addEventListener("load", () => {
         try {
           const win = hud.contentWindow;
@@ -66,10 +63,5 @@
       }, { once: true });
     })();
   </script>
-
-<!-- JARVIS_V9_V5_WIRED: additive only; existing V5 HUD remains untouched -->
-<script src="v9/loader.js"></script>
-<script>window.JARVIS_V9_LOAD_ALL?.().catch(e=>window.dispatchEvent(new CustomEvent('jarvis:v9:error',{detail:e})));</script>
-<script src="v9/v9-v5-ui.js"></script>
 </body>
 </html>
