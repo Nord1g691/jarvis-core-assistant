@@ -35,7 +35,9 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = entry.data
+    domain_data = hass.data.setdefault(DOMAIN, {})
+    runtime_data = domain_data.setdefault(entry.entry_id, {})
+    runtime_data["config"] = dict(entry.data)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     return True
 
