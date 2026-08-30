@@ -5,6 +5,6 @@
   "documentation": "https://github.com/Nord1g691/jarvis-core-assistant",
   "issue_tracker": "https://github.com/Nord1g691/jarvis-core-assistant/issues",
   "codeowners": ["@Nord1g691"],
-  "config_flow": false,
+  "config_flow": true,
   "iot_class": "local_push"
 }
