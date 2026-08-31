@@ -10,44 +10,39 @@
   </style>
 </head>
 <body>
-  <iframe id="hud" src="v5-original.html" title="JARVIS V5"></iframe>
+  <iframe id="hud" src="v5-original.html?v=3.0.19" title="JARVIS"></iframe>
   <script>
     (() => {
       "use strict";
-      const hud=document.getElementById("hud");
-      const version="9.6.3";
-      const load=(src)=>new Promise((resolve)=>{
-        if(document.querySelector(`script[data-jarvis-src="${src}"]`)){resolve();return;}
-        const script=document.createElement("script");
-        script.src=`${src}?v=${version}`;
-        script.dataset.jarvisSrc=src;
-        script.onload=resolve;
-        script.onerror=()=>{console.error("JARVIS: failed to load",src);resolve();};
-        document.head.appendChild(script);
+      const VERSION = "3.0.19";
+      const hud = document.getElementById("hud");
+
+      const inject = (doc, src, id) => new Promise((resolve) => {
+        if (doc.getElementById(id)) {
+          resolve(true);
+          return;
+        }
+        const script = doc.createElement("script");
+        script.id = id;
+        script.src = `${src}?v=${VERSION}`;
+        script.async = false;
+        script.onload = () => resolve(true);
+        script.onerror = () => {
+          console.error("JARVIS: failed to load", src);
+          resolve(false);
+        };
+        doc.head.appendChild(script);
       });
-      const startV9=async()=>{
-        await load("v9/loader.js");
-        await load("v9/launcher.js");
-        await load("v9/v9-v5-ui.js");
-        await window.JARVIS_V9_LOAD_ALL?.();
-      };
-      startV9().catch(error=>console.error("JARVIS V9 initialization failed",error));
-      hud.addEventListener("load",()=>{
-        try{
-          const win=hud.contentWindow;
-          if(!win||win.document.getElementById("jarvis-native-bridge"))return;
-          const script=win.document.createElement("script");
-          script.id="jarvis-native-bridge";
-          script.src=`v9/native-bridge.js?v=${version}`;
-          win.document.head.appendChild(script);
-        }catch(error){console.error("JARVIS native bridge injection failed",error);}
-      },{once:true});
+
+      hud.addEventListener("load", async () => {
+        const doc = hud.contentDocument;
+        if (!doc?.head) return;
+
+        await inject(doc, "v9/loader.js", "jarvis-v9-loader");
+        await inject(doc, "v9/v9-v5-ui.js", "jarvis-v9-v5-ui");
+        await inject(doc, "v9/native-bridge.js", "jarvis-native-bridge");
+      }, { once: true });
     })();
   </script>
-
-<!-- JARVIS_V9_V5_WIRED: additive only; existing V5 HUD remains untouched -->
-<script src="v9/loader.js"></script>
-<script>window.JARVIS_V9_LOAD_ALL?.().catch(e=>window.dispatchEvent(new CustomEvent('jarvis:v9:error',{detail:e})));</script>
-<script src="v9/v9-v5-ui.js"></script>
 </body>
 </html>
