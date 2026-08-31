@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JARVIS V9 — HUD V5 + V9</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#01050c}
+#hud{position:fixed;inset:0;width:100%;height:100%;border:0;background:#01050c}
+#boot{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;padding:8px 14px;border:1px solid rgba(0,234,255,.35);border-radius:20px;background:rgba(2,10,20,.9);color:#d9faff;font:600 11px Rajdhani,system-ui,sans-serif;letter-spacing:1.5px;box-shadow:0 0 20px rgba(0,180,255,.15);pointer-events:none}
+#boot.ok{color:#39ff88;border-color:rgba(57,255,136,.4)}#boot.err{color:#ff6b87;border-color:rgba(255,49,88,.45)}
+</style>
+</head>
+<body>
+<iframe id="hud" src="../index.html" title="JARVIS V5 HUD"></iframe>
+<div id="boot">JARVIS V9 — CHARGEMENT…</div>
+<script>
+(()=>{
+'use strict';
+const frame=document.getElementById('hud'), boot=document.getElementById('boot');
+const set=(text,cls='')=>{boot.textContent=text;boot.className=cls?cls:''};
+const add=(doc,src)=>new Promise((resolve,reject)=>{const s=doc.createElement('script');s.src=src;s.async=false;s.onload=resolve;s.onerror=()=>reject(new Error('Échec '+src));doc.head.appendChild(s)});
+frame.addEventListener('load',async()=>{
+  try{
+    const doc=frame.contentDocument;
+    if(!doc)throw new Error('HUD inaccessible');
+    const base=new URL('./',location.href).href;
+    set('JARVIS V9 — MODULES…');
+    await add(doc,base+'v9-load-all.js');
+    if(typeof frame.contentWindow.JARVIS_V9_LOAD_ALL==='function') await frame.contentWindow.JARVIS_V9_LOAD_ALL();
+    await add(doc,base+'v9-v5-ui.js');
+    set('JARVIS V9 — PRÊT', 'ok');
+    setTimeout(()=>boot.remove(),1200);
+  }catch(e){console.error(e);set('JARVIS V9 — '+(e.message||'ERREUR'),'err')}
+});
+})();
+</script>
+</body>
+</html>
