@@ -2,8 +2,8 @@
   "use strict";
 
   // Single runtime owner: the V5 HUD iframe owns the complete V9 UI/runtime.
-  // The HA panel only transports HA state/messages to that iframe.
-  const ASSET_VERSION = "9.6.5";
+  // The HA panel only transports Home Assistant state/messages to that iframe.
+  const ASSET_VERSION = "3.0.19";
   const HUD_URL = `/jarvis_static/v5-original.html?v=${ASSET_VERSION}`;
   const ORIGIN = window.location.origin;
 
@@ -52,7 +52,6 @@
 
       this._iframe = frame;
       this.appendChild(frame);
-
       frame.addEventListener("load", () => this._bootHud(), { once: true });
     }
 
@@ -89,9 +88,9 @@
       const doc = frame?.contentDocument;
       if (!win || !doc?.head) return;
 
-      // The previous implementation loaded V9 beside the iframe, while the
-      // actual HUD remained V5. That made the new UI invisible in HACS.
-      // V9 must execute INSIDE the HUD iframe so it can mount its controls.
+      // V9 must execute inside the same iframe as the visible HUD.
+      // Previously it was loaded by index.html in the outer document, while
+      // HACS opened v5-original.html directly, so the new UI never mounted.
       const inject = (src, id) => new Promise((resolve) => {
         if (doc.getElementById(id)) {
           resolve(true);
@@ -115,7 +114,6 @@
           await inject(V9_SCRIPTS[i], `jarvis-v9-panel-${i}`);
         }
 
-        // Native HA bridge belongs to the same iframe/runtime owner.
         await inject(
           `/jarvis_static/v9/native-bridge.js?v=${ASSET_VERSION}`,
           "jarvis-native-bridge",
@@ -155,19 +153,15 @@
           case "get_states":
             result = this._states();
             break;
-
           case "get_panel_data":
             result = await this._hass.callWS({ type: "jarvis/get_panel_data" });
             break;
-
           case "get_config":
             result = await this._hass.callWS({ type: "get_config" });
             break;
-
           case "get_services":
             result = await this._hass.callWS({ type: "get_services" });
             break;
-
           case "call_service":
             result = await this._hass.callService(
               request.domain,
@@ -175,11 +169,9 @@
               request.service_data || {},
             );
             break;
-
           case "http_request":
             result = await this._httpRequest(request);
             break;
-
           default:
             throw new Error(`Commande HA non supportée: ${request.type}`);
         }
@@ -202,22 +194,16 @@
       if (method === "GET" && (path === "/api" || path === "/api/")) {
         return { status: 200, body: { message: "API running." } };
       }
-
       if (method === "GET" && path === "/api/states") {
         return { status: 200, body: this._states() };
       }
-
       if (method === "GET" && path.startsWith("/api/states/")) {
         const entityId = decodeURIComponent(path.slice("/api/states/".length));
         const state = this._hass.states?.[entityId];
         return state
           ? { status: 200, body: state }
-          : {
-              status: 404,
-              body: { message: "Entity not found", entity_id: entityId },
-            };
+          : { status: 404, body: { message: "Entity not found", entity_id: entityId } };
       }
-
       if (method === "GET" && path === "/api/services") {
         return {
           status: 200,
@@ -233,39 +219,25 @@
         } catch (_) {
           data = {};
         }
-
         const serviceData = data.service_data || data.data || data;
         const result = await this._hass.callService(
           decodeURIComponent(match[1]),
           decodeURIComponent(match[2]),
           serviceData,
         );
-
         return { status: 200, body: result || {} };
       }
 
       return {
         status: 404,
-        body: {
-          message: "API Home Assistant non supportée",
-          path,
-          method,
-        },
+        body: { message: "API Home Assistant non supportée", path, method },
       };
     }
 
     _reply(id, success, result, error) {
       if (id == null || !this._iframe?.contentWindow) return;
-
       this._iframe.contentWindow.postMessage(
-        {
-          source: "jarvis-ha",
-          type: "result",
-          id,
-          success,
-          result,
-          error,
-        },
+        { source: "jarvis-ha", type: "result", id, success, result, error },
         ORIGIN,
       );
     }
