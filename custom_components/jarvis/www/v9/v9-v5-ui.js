@@ -1,0 +1,2 @@
+/** JARVIS V9/V5 UI bridge — connection is a real panel, not a placeholder. */
+(()=>{'use strict';const mount=()=>window.JARVIS_V9_UI?.mount?.(document.body);const connection=()=>window.JARVIS_V9_CONNECTION_FORM;window.JARVIS_V9_V5_UI=Object.freeze({render:()=>window.JARVIS_V9_UI?.renderCategories?.(),renderConnection:target=>connection()?.render?.(target)});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount()})();
