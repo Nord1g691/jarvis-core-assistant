@@ -1,0 +1,44 @@
+{
+  "schema": "jarvis_house_spatial_model",
+  "version": "0.1",
+  "date": "2026-09-04",
+  "status": "PROTOTYPE_SAFE",
+  "geometry_authority": "architectural_plan",
+  "north": "top",
+  "rules": [
+    "Architectural plan remains the geometry authority.",
+    "Hotspots are semantic anchors only and must not redefine walls.",
+    "Satellite/drone define site orientation and exterior implantation once raw rasters are available.",
+    "Photos are as-built appearance/context evidence, not direct metric geometry.",
+    "Current-use corrections override historical labels only when explicitly confirmed."
+  ],
+  "zones": [
+    {"id":"garage","label":"Garage","anchor_pct":{"x":58.0,"y":14.5},"entities":["cover.smart_garage_door_2011121892665436100848e1e93b38f4_garage","binary_sensor.porte_acces_garage","binary_sensor.porte_cave","binary_sensor.porte_jardin"],"confidence":"PLAN_PHOTO_USER"},
+    {"id":"living","label":"Salon / Séjour","anchor_pct":{"x":24.0,"y":58.0},"level_m":-0.17,"entities":["light.eclairage_plafond_2","light.eclairage_couleur_salon","switch.smart_switch_2103188752458451855248e1e96523aa_outlet","light.lsc_smart_10m_ledstrip_rgbic_cct_2","light.lsc_smart_10m_ledstrip_rgbic_cct"],"confidence":"PLAN_PHOTO_USER"},
+    {"id":"dining","label":"Salle à manger","anchor_pct":{"x":34.0,"y":49.0},"level_m":0.0,"entities":["cover.voletsalleamanger","cover.voletporte_volet_terrasse"],"confidence":"PLAN_PHOTO_USER"},
+    {"id":"kitchen","label":"Cuisine","anchor_pct":{"x":45.0,"y":52.5},"open_to":["dining"],"door_to":["cellier"],"entities":["cover.voletcuisine"],"confidence":"PLAN_PHOTO_USER"},
+    {"id":"cellier","label":"Cellier","anchor_pct":{"x":44.5,"y":43.0},"geometry_note":"Keep exact irregular architectural footprint; never simplify to rectangle.","confidence":"PLAN_USER"},
+    {"id":"stairs_laundry","label":"Escalier / Buanderie","anchor_pct":{"x":39.0,"y":33.5},"current_use_note":"Architectural placard under stairs = compact laundry on right side under stair.","confidence":"PLAN_PHOTO_USER"},
+    {"id":"children_bedroom","label":"Chambre enfants","architectural_label":"Chambre 2","anchor_pct":{"x":63.0,"y":29.0},"entities":["binary_sensor.ewelink_snzb_04p"],"confidence":"PLAN_USER"},
+    {"id":"children_bathroom","label":"SDB enfants actuelle","architectural_label":"Ancien dressing Chambre 2","anchor_pct":{"x":56.5,"y":29.0},"as_built_sequence":["shower_at_far_end","door_to_children_bedroom","vanity_sink_in_continuation","corridor_access"],"additional_fixture":"WC_left","confidence":"PHOTO_USER"},
+    {"id":"parent_bathroom","label":"SDB parentale","architectural_label":"Salle d'eau","anchor_pct":{"x":68.0,"y":42.0},"confidence":"PLAN_USER"},
+    {"id":"parent_bedroom","label":"Chambre parentale","architectural_label":"Chambre 1","anchor_pct":{"x":67.0,"y":62.0},"confidence":"PLAN"},
+    {"id":"terrace_porch","label":"Terrasse / Porche","anchor_pct":{"x":38.0,"y":71.0},"entities":["binary_sensor.ewelink_snzb_04p_3"],"confidence":"PHOTO_USER"},
+    {"id":"garden_pool","label":"Jardin / Piscine","anchor_pct":{"x":78.0,"y":70.0},"entities":["switch.filtration_piscine","climate.pac_piscine","light.eclairage_piscine","switch.exterieur_programmateur_eau_programmateur_eau","switch.sonoff_swv_zfe"],"confidence":"PHOTO_SATELLITE_DRONE_HA"}
+  ],
+  "vertical": {
+    "living_cathedral_peak_m_approx": 5.0,
+    "standard_ceiling_m_approx": 2.4,
+    "living_split_level_m": 0.17,
+    "fireplace_relation": "between_two_posts_at_living_kitchen_transition",
+    "ceiling_fan": "high_central_cathedral"
+  },
+  "exterior": {
+    "pool_volume_m3_approx": 35,
+    "main_paving": "grey_60x60",
+    "rear_surface": "wood_look_40x120",
+    "rainwater_tank_l": 4000,
+    "north_reference": "satellite_IMG_0735_top",
+    "drone_reference": "dji_fly_20250203_170128_172_1738657534084_photo_optimized.jpeg"
+  }
+}

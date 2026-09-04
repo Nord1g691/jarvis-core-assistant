@@ -122,9 +122,14 @@
           "jarvis-v9-v5-ui",
         );
 
-        if (!nativeOK || !loaderOK || !uiOK || readyDetail.timeout || (readyDetail.errors || []).length) {
+        const spatialOK = await inject(
+          `/jarvis_static/v9/spatial-ui.js?v=${ASSET_VERSION}`,
+          "jarvis-spatial-ui",
+        );
+
+        if (!nativeOK || !loaderOK || !uiOK || !spatialOK || readyDetail.timeout || (readyDetail.errors || []).length) {
           console.error("JARVIS V9 bootstrap diagnostics", {
-            nativeOK, loaderOK, uiOK, readyDetail,
+            nativeOK, loaderOK, uiOK, spatialOK, readyDetail,
           });
         }
 
@@ -134,6 +139,7 @@
             nativeOK,
             loaderOK,
             uiOK,
+            spatialOK,
             readyDetail,
           },
         }));
@@ -165,6 +171,10 @@
             break;
           case "get_panel_data":
             result = await this._hass.callWS({ type: "jarvis/get_panel_data" });
+            break;
+          case "get_spatial_model":
+          case "jarvis/get_spatial_model":
+            result = await this._hass.callWS({ type: "jarvis/get_spatial_model" });
             break;
           case "get_config":
             result = await this._hass.callWS({ type: "get_config" });

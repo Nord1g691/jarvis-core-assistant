@@ -1,0 +1,48 @@
+{
+  "schema": "jarvis_spatial_ui_model",
+  "version": "0.2",
+  "date": "2026-09-04",
+  "status": "INTERACTIVE_NAV_PROTOTYPE",
+  "geometry_authority": "07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png",
+  "north": "top",
+  "navigation": [
+    "property",
+    "rdc",
+    "room"
+  ],
+  "property_view": {
+    "status": "PHOTO_EVIDENCE_MODE_UNTIL_RAW_SATELLITE_RASTER",
+    "cards": [
+      {"id":"house","label":"Maison / RDC","photo":"front","desc":"Entrer dans le plan intérieur","action":"rdc"},
+      {"id":"terrace","label":"Terrasse / Porche","photo":"terrace","desc":"Extérieur proche de la pièce de vie"},
+      {"id":"garden","label":"Jardin","photo":"garden","desc":"Vue générale jardin"},
+      {"id":"garden2","label":"Jardin / végétation","photo":"garden2","desc":"Référence extérieure complémentaire"},
+      {"id":"pool","label":"Piscine / extérieur","photo":"porch","desc":"Zone extérieure à recaler avec satellite/drone"}
+    ]
+  },
+  "rdc_view": {
+    "background": "architectural_plan",
+    "zones": [
+      {"id":"garage","label":"Garage","x":58,"y":14.5,"photo":"front","summary":"Grand garage ouvert. Zone technique, accès maison, cave et jardin.","entities":["cover.smart_garage_door_2011121892665436100848e1e93b38f4_garage","binary_sensor.porte_acces_garage","binary_sensor.porte_cave","binary_sensor.porte_jardin"]},
+      {"id":"living","label":"Salon / Séjour","x":24,"y":58,"photo":"living1","summary":"Niveau bas -17 cm. Cathédrale, cheminée entre deux poteaux, poutres, TV et salon.","entities":["light.eclairage_plafond_2","light.eclairage_couleur_salon","switch.smart_switch_2103188752458451855248e1e96523aa_outlet","light.lsc_smart_10m_ledstrip_rgbic_cct_2","light.lsc_smart_10m_ledstrip_rgbic_cct"]},
+      {"id":"dining","label":"Salle à manger","x":34,"y":49,"photo":"living2","summary":"Niveau haut. Table côté salle à manger. Marche +17 cm revenant à l’angle du mur.","entities":["cover.voletsalleamanger","cover.voletporte_volet_terrasse"]},
+      {"id":"kitchen","label":"Cuisine","x":45,"y":52.5,"photo":"living3","summary":"Ouverte vers salle à manger. Passage sans porte. Porte réelle vers cellier.","entities":["cover.voletcuisine"]},
+      {"id":"cellier","label":"Cellier","x":44.5,"y":43,"photo":null,"summary":"Forme irrégulière du plan conservée telle quelle.","entities":[]},
+      {"id":"stairs_laundry","label":"Escalier / Buanderie","x":39,"y":33.5,"photo":"living3","summary":"Placard sous escalier = buanderie compacte actuelle, à droite sous l’escalier.","entities":[]},
+      {"id":"children_bedroom","label":"Chambre enfants","x":63,"y":29,"photo":null,"summary":"Chambre 2 du plan. Porte existante vers le dégagement diagonal.","entities":["binary_sensor.ewelink_snzb_04p"]},
+      {"id":"children_bathroom","label":"SDB enfants actuelle","x":56.5,"y":29,"photo":"children_bath","summary":"Ancien dressing : douche au fond, porte vers chambre enfants, lavabo dans la continuité, WC à gauche, accès couloir.","entities":[]},
+      {"id":"parent_bathroom","label":"SDB parentale","x":68,"y":42,"photo":null,"summary":"Salle d’eau du plan. Porte vers le même dégagement diagonal.","entities":[]},
+      {"id":"parent_bedroom","label":"Chambre parentale","x":67,"y":62,"photo":null,"summary":"Chambre 1 du plan, reliée au noyau nuit/dressing.","entities":[]},
+      {"id":"terrace_porch","label":"Terrasse / Porche","x":38,"y":71,"photo":"terrace","summary":"Porche couvert devant les baies et liaison entrée → terrasse. Dallage gris 60×60.","entities":["binary_sensor.ewelink_snzb_04p_3"]}
+    ]
+  },
+  "ha_actions": {
+    "status": "UI_READY_RUNTIME_BINDING_PENDING",
+    "principle": "actions are generated from entity domains and will call hass.callService when embedded into JARVIS panel"
+  },
+  "blocked": [
+    "raw satellite IMG_0735 pixels not recovered in current runtime",
+    "raw drone image not recovered in current runtime",
+    "Dreame raster not recovered"
+  ]
+}

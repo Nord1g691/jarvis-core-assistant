@@ -1,0 +1,106 @@
+{
+  "schema": "jarvis_house_source_inventory",
+  "version": "1.0",
+  "date": "2026-09-04",
+  "status": "CONSOLIDATED",
+  "authority_order": [
+    "user_current_corrections",
+    "architectural_plan",
+    "real_photos",
+    "satellite_and_drone",
+    "home_assistant_media_and_live_inventory",
+    "dreame_maps",
+    "context_only"
+  ],
+  "visual_sources": {
+    "plan": [
+      "IMG_8847.jpeg",
+      "07_PLAN_MAITRE_RDC_OFFICIEL.png",
+      "07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png"
+    ],
+    "satellite": ["IMG_0735.jpeg"],
+    "drone": ["dji_fly_20250203_170128_172_1738657534084_photo_optimized.jpeg"],
+    "pool": [
+      "IMG_1753.jpeg",
+      "BF7ADE09-F3CC-4D0D-870E-7B4DA770FB80.jpeg",
+      "3E5E5C0B-99BF-429D-89AC-CDFBE597C77C.jpeg"
+    ],
+    "rear_exterior": ["IMG_1979.jpeg"],
+    "living_room": [
+      "IMG_0751_piece_de_vie.jpeg",
+      "IMG_0753_piece_de_vie.jpeg",
+      "IMG_0754_charpente_cheminee_poteaux.jpeg"
+    ],
+    "facade_porch": [
+      "IMG_0757_facade_porche_jardin.jpeg",
+      "IMG_0762_facade_terrasse_porche.jpeg"
+    ],
+    "entry_garage": [
+      "IMG_0755_entree_garage_jardin.jpeg",
+      "garage_local_technique_escalier.jpeg",
+      "IMG_99E09EF7-F2A4-4E7D-9ECC-68F362380939.jpeg"
+    ],
+    "garden": [
+      "IMG_0756_jardin_vue_large.jpeg",
+      "IMG_0759_jardin_vegetation.jpeg"
+    ],
+    "children_bathroom": ["IMG_4245.jpeg"],
+    "photo_atlas": ["28_ATLAS_PHOTO_SPATIAL_V1.html"]
+  },
+  "dreame_entities": [
+    "camera.l40s_pro_ultra_map_1",
+    "camera.l40s_pro_ultra_map_2",
+    "camera.l40s_pro_ultra_map_3",
+    "camera.l40s_pro_ultra_map_4"
+  ],
+  "dreame_rooms": {
+    "1": "children bathroom / former dressing",
+    "2": "parent bedroom",
+    "3": "children bedroom",
+    "4": "sejour + dining",
+    "5": "kitchen",
+    "6": "parent dressing",
+    "7": "night corridor",
+    "8": "bathroom 2",
+    "9": "EXCLUDED mirror artifact",
+    "10": "salon + bureau"
+  },
+  "key_documents": [
+    "jarvis_spatial_context_v1_7_normalized.json",
+    "17_REGISTRE_ANCRES_SPATIALES.json",
+    "18_PLAN_MAITRE_BASE_VECTORIELLE.svg",
+    "20_PLAN_MAITRE_FRAMEWORK_PRO.svg",
+    "21_CHECKLIST_QA_PRO.md",
+    "23_MODELE_CANONIQUE_3D_HA.json",
+    "24_DREAME_CARTES_HA_REFERENCE.json",
+    "30_SURFACES_CONTROLE_GLOBAL.json",
+    "31_ETAT_CONSTRUCTION_GEOMETRIE_3D.json",
+    "32_PROFIL_VERTICAL_3D_REFERENCE.json",
+    "35_REGISTRE_SOURCES_PHOTOS_GEOMETRIE.json",
+    "37_PIPELINE_EXECUTION_SNAPSHOT.json",
+    "38_BASE_DOCUMENTAIRE_MAITRE_V3.json",
+    "40_ORIENTATION_CARDINALE_ETAT_REFERENCE.json",
+    "41_ORIENTATION_NORD_CALIBRATION_AUDIT.json",
+    "42_NEXT_QA_GATES.json",
+    "44_MATRICE_COUVERTURE_SOURCES.json",
+    "46_PLAN_CONSTRUCTION_WORLD_MODEL.json",
+    "85_MASTER_FUSION_SPATIALE_MAISON_V2.json",
+    "91_MASTER_FUSION_SPATIALE_MAISON_V21.json",
+    "93_PREUVE_PHOTO_SDB_ENFANTS_IMG_4245_V1.json",
+    "94_MASTER_FUSION_SPATIALE_MAISON_V22.json",
+    "102_JARVIS_SPATIAL_UI_MODEL_V03.json"
+  ],
+  "ha_sources_to_harvest_when_available": [
+    "room/climate card photos",
+    "Home Assistant media house photos",
+    "four Dreame map rasters"
+  ],
+  "rules": [
+    "plan is geometry authority",
+    "photos validate appearance/topology but panoramas are non-metric",
+    "satellite/drone control exterior orientation and implantation",
+    "Dreame never overrides walls",
+    "every inferred object keeps confidence/provenance",
+    "conflicts are recorded, never guessed"
+  ]
+}
