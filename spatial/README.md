@@ -2,6 +2,13 @@
 
 This folder is the safe spatial contract for the house UI and future JARVIS reasoning.
 
+## Documentation
+
+- [`house-spatial-v03.json`](house-spatial-v03.json) — current spatial/UI contract
+- [`SOURCE_REGISTRY.md`](SOURCE_REGISTRY.md) — source provenance, authority and allowed usage
+- [`QA_GATES.md`](QA_GATES.md) — staged validation gates before authoritative 3D
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) — digital-twin architecture and stable-ID strategy
+
 ## Rules
 
 - Architectural plan = geometry authority.
@@ -33,6 +40,22 @@ This folder is the safe spatial contract for the house UI and future JARVIS reas
 - Split level, cathedral ceiling, fireplace/posts, terrace/porch, garage/cellar relations and exterior semantics remain in the spatial contract.
 - A plan-derived 2.5D preview is now part of the production pipeline. It extrudes detected architectural wall strokes rather than generating geometry from semantic room polygons.
 - `house-spatial-v03.json` is the current UI/spatial contract for the next panel integration pass.
+- Source provenance, QA gates and digital-twin architecture are now documented in this folder.
+
+## Current QA summary
+
+- Source integrity: PASS
+- North/orientation: PASS
+- Wall geometry: IN PROGRESS
+- Openings: PARTIAL
+- As-built deltas: PARTIAL / SAFE
+- Vertical profile: PARTIAL
+- Exterior/site registration: PARTIAL
+- Metric calibration: PARTIAL
+- HA spatial binding: READY FOR PROTOTYPE
+- Final interactive 3D: NOT READY; technical prototype allowed
+
+See [`QA_GATES.md`](QA_GATES.md) for the detailed promotion criteria.
 
 ## Blocked gates
 
