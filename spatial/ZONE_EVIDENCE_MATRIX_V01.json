@@ -1,0 +1,92 @@
+{
+  "schema": "jarvis_zone_evidence_matrix",
+  "version": "1.0",
+  "date": "2026-09-04",
+  "zones": {
+    "property": {
+      "visual": ["IMG_0735.jpeg","dji_fly_20250203_170128_172_1738657534084_photo_optimized.jpeg","IMG_0755_entree_garage_jardin.jpeg","IMG_0756_jardin_vue_large.jpeg","IMG_0757_facade_porche_jardin.jpeg","IMG_0759_jardin_vegetation.jpeg","IMG_0762_facade_terrasse_porche.jpeg","IMG_1979.jpeg"],
+      "documents": ["17_REGISTRE_ANCRES_SPATIALES.json","38_BASE_DOCUMENTAIRE_MAITRE_V3.json","40_ORIENTATION_CARDINALE_ETAT_REFERENCE.json","41_ORIENTATION_NORD_CALIBRATION_AUDIT.json","44_MATRICE_COUVERTURE_SOURCES.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "authority": "satellite+drone+real photos for exterior only"
+    },
+    "living": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_0751_piece_de_vie.jpeg","IMG_0753_piece_de_vie.jpeg","IMG_0754_charpente_cheminee_poteaux.jpeg"],
+      "documents": ["23_MODELE_CANONIQUE_3D_HA.json","32_PROFIL_VERTICAL_3D_REFERENCE.json","38_BASE_DOCUMENTAIRE_MAITRE_V3.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["light.eclairage_plafond_2","light.eclairage_couleur_salon","switch.smart_switch_2103188752458451855248e1e96523aa_outlet","light.lsc_smart_10m_ledstrip_rgbic_cct_2","light.lsc_smart_10m_ledstrip_rgbic_cct","cover.volet3","cover.shelly2pmg4_7c2c677b399c","cover.volet1"]
+    },
+    "dining": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_0751_piece_de_vie.jpeg","IMG_0753_piece_de_vie.jpeg","IMG_0754_charpente_cheminee_poteaux.jpeg","IMG_0762_facade_terrasse_porche.jpeg"],
+      "documents": ["32_PROFIL_VERTICAL_3D_REFERENCE.json","38_BASE_DOCUMENTAIRE_MAITRE_V3.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["cover.voletsalleamanger","cover.voletporte_volet_terrasse"]
+    },
+    "kitchen": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_0751_piece_de_vie.jpeg","IMG_0753_piece_de_vie.jpeg","IMG_0754_charpente_cheminee_poteaux.jpeg"],
+      "documents": ["34_CUISINE_CELLIER_GEOMETRIE.json","38_BASE_DOCUMENTAIRE_MAITRE_V3.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["cover.voletcuisine"]
+    },
+    "cellier": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png"],
+      "documents": ["34_CUISINE_CELLIER_GEOMETRIE.json","38_BASE_DOCUMENTAIRE_MAITRE_V3.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "rule": "keep exact irregular plan footprint"
+    },
+    "stairs_laundry": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_0751_piece_de_vie.jpeg","IMG_0754_charpente_cheminee_poteaux.jpeg"],
+      "documents": ["38_BASE_DOCUMENTAIRE_MAITRE_V3.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "rule": "compact laundry in original under-stair closet footprint, right side"
+    },
+    "children_bedroom": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_4245.jpeg"],
+      "documents": ["10_ETAPE_4_DREAME_RECALAGE.json","24_DREAME_CARTES_HA_REFERENCE.json","93_PREUVE_PHOTO_SDB_ENFANTS_IMG_4245_V1.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["binary_sensor.ewelink_snzb_04p"],
+      "dreame_room": 3
+    },
+    "children_bathroom": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_4245.jpeg"],
+      "documents": ["10_ETAPE_4_DREAME_RECALAGE.json","24_DREAME_CARTES_HA_REFERENCE.json","93_PREUVE_PHOTO_SDB_ENFANTS_IMG_4245_V1.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "dreame_room": 1,
+      "as_built": "shower rear, WC left, vanity right, bedroom door, corridor access"
+    },
+    "parent_bedroom": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png"],
+      "documents": ["10_ETAPE_4_DREAME_RECALAGE.json","24_DREAME_CARTES_HA_REFERENCE.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "dreame_room": 2
+    },
+    "parent_bathroom": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png"],
+      "documents": ["10_ETAPE_4_DREAME_RECALAGE.json","24_DREAME_CARTES_HA_REFERENCE.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "dreame_room": 8
+    },
+    "night_corridor": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png"],
+      "documents": ["10_ETAPE_4_DREAME_RECALAGE.json","24_DREAME_CARTES_HA_REFERENCE.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "dreame_room": 7
+    },
+    "garage": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_0755_entree_garage_jardin.jpeg","garage_local_technique_escalier.jpeg","IMG_99E09EF7-F2A4-4E7D-9ECC-68F362380939.jpeg"],
+      "documents": ["26_GARAGE_ZONE_TECHNIQUE_INFRASTRUCTURE.json","33_GARAGE_CHAINE_COTES_ARCHITECTURALE.json","38_BASE_DOCUMENTAIRE_MAITRE_V3.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["cover.smart_garage_door_2011121892665436100848e1e93b38f4_garage","binary_sensor.porte_acces_garage","binary_sensor.porte_cave","binary_sensor.porte_jardin"]
+    },
+    "terrace_porch": {
+      "visual": ["07_PLAN_MAITRE_RDC_OFFICIEL_V2_ORIENTE.png","IMG_0757_facade_porche_jardin.jpeg","IMG_0762_facade_terrasse_porche.jpeg","IMG_1979.jpeg"],
+      "documents": ["38_BASE_DOCUMENTAIRE_MAITRE_V3.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["binary_sensor.ewelink_snzb_04p_3"]
+    },
+    "pool": {
+      "visual": ["IMG_0735.jpeg","dji_fly_20250203_170128_172_1738657534084_photo_optimized.jpeg","IMG_1753.jpeg","BF7ADE09-F3CC-4D0D-870E-7B4DA770FB80.jpeg","3E5E5C0B-99BF-429D-89AC-CDFBE597C77C.jpeg","IMG_0756_jardin_vue_large.jpeg","IMG_0762_facade_terrasse_porche.jpeg"],
+      "documents": ["38_BASE_DOCUMENTAIRE_MAITRE_V3.json","44_MATRICE_COUVERTURE_SOURCES.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["switch.filtration_piscine","climate.pac_piscine","light.eclairage_piscine"]
+    },
+    "garden": {
+      "visual": ["IMG_0735.jpeg","dji_fly_20250203_170128_172_1738657534084_photo_optimized.jpeg","IMG_0755_entree_garage_jardin.jpeg","IMG_0756_jardin_vue_large.jpeg","IMG_0757_facade_porche_jardin.jpeg","IMG_0759_jardin_vegetation.jpeg","IMG_1979.jpeg"],
+      "documents": ["38_BASE_DOCUMENTAIRE_MAITRE_V3.json","44_MATRICE_COUVERTURE_SOURCES.json","94_MASTER_FUSION_SPATIALE_MAISON_V22.json"],
+      "ha": ["switch.exterieur_programmateur_eau_programmateur_eau","switch.sonoff_swv_zfe"]
+    }
+  },
+  "global_rules": [
+    "plan controls walls/openings",
+    "real photos control appearance and as-built confirmation",
+    "satellite/drone control exterior implantation only",
+    "Dreame topology never overrides plan geometry",
+    "all zones inherit confidence/provenance",
+    "missing raster must remain missing, never invented"
+  ]
+}
