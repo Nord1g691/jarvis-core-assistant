@@ -166,6 +166,10 @@
           case "get_panel_data":
             result = await this._hass.callWS({ type: "jarvis/get_panel_data" });
             break;
+          case "get_spatial_model":
+          case "jarvis/get_spatial_model":
+            result = await this._hass.callWS({ type: "jarvis/get_spatial_model" });
+            break;
           case "get_config":
             result = await this._hass.callWS({ type: "get_config" });
             break;
