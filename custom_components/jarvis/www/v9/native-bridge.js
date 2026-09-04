@@ -4,6 +4,8 @@
   const pending=new Map();let seq=0;let nativeReady=false;
   const send=payload=>window.parent.postMessage({source:'jarvis-v9',...payload},'*');
   const announce=()=>{nativeReady=true;window.JARVIS_HA_NATIVE=true;window.dispatchEvent(new CustomEvent('jarvis:ha-native-ready'));};
+  const requestNative=(message)=>{const id=++seq;const promise=new Promise((resolve,reject)=>pending.set(id,{resolve,reject}));send({type:'request',id,message});return promise;};
+  window.JARVIS_HA_REQUEST=requestNative;
   window.addEventListener('message',ev=>{
     const m=ev.data;if(!m||m.source!=='jarvis-ha')return;
     if(m.type==='ready'){announce();return;}
@@ -35,10 +37,7 @@
       let body=init?.body;
       if(body instanceof URLSearchParams)body=body.toString();
       if(body instanceof Blob)body=await body.text();
-      const id=++seq;
-      const promise=new Promise((resolve,reject)=>pending.set(id,{resolve,reject}));
-      send({type:'request',id,message:{type:'http_request',path:parsed.pathname+parsed.search,method,body:body??null}});
-      const result=await promise;
+      const result=await requestNative({type:'http_request',path:parsed.pathname+parsed.search,method,body:body??null});
       const responseBody=result?.body;
       const status=result?.status??200;
       return new Response(typeof responseBody==='string'?responseBody:JSON.stringify(responseBody),{status,headers:{'Content-Type':'application/json'}});
