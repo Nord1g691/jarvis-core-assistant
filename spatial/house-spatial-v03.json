@@ -1,0 +1,50 @@
+{
+  "schema": "jarvis_spatial_ui_model",
+  "version": "0.3",
+  "date": "2026-09-04",
+  "status": "PROPERTY_RDC_ROOM_NAV_READY",
+  "geometry_authority": "architectural_plan",
+  "orientation": {
+    "north": "top",
+    "source": "IMG_0735 satellite reference",
+    "confidence": "CONFIRMED"
+  },
+  "property_view": {
+    "background": "100_JARVIS_VUE_PROPRIETE_TECHNIQUE_V03.png",
+    "status": "VISUAL_REGISTRATION_PRE_METRIC",
+    "grounded_relations": [
+      "Rue de la Madone west/left",
+      "Rue du Cure Estragnat south/bottom",
+      "field east/right",
+      "pool east/southeast of house",
+      "large pine as exterior landmark",
+      "terrace/paving between house and pool",
+      "cabane/pool-house near pool/terrace"
+    ],
+    "warning": "Exact satellite scale/transform not promoted until raw raster is recoverable"
+  },
+  "navigation": ["property", "rdc", "room"],
+  "zones": [
+    {"id":"garage","label":"Garage","x":58,"y":14.5,"photo":"garage","summary":"Grand garage ouvert. Zone technique, acces maison, cave et jardin.","entities":["cover.smart_garage_door_2011121892665436100848e1e93b38f4_garage","binary_sensor.porte_acces_garage","binary_sensor.porte_cave","binary_sensor.porte_jardin"]},
+    {"id":"living","label":"Salon / Sejour","x":24,"y":58,"photo":"living1","summary":"Niveau bas -17 cm. Cathedrale ~5 m, cheminee entre deux poteaux, poutres, TV et salon.","entities":["light.eclairage_plafond_2","light.eclairage_couleur_salon","switch.smart_switch_2103188752458451855248e1e96523aa_outlet","light.lsc_smart_10m_ledstrip_rgbic_cct_2","light.lsc_smart_10m_ledstrip_rgbic_cct"]},
+    {"id":"dining","label":"Salle a manger","x":34,"y":49,"photo":"living2","summary":"Niveau haut. Table cote salle a manger. Marche +17 cm revenant a l'angle du mur.","entities":["cover.voletsalleamanger","cover.voletporte_volet_terrasse"]},
+    {"id":"kitchen","label":"Cuisine","x":45,"y":52.5,"photo":"living3","summary":"Ouverte vers salle a manger. O07 passage ouvert. O08 porte reelle vers cellier.","entities":["cover.voletcuisine"]},
+    {"id":"cellier","label":"Cellier","x":44.5,"y":43,"photo":null,"summary":"Forme irreguliere exacte du plan. Ne jamais simplifier en rectangle.","entities":[]},
+    {"id":"stairs","label":"Escalier / Buanderie","x":39,"y":33.5,"photo":"living3","summary":"Placard sous escalier = buanderie compacte actuelle, a droite sous l'escalier.","entities":[]},
+    {"id":"children","label":"Chambre enfants","x":63,"y":29,"photo":null,"summary":"Chambre 2 du plan. Porte existante vers le degagement diagonal.","entities":["binary_sensor.ewelink_snzb_04p"]},
+    {"id":"children_bath","label":"SDB enfants actuelle","x":56.5,"y":29,"photo":"children_bath","summary":"Ancien dressing : douche au fond, porte vers chambre enfants, lavabo dans la continuite, WC a gauche, acces couloir.","entities":[]},
+    {"id":"parent_bath","label":"SDB parentale","x":68,"y":42,"photo":null,"summary":"Salle d'eau du plan. Porte vers le meme degagement diagonal.","entities":[]},
+    {"id":"parent","label":"Chambre parentale","x":67,"y":62,"photo":null,"summary":"Chambre 1 du plan, reliee au noyau nuit/dressing.","entities":[]},
+    {"id":"terrace","label":"Terrasse / Porche","x":38,"y":71,"photo":"terrace","summary":"Porche couvert devant les baies et liaison entree -> terrasse.","entities":["binary_sensor.ewelink_snzb_04p_3"]}
+  ],
+  "ha_runtime": {
+    "actions_ready": true,
+    "method": "hass.callService when hosted in HA/JARVIS panel"
+  },
+  "next": [
+    "replace technical property background with exact satellite/drone raster transform",
+    "bind cameras and live sensors by zone",
+    "add room-specific renders/photo panoramas",
+    "later glTF/WebGL"
+  ]
+}
