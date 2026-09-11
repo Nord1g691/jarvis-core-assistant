@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+<defs>
+  <filter id="glow"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="glow2"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <radialGradient id="coreg"><stop offset="0" stop-color="#fff"/><stop offset=".16" stop-color="#dfffff"/><stop offset=".38" stop-color="#00eaff"/><stop offset="1" stop-color="#003a55" stop-opacity="0"/></radialGradient>
+  <linearGradient id="tri" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset=".45" stop-color="#65f6ff"/><stop offset="1" stop-color="#00b9e7"/></linearGradient>
+</defs>
+<g fill="none" stroke="#58f2ff" stroke-linecap="round">
+  <circle cx="200" cy="200" r="188" stroke-width="1" opacity=".45" stroke-dasharray="1 5"/>
+  <circle cx="200" cy="200" r="178" stroke-width="2" opacity=".95" stroke-dasharray="2 4" filter="url(#glow)"/>
+  <circle cx="200" cy="200" r="166" stroke-width="1" opacity=".45"/>
+  <circle cx="200" cy="200" r="157" stroke-width="5" opacity=".65" stroke-dasharray="22 9 3 8" filter="url(#glow)"/>
+  <circle cx="200" cy="200" r="146" stroke-width="1" opacity=".55" stroke-dasharray="2 10"/>
+  <circle cx="200" cy="200" r="136" stroke-width="3" opacity=".8" stroke-dasharray="48 10 14 8"/>
+  <circle cx="200" cy="200" r="124" stroke-width="1" opacity=".5"/>
+  <circle cx="200" cy="200" r="114" stroke-width="4" opacity=".7" stroke-dasharray="8 7"/>
+  <circle cx="200" cy="200" r="101" stroke-width="1" opacity=".55" stroke-dasharray="1 6"/>
+  <circle cx="200" cy="200" r="90" stroke-width="2" opacity=".8" stroke-dasharray="34 7 5 9"/>
+  <circle cx="200" cy="200" r="76" stroke-width="1" opacity=".55"/>
+  <circle cx="200" cy="200" r="64" stroke-width="4" opacity=".75" stroke-dasharray="18 8"/>
+  <circle cx="200" cy="200" r="52" stroke-width="1" opacity=".8"/>
+  <circle cx="200" cy="200" r="42" stroke-width="2" opacity=".75" stroke-dasharray="5 4"/>
+</g>
+<g stroke="#8bf7ff" stroke-width="1" opacity=".48">
+  <path d="M200 10v54M200 336v54M10 200h54M336 200h54"/>
+  <path d="M65 65l38 38M297 297l38 38M335 65l-38 38M103 297l-38 38"/>
+</g>
+<g stroke="#1ecde7" stroke-width="1" opacity=".58">
+  <path d="M200 40l7 30-7 18-7-18z"/><path d="M360 200l-30 7-18-7 18-7z"/><path d="M200 360l-7-30 7-18 7 18z"/><path d="M40 200l30-7 18 7-18 7z"/>
+</g>
+<g transform="translate(200 200)">
+  <g stroke="#5eefff" stroke-width="1" opacity=".45">
+    <path d="M0-153v20"/><path d="M0-153v20" transform="rotate(30)"/><path d="M0-153v20" transform="rotate(60)"/><path d="M0-153v20" transform="rotate(90)"/><path d="M0-153v20" transform="rotate(120)"/><path d="M0-153v20" transform="rotate(150)"/><path d="M0-153v20" transform="rotate(180)"/><path d="M0-153v20" transform="rotate(210)"/><path d="M0-153v20" transform="rotate(240)"/><path d="M0-153v20" transform="rotate(270)"/><path d="M0-153v20" transform="rotate(300)"/><path d="M0-153v20" transform="rotate(330)"/>
+  </g>
+  <g fill="#7ff8ff" opacity=".8">
+    <rect x="-2" y="-127" width="4" height="10" rx="2"/><rect x="-2" y="-127" width="4" height="10" rx="2" transform="rotate(45)"/><rect x="-2" y="-127" width="4" height="10" rx="2" transform="rotate(90)"/><rect x="-2" y="-127" width="4" height="10" rx="2" transform="rotate(135)"/><rect x="-2" y="-127" width="4" height="10" rx="2" transform="rotate(180)"/><rect x="-2" y="-127" width="4" height="10" rx="2" transform="rotate(225)"/><rect x="-2" y="-127" width="4" height="10" rx="2" transform="rotate(270)"/><rect x="-2" y="-127" width="4" height="10" rx="2" transform="rotate(315)"/>
+  </g>
+</g>
+<g opacity=".7" fill="none" stroke="#00eaff">
+  <path d="M78 122h42l12 12"/><path d="M322 122h-42l-12 12"/><path d="M78 278h42l12-12"/><path d="M322 278h-42l-12-12"/>
+  <path d="M104 158h26l8 8M296 158h-26l-8 8M104 242h26l8-8M296 242h-26l-8-8"/>
+</g>
+<circle cx="200" cy="200" r="47" fill="url(#coreg)" filter="url(#glow2)"/>
+<g filter="url(#glow)" fill="none" stroke="url(#tri)">
+  <polygon points="200,144 248,228 152,228" stroke-width="7"/>
+  <polygon points="200,158 236,221 164,221" stroke-width="2" opacity=".95"/>
+  <circle cx="200" cy="200" r="30" stroke-width="2" opacity=".8"/>
+  <circle cx="200" cy="200" r="18" stroke-width="1" opacity=".85"/>
+</g>
+<g fill="#a9faff" font-family="Arial,sans-serif" font-size="5" letter-spacing="1.2" opacity=".7">
+  <text x="176" y="27">JARVIS CORE</text><text x="39" y="111" transform="rotate(-32 39 111)">INTELLIGENCE</text><text x="321" y="111" transform="rotate(32 321 111)">CONTROL</text><text x="45" y="300" transform="rotate(32 45 300)">PROTECTION</text><text x="320" y="300" transform="rotate(-32 320 300)">EVOLUTION</text>
+  <text x="109" y="193">SYS 04</text><text x="267" y="193">AI 100%</text><text x="110" y="212">SYNC 12ms</text><text x="267" y="212">NET OK</text>
+</g>
+</svg>
