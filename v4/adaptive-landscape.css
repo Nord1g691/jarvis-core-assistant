@@ -1,0 +1,23 @@
+/* Adaptive landscape pass: preserve centered Core while making the orbital HUD fit short iPhone viewports. */
+@media (orientation:landscape){
+  .shell{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right));padding-bottom:max(78px,calc(env(safe-area-inset-bottom) + 64px))}
+  .header{width:min(650px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 120px))}
+  .hudstrip{width:min(760px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 70px))}
+  .hudframe{width:min(1080px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 20px));min-height:clamp(340px,68vh,430px)}
+  .core{width:min(410px,64vh)!important}
+  .dock{left:calc(50% + (env(safe-area-inset-left) - env(safe-area-inset-right))/2);width:min(590px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 90px));bottom:max(7px,env(safe-area-inset-bottom))}
+  .orbit-card{width:clamp(108px,15vw,158px)!important;min-height:56px!important}
+  .orbit-card[data-slot="1"]{left:7%!important;top:10%!important}
+  .orbit-card[data-slot="2"]{right:7%!important;top:10%!important}
+  .orbit-card[data-slot="3"]{left:1%!important;top:43%!important}
+  .orbit-card[data-slot="4"]{right:1%!important;top:43%!important}
+  .orbit-card[data-slot="5"]{left:8%!important;bottom:8%!important}
+  .orbit-card[data-slot="6"]{right:8%!important;bottom:8%!important}
+  .orbit-card[data-slot="7"]{left:27%!important;bottom:0!important}
+  .orbit-card[data-slot="8"]{right:27%!important;bottom:0!important}
+  .orbit-card[data-slot="9"]{top:-1%!important}
+}
+@media (orientation:landscape) and (max-height:430px){
+  .header{transform:scale(.82);margin-top:-4px;margin-bottom:-4px}.brand small{display:none}.online{display:none}.hudstrip{margin-top:-2px;transform:scale(.9);transform-origin:top center}.realtime-strip{transform:scale(.9);transform-origin:top center}.hudframe{min-height:310px;margin-top:-18px}.core{width:min(350px,66vh)!important}.orbit-card{width:clamp(102px,14vw,142px)!important;min-height:50px!important;padding:6px 8px 7px!important}.orbit-card b{font-size:5.5px!important}.orbit-card span,.orbit-card .live-row span{font-size:7px!important}.orbit-card small,.orbit-card .live-sub{font-size:5.5px!important}.system{margin-top:-10px;transform:scale(.9)}.diagnostic,.datagrid,.metrics,.quote{max-width:860px}.diagnostic{margin-top:2px}.datagrid{margin-top:2px}.metrics{margin-top:3px}.quote{margin-top:3px}.dock button{min-height:40px}.orbit-card[data-slot="7"],.orbit-card[data-slot="8"]{display:none!important}}
+@media (orientation:landscape) and (max-height:375px){
+  .hudstrip{display:none}.realtime-strip{display:none}.hudframe{min-height:285px;margin-top:-22px}.core{width:min(320px,68vh)!important}.orbit-card[data-slot="5"],.orbit-card[data-slot="6"],.orbit-card[data-slot="7"],.orbit-card[data-slot="8"],.orbit-card[data-slot="9"]{display:none!important}.system{margin-top:-16px}.diagnostic{display:none}.datagrid{margin-top:0}.metrics{margin-top:2px}.quote{display:none}.dock{width:min(520px,calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right) - 80px))}}
