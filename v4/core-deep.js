@@ -13,11 +13,14 @@
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
 
-  /* Final V4.1 overrides are loaded here so the preview and the future native shell share one state contract. */
+  /* Final V4.1 state/runtime assets. */
   if(!document.querySelector('link[data-jarvis-final]')){
-    const css=document.createElement('link');css.rel='stylesheet';css.href='final-pass.css?v=431';css.dataset.jarvisFinal='431';document.head.appendChild(css)
+    const css=document.createElement('link');css.rel='stylesheet';css.href='final-pass.css?v=432';css.dataset.jarvisFinal='432';document.head.appendChild(css)
+  }
+  if(!document.querySelector('link[data-jarvis-pulse]')){
+    const pulse=document.createElement('link');pulse.rel='stylesheet';pulse.href='final-pulse.css?v=432';pulse.dataset.jarvisPulse='432';document.head.appendChild(pulse)
   }
   if(!document.querySelector('script[data-jarvis-final]')){
-    const js=document.createElement('script');js.src='final-runtime.js?v=431';js.defer=true;js.dataset.jarvisFinal='431';document.head.appendChild(js)
+    const js=document.createElement('script');js.src='final-runtime.js?v=432';js.defer=true;js.dataset.jarvisFinal='432';document.head.appendChild(js)
   }
 })();
