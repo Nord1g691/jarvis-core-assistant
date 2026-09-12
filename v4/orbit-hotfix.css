@@ -1,0 +1,3 @@
+/* Orbital HUD compatibility overrides. */
+.jarvis-orbit-stage .orbit-card:not(.off):not(.orbit-overflow){display:block!important}
+.jarvis-orbit-stage .context-card:not(.active),.jarvis-orbit-stage .orbit-card.off,.jarvis-orbit-stage .orbit-card.orbit-overflow{display:none!important}
