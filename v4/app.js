@@ -1,9 +1,9 @@
-const DEFAULTS={theme:'classic',blocks:{energy:'under',home:'under',export:'under',security:'under'},orbit:{presence:true,openings:true,energy:true,climate:true,voice:false,security:true,sentinel:true,network:false,vehicle:false,memory:false},activeMenu:'home'};
+const DEFAULTS={theme:'classic',blocks:{energy:'under',home:'under',export:'under',security:'under'},orbit:{activity:true,events:true,presence:true,openings:true,energy:true,climate:true,voice:false,security:true,sentinel:true,network:false,vehicle:false,memory:false},activeMenu:'home'};
 const clone=o=>JSON.parse(JSON.stringify(o));
 let saved=clone(DEFAULTS);try{const x=JSON.parse(localStorage.getItem('jarvis_v41_preview')||'null');if(x)saved={...clone(DEFAULTS),...x,blocks:{...DEFAULTS.blocks,...(x.blocks||{})},orbit:{...DEFAULTS.orbit,...(x.orbit||{})}}}catch(e){}
 let draft=clone(saved),dirty=false;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const liveCss=document.createElement('link');liveCss.rel='stylesheet';liveCss.href='live.css?v=41j';document.head.appendChild(liveCss);
+const liveCss=document.createElement('link');liveCss.rel='stylesheet';liveCss.href='live.css?v=41v';document.head.appendChild(liveCss);
 const themeMap={classic:'#00eaff',holo:'#4a8dff',sentinel:'#ff8b36',glass:'#b36cff',neural:'#42ffd6'};
 const themeNames={classic:'Classic HUD',holo:'Holo Grid',sentinel:'Sentinel Tactical',glass:'Glass Orbital',neural:'Neural Core'};
 const leftHud=$('.sidehud.left'),rightHud=$('.sidehud.right');
@@ -20,11 +20,11 @@ function persist(){localStorage.setItem('jarvis_v41_preview',JSON.stringify(save
 function setMenu(cat){saved.activeMenu=cat;persist();$$('#menuTabs button').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));$$('#menuCards .card').forEach(c=>c.hidden=c.dataset.cat!==cat);renderMenuOnly()}$$('#menuTabs button').forEach(b=>b.onclick=()=>setMenu(b.dataset.cat));
 const themesBox=$('#themes');Object.keys(themeMap).forEach(k=>{const b=document.createElement('button');b.className='theme';b.dataset.theme=k;b.innerHTML=`<div class="preview"></div><strong>${themeNames[k]}</strong>`;b.onclick=()=>{draft.theme=k;markDirty();renderDraft()};themesBox.appendChild(b)});
 function markDirty(){dirty=true;$('#saveBtn').classList.add('dirty')}
-function renderDraft(){document.documentElement.dataset.theme=draft.theme;document.documentElement.style.setProperty('--a',themeMap[draft.theme]);$$('.theme').forEach(b=>b.classList.toggle('active',b.dataset.theme===draft.theme));$$('.setting').forEach(s=>{const key=s.dataset.setting;s.querySelectorAll('.choice button').forEach(b=>b.classList.toggle('on',draft.blocks[key]===b.dataset.v))});$$('.orbit-toggle').forEach(b=>b.classList.toggle('on',!!draft.orbit[b.dataset.orbitKey]))}
+function renderDraft(){document.documentElement.dataset.theme=draft.theme;document.documentElement.style.setProperty('--a',themeMap[draft.theme]);$$('.theme').forEach(b=>b.classList.toggle('active',b.dataset.theme===draft.theme));$$('.setting').forEach(s=>{const key=s.dataset.setting;s.querySelectorAll('.choice button').forEach(b=>b.classList.toggle('on',draft.blocks[key]===b.dataset.v))});$$('.orbit-toggle').forEach(b=>b.classList.toggle('on',draft.orbit[b.dataset.orbitKey]!==false))}
 $$('.setting').forEach(s=>s.querySelectorAll('.choice button').forEach(b=>b.onclick=()=>{draft.blocks[s.dataset.setting]=b.dataset.v;markDirty();renderDraft()}));
-$$('.orbit-toggle').forEach(b=>b.onclick=()=>{const k=b.dataset.orbitKey;draft.orbit[k]=!draft.orbit[k];markDirty();renderDraft()});
-const priority={activity:100,event:95,openings:90,presence:80,security:70,sentinel:68,energy:60,climate:55,vehicle:50,network:35,voice:30,memory:25};
-function arrangeOrbit(){const cards=$$('.orbit-card').filter(el=>!el.classList.contains('off')&&getComputedStyle(el).display!=='none');cards.sort((a,b)=>(priority[b.dataset.orbit]||0)-(priority[a.dataset.orbit]||0));cards.forEach((el,i)=>el.dataset.slot=String(i+1));$$('.orbit-card.off').forEach(el=>el.removeAttribute('data-slot'))}
+if(orbitSelect)orbitSelect.addEventListener('click',e=>{const b=e.target.closest('.orbit-toggle');if(!b)return;const k=b.dataset.orbitKey;draft.orbit[k]=draft.orbit[k]===false;markDirty();renderDraft()});
+const priority={activity:100,events:95,openings:90,presence:80,security:70,sentinel:68,energy:60,climate:55,vehicle:50,network:35,voice:30,memory:25};
+function arrangeOrbit(){const cards=$$('.orbit-card').filter(el=>!el.classList.contains('off')&&getComputedStyle(el).display!=='none');cards.sort((a,b)=>(priority[b.dataset.orbit]||0)-(priority[a.dataset.orbit]||0));cards.forEach((el,i)=>el.dataset.slot=String(i+1));$$('.orbit-card').filter(el=>el.classList.contains('off')||getComputedStyle(el).display==='none').forEach(el=>el.removeAttribute('data-slot'))}
 function applySaved(){document.documentElement.dataset.theme=saved.theme;document.documentElement.style.setProperty('--a',themeMap[saved.theme]);$$('#homeBlocks [data-block]').forEach(el=>{el.style.display=saved.blocks[el.dataset.block]==='under'?'block':'none'});$$('.orbit-card').forEach(el=>el.classList.toggle('off',saved.orbit[el.dataset.orbit]===false));arrangeOrbit();renderMenuOnly()}
 function renderMenuOnly(){const wrap=$('#menuOnly'),grid=$('#menuOnlyGrid');grid.innerHTML='';const labels={energy:'☀️ Solaire',home:'⌂ Maison',export:'⇄ Export / Import',security:'🛡 Sécurité'};Object.keys(saved.blocks).filter(k=>saved.blocks[k]==='menu').forEach(k=>{const d=document.createElement('div');d.className='menuonly-item';d.textContent=labels[k];grid.appendChild(d)});wrap.style.display=grid.children.length?'block':'none'}
 $('#saveBtn').onclick=()=>{saved={...clone(draft),activeMenu:saved.activeMenu};persist();dirty=false;$('#saveBtn').classList.remove('dirty');applySaved();const m=$('#savedMsg');m.textContent='✓ Réglages enregistrés';m.classList.add('show');setTimeout(()=>m.classList.remove('show'),1800)};
@@ -32,4 +32,5 @@ $('#resetBtn').onclick=()=>{draft={...clone(DEFAULTS),activeMenu:saved.activeMen
 function updateClock(){const c=$('#liveClock');if(c)c.textContent='MAJ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}updateClock();setInterval(updateClock,1000);
 function syncOrientation(){document.body.classList.toggle('landscape',innerWidth>innerHeight);requestAnimationFrame(arrangeOrbit)}syncOrientation();addEventListener('resize',syncOrientation);addEventListener('orientationchange',()=>setTimeout(syncOrientation,120));
 window.jarvisArrangeOrbit=arrangeOrbit;
+window.jarvisApplySaved=applySaved;
 setMenu(saved.activeMenu||'home');renderDraft();applySaved();
