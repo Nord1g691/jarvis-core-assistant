@@ -52,7 +52,9 @@
     const max=innerWidth>innerHeight?9:8;all.forEach((c,i)=>c.classList.toggle('orbit-overflow',i>=max));cards=all.slice(0,max);
     if(!cards.length){geom=null;return}
     geom=geometry(cards);step=360/cards.length;
-    stage.style.setProperty('--orbit-cx',geom.cx+'px');stage.style.setProperty('--orbit-cy',geom.cy+'px');stage.style.setProperty('--orbit-rx',geom.rx+'px');stage.style.setProperty('--orbit-ry',geom.ry+'px');paint();
+    stage.style.setProperty('--orbit-cx',geom.cx+'px');stage.style.setProperty('--orbit-cy',geom.cy+'px');
+    stage.style.setProperty('--orbit-w',(geom.rx*2)+'px');stage.style.setProperty('--orbit-h',(geom.ry*2)+'px');
+    stage.style.setProperty('--orbit-inner-w',(geom.rx*1.72)+'px');stage.style.setProperty('--orbit-inner-h',(geom.ry*1.72)+'px');paint();
   }
   function queueSync(){if(syncQueued)return;syncQueued=true;requestAnimationFrame(sync)}
   function tick(now){
