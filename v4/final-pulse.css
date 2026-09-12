@@ -1,0 +1,26 @@
+/* Final centered state pulse — no lateral drift. */
+@media (orientation:landscape){
+  body.jarvis-speaking .hudframe .core{
+    animation:jarvisOuterSpeakLand .36s ease-in-out infinite!important;
+    will-change:transform,filter!important;
+  }
+  body.jarvis-listening .hudframe .core{
+    animation:jarvisOuterListenLand 1.15s ease-in-out infinite!important;
+  }
+}
+
+@keyframes jarvisOuterSpeakLand{
+  0%,100%{
+    transform:translate(-50%,-50%) scale(calc(var(--jarvis-core-scale) * .90))!important;
+    filter:drop-shadow(0 0 12px rgba(180,92,255,.28));
+  }
+  50%{
+    transform:translate(-50%,-50%) scale(calc(var(--jarvis-core-scale) * .96))!important;
+    filter:drop-shadow(0 0 28px rgba(180,92,255,.62));
+  }
+}
+
+@keyframes jarvisOuterListenLand{
+  0%,100%{transform:translate(-50%,-50%) scale(calc(var(--jarvis-core-scale) * .915))!important}
+  50%{transform:translate(-50%,-50%) scale(calc(var(--jarvis-core-scale) * .935))!important}
+}
