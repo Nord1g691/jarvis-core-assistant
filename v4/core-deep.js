@@ -13,12 +13,14 @@
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
 
-  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='436';document.head.appendChild(x)};
-  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='436';document.head.appendChild(x)};
-  addCss('final-pass.css?v=436','final');
-  addCss('final-pulse.css?v=436','pulse');
-  addCss('orbit-pro.css?v=436','orbit');
-  addCss('orbit-hotfix.css?v=436','orbithotfix');
-  addJs('final-runtime.js?v=436','final');
-  addJs('orbit-pro.js?v=436','orbit');
+  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='437';document.head.appendChild(x)};
+  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='437';document.head.appendChild(x)};
+  addCss('final-pass.css?v=437','final');
+  addCss('final-pulse.css?v=437','pulse');
+  addCss('orbit-pro.css?v=437','orbit');
+  addCss('orbit-hotfix.css?v=437','orbithotfix');
+  addCss('boot-pro.css?v=437','boot');
+  addJs('final-runtime.js?v=437','final');
+  addJs('orbit-pro.js?v=437','orbit');
+  addJs('boot-pro.js?v=437','boot');
 })();
