@@ -1,0 +1,6 @@
+/* Keep the absolute-positioned Core anchored while state animations scale/rotate it. */
+@media (orientation:landscape){
+  .core{left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;transform-origin:50% 50%!important}
+  body.jarvis-listening .core{animation:jListenLand 1s ease-in-out infinite!important}
+  body.jarvis-thinking .core{animation:jThinkLand .65s ease-in-out infinite alternate!important}
+  body.jarvis
