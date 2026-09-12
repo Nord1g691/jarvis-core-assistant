@@ -1,10 +1,20 @@
-const DEFAULTS={theme:'classic',blocks:{energy:'under',home:'under',export:'under',security:'under'},orbit:{energy:true,voice:true,security:true,memory:true,sentinel:true,network:true},activeMenu:'home'};
+const DEFAULTS={theme:'classic',blocks:{energy:'under',home:'under',export:'under',security:'under'},orbit:{presence:true,openings:true,energy:true,climate:true,voice:false,security:true,sentinel:true,network:false,vehicle:false,memory:false},activeMenu:'home'};
 const clone=o=>JSON.parse(JSON.stringify(o));
 let saved=clone(DEFAULTS);try{const x=JSON.parse(localStorage.getItem('jarvis_v41_preview')||'null');if(x)saved={...clone(DEFAULTS),...x,blocks:{...DEFAULTS.blocks,...(x.blocks||{})},orbit:{...DEFAULTS.orbit,...(x.orbit||{})}}}catch(e){}
 let draft=clone(saved),dirty=false;
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const liveCss=document.createElement('link');liveCss.rel='stylesheet';liveCss.href='live.css?v=41j';document.head.appendChild(liveCss);
 const themeMap={classic:'#00eaff',holo:'#4a8dff',sentinel:'#ff8b36',glass:'#b36cff',neural:'#42ffd6'};
 const themeNames={classic:'Classic HUD',holo:'Holo Grid',sentinel:'Sentinel Tactical',glass:'Glass Orbital',neural:'Neural Core'};
+
+/* Real-time utility cards: preview data today, HA entity bindings in the integration build. */
+const leftHud=$('.sidehud.left'),rightHud=$('.sidehud.right');
+if(leftHud){leftHud.insertAdjacentHTML('afterbegin',`<div class="sidebox orbit-card live" data-orbit="presence"><b>PRÉSENCE</b><div class="live-row"><span>2 présents</span><i class="live-dot"></i></div><small class="live-sub">Maison occupée</small></div><div class="sidebox orbit-card live alert" data-orbit="openings"><b>OUVERTURES</b><div class="live-row"><span>1 ouverte</span><i class="live-dot alert"></i></div><small class="live-sub">Porte garage ouverte</small></div>`);}
+if(leftHud){leftHud.insertAdjacentHTML('beforeend',`<div class="sidebox orbit-card live" data-orbit="climate"><b>CONFORT</b><div class="live-row"><span>19.8 °C</span><i class="live-dot"></i></div><small class="live-sub">Salon · consigne 19°</small></div>`);}
+if(rightHud){rightHud.insertAdjacentHTML('beforeend',`<div class="sidebox orbit-card live" data-orbit="vehicle"><b>VÉHICULE</b><div class="live-row"><span>Absent</span><i class="live-dot warn"></i></div><small class="live-sub">e-208 non détectée</small></div>`);}
+const online=$('.online');if(online)online.insertAdjacentHTML('afterend','<div class="realtime-strip"><i></i><b>TEMPS RÉEL</b><span id="liveClock">MAJ --:--:--</span></div>');
+const orbitSelect=$('#orbitSelect');if(orbitSelect){orbitSelect.insertAdjacentHTML('afterbegin',`<button class="orbit-toggle" data-orbit-key="presence"><b>Présence</b><small>Qui est à la maison</small></button><button class="orbit-toggle" data-orbit-key="openings"><b>Ouvertures</b><small>Portes / fenêtres</small></button>`);orbitSelect.insertAdjacentHTML('beforeend',`<button class="orbit-toggle" data-orbit-key="climate"><b>Confort</b><small>Température / consigne</small></button><button class="orbit-toggle" data-orbit-key="vehicle"><b>Véhicule</b><small>Présence / charge</small></button>`);const note=orbitSelect.parentElement?.querySelector('.landscape-note');if(note)note.insertAdjacentHTML('afterend','<div class="priority-note"><strong>Infos prioritaires</strong> · Les ouvertures, alertes et présences sont prévues pour remonter les états Home Assistant en direct. Tu choisis ici ce qui reste autour du Core.</div>');}
+
 const ticks=$('#ticks');for(let i=0;i<72;i++){const e=document.createElement('i');e.className='tick'+(i%6===0?' major':'');e.style.transform=`rotate(${i*5}deg) translateY(-176px)`;ticks.appendChild(e)}
 const open=id=>$('#'+id).classList.add('open');const close=id=>$('#'+id).classList.remove('open');
 $('#openMenu').onclick=()=>open('menuPanel');$('#menuBtn').onclick=()=>open('menuPanel');$('#settingsBtn').onclick=()=>open('settingsPanel');$('#appearanceBtn').onclick=()=>{open('settingsPanel');selectPane('core')};$('#voiceBtn').onclick=()=>{open('settingsPanel');selectPane('voice')};$$('[data-close]').forEach(b=>b.onclick=()=>close(b.dataset.close));
@@ -20,4 +30,6 @@ function applySaved(){document.documentElement.dataset.theme=saved.theme;documen
 function renderMenuOnly(){const wrap=$('#menuOnly'),grid=$('#menuOnlyGrid');grid.innerHTML='';const labels={energy:'☀️ Solaire',home:'⌂ Maison',export:'⇄ Export / Import',security:'🛡 Sécurité'};Object.keys(saved.blocks).filter(k=>saved.blocks[k]==='menu').forEach(k=>{const d=document.createElement('div');d.className='menuonly-item';d.textContent=labels[k];grid.appendChild(d)});wrap.style.display=grid.children.length?'block':'none'}
 $('#saveBtn').onclick=()=>{saved={...clone(draft),activeMenu:saved.activeMenu};persist();dirty=false;$('#saveBtn').classList.remove('dirty');applySaved();const m=$('#savedMsg');m.textContent='✓ Réglages enregistrés';m.classList.add('show');setTimeout(()=>m.classList.remove('show'),1800)};
 $('#resetBtn').onclick=()=>{draft={...clone(DEFAULTS),activeMenu:saved.activeMenu};markDirty();renderDraft()};
+function updateClock(){const c=$('#liveClock');if(c)c.textContent='MAJ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}updateClock();setInterval(updateClock,1000);
+function syncOrientation(){document.body.classList.toggle('landscape',innerWidth>innerHeight)}syncOrientation();addEventListener('resize',syncOrientation);addEventListener('orientationchange',()=>setTimeout(syncOrientation,120));
 setMenu(saved.activeMenu||'home');renderDraft();applySaved();
