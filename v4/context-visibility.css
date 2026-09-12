@@ -1,0 +1,1 @@
+.context-card:not(.active),.event-card:not(.event-active){display:none!important}.context-card.active,.event-card.event-active{display:block!important}
