@@ -1,0 +1,27 @@
+/* Premium balance pass: less gadget, more finished-product hierarchy. */
+:root{--panel-line:color-mix(in srgb,var(--a) 34%,transparent);--panel-soft:color-mix(in srgb,var(--a) 10%,transparent)}
+body{background-color:#02070c}
+.header .brand h1{letter-spacing:.22em;font-weight:650}.header .brand small{letter-spacing:.14em;opacity:.72}.vtag{font-weight:700}
+.hudstrip{opacity:.78}.hudmini{border-color:#ffffff0b!important;background:linear-gradient(180deg,#06131db8,#030a10a8)!important}.hudmini b{opacity:.75}.hudmini span{color:#8eb7c2!important}
+/* Calm the extra reactor layers: keep depth, remove the toy-like overstatement. */
+.core .reactor-depth{opacity:.42;animation-duration:38s!important;box-shadow:0 0 0 6px #00101a66,0 0 0 7px color-mix(in srgb,var(--a) 8%,transparent),inset 0 0 18px color-mix(in srgb,var(--a) 8%,transparent)}
+.core .reactor-grid{opacity:.34;animation:none!important;filter:none!important}
+.core .reactor-triad{opacity:.26;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--a) 22%,transparent))}
+.core .reactor-hub{width:13%;box-shadow:0 0 7px #fff8,0 0 16px color-mix(in srgb,var(--a) 60%,transparent),0 0 28px color-mix(in srgb,var(--a) 24%,transparent),inset 0 0 9px #fff6;animation:hubPremium 3.8s ease-in-out infinite!important}
+.core .reactor-pulse{display:none!important}.core .core-art{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--a) 24%,transparent)) contrast(1.04)!important}.core .core-sweep{opacity:.34!important}.core .core-sparks{opacity:.18!important}.core .tech-ring .node{box-shadow:0 0 5px color-mix(in srgb,var(--a) 72%,transparent)!important}
+@keyframes hubPremium{50%{transform:translate(-50%,-50%) scale(1.035)}}
+/* Orbit cards: quieter glass, stronger data hierarchy. */
+.hudframe .orbit-card{background:linear-gradient(145deg,rgba(5,18,27,.94),rgba(2,9,14,.88))!important;backdrop-filter:blur(10px) saturate(115%);-webkit-backdrop-filter:blur(10px) saturate(115%);box-shadow:inset 0 1px rgba(255,255,255,.035),0 12px 30px rgba(0,0,0,.28)!important}
+.hudframe .orbit-card:before{opacity:.26!important}.hudframe .orbit-card b{font-weight:700!important;letter-spacing:.13em!important;color:#9dc8d2!important}.hudframe .orbit-card>span,.hudframe .orbit-card .live-row span,.hudframe .orbit-card strong{font-weight:650!important;color:#f3fbfd!important;text-shadow:none!important}.hudframe .orbit-card small,.hudframe .orbit-card .live-sub{color:#71919a!important}
+.hudframe.focus-mode .orbit-card:not(.focus-primary):not(.focus-secondary){opacity:.46!important;filter:saturate(.62) brightness(.82)!important}.hudframe .orbit-card.focus-primary{opacity:1!important;box-shadow:inset 0 1px rgba(255,255,255,.06),0 14px 38px rgba(0,0,0,.34),0 0 16px color-mix(in srgb,var(--edge) 18%,transparent)!important}
+/* Under-core data blocks become instrument tiles rather than neon cards. */
+.metric{background:linear-gradient(180deg,rgba(6,18,27,.9),rgba(2,9,14,.92))!important;border:1px solid #ffffff0b!important;box-shadow:inset 0 1px rgba(255,255,255,.035)!important}.metric .ico{filter:saturate(.8);opacity:.9}.metric b{font-weight:650;letter-spacing:-.02em}.metric small{letter-spacing:.12em;color:#7e9da6!important}.metric em{font-weight:650;opacity:.9}
+.system{opacity:.9}.system span{letter-spacing:.14em}.diagnostic{opacity:.9}.datagrid{opacity:.82}.quote{background:linear-gradient(180deg,rgba(5,17,25,.85),rgba(2,8,13,.9))!important;border-color:#ffffff0a!important}
+/* Dock: flatter, more native-app, less arcade. */
+.dock{background:rgba(3,10,16,.9)!important;border:1px solid #ffffff0d!important;box-shadow:0 12px 34px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.035)!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.dock button{color:#78939b!important}.dock button.active{background:linear-gradient(180deg,color-mix(in srgb,var(--a) 10%,transparent),transparent)!important;color:#eafcff!important;box-shadow:inset 0 1px color-mix(in srgb,var(--a) 38%,transparent)!important}.dock button span{filter:saturate(.72)}
+/* Settings: cleaner grouping and more visual breathing room. */
+.sheet{background:linear-gradient(180deg,#061019f5,#02070cf8)!important}.sheethead{border-bottom:1px solid #ffffff0b}.settingsnav button{background:#05121b!important;border-color:#ffffff0c!important}.settingsnav button.active{background:linear-gradient(180deg,color-mix(in srgb,var(--a) 12%,#06131c),#041018)!important;border-color:color-mix(in srgb,var(--a) 36%,transparent)!important;box-shadow:inset 0 1px color-mix(in srgb,var(--a) 30%,transparent)!important}.section{background:linear-gradient(180deg,rgba(5,17,25,.9),rgba(2,9,14,.9))!important;border-color:#ffffff0b!important;box-shadow:none!important}.section>.title{letter-spacing:.13em;color:#a6d0d8!important}
+.theme,.orbit-toggle,.setting{box-shadow:none!important}.theme.active,.orbit-toggle.on{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a) 32%,transparent)!important}
+body.jarvis-listening .reactor-hub,body.jarvis-thinking .reactor-hub,body.jarvis-searching .reactor-hub,body.jarvis-speaking .reactor-hub{box-shadow:0 0 8px #fff8,0 0 18px var(--activity),0 0 30px rgba(var(--activity-rgb),.26)!important}
+@media (orientation:landscape){.core .reactor-hub{width:12%}.hudframe .orbit-card{backdrop-filter:blur(8px) saturate(110%);-webkit-backdrop-filter:blur(8px) saturate(110%)}.hudframe:before{opacity:.42!important}.hudframe:after{opacity:.66!important}}
+@media(prefers-reduced-motion:reduce){.core .reactor-hub{animation:none!important}}
