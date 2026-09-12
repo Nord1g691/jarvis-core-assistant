@@ -2,7 +2,7 @@
   if(window.__jarvisOrbitPro)return;window.__jarvisOrbitPro=true;
   const frame=document.querySelector('.hudframe'),core=frame?.querySelector('.core');if(!frame||!core)return;
   const stage=document.createElement('div');stage.className='jarvis-orbit-stage';stage.setAttribute('aria-hidden','false');frame.appendChild(stage);
-  let phase=-90,last=performance.now(),pauseUntil=0,raf=0,cards=[],geom=null,step=0,syncQueued=false;
+  let phase=-90,last=performance.now(),pauseUntil=0,raf=0,cards=[],geom=null,step=0,syncQueued=false,motionFactor=1;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)');
 
   function adopt(){
@@ -11,13 +11,12 @@
   }
   function stateSpeed(){
     if(reduce.matches)return 0;
-    const motion=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--jarvis-motion'))||1;
     let seconds=76;
     if(document.body.classList.contains('jarvis-listening'))seconds=52;
     if(document.body.classList.contains('jarvis-thinking'))seconds=42;
     if(document.body.classList.contains('jarvis-searching'))seconds=34;
     if(document.body.classList.contains('jarvis-speaking'))seconds=29;
-    return 360/(seconds*1000)*motion;
+    return 360/(seconds*1000)*motionFactor;
   }
   function geometry(list){
     const fr=frame.getBoundingClientRect(),cr=core.getBoundingClientRect();
@@ -47,7 +46,9 @@
   }
   function sync(){
     syncQueued=false;adopt();
-    const all=[...stage.querySelectorAll('.orbit-card')].filter(el=>!el.classList.contains('off')&&getComputedStyle(el).display!=='none').sort((a,b)=>(Number(a.dataset.slot)||99)-(Number(b.dataset.slot)||99));
+    motionFactor=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--jarvis-motion'))||1;
+    const pool=[...stage.querySelectorAll('.orbit-card')];pool.forEach(c=>c.classList.remove('orbit-overflow'));
+    const all=pool.filter(el=>!el.classList.contains('off')&&getComputedStyle(el).display!=='none').sort((a,b)=>(Number(a.dataset.slot)||99)-(Number(b.dataset.slot)||99));
     const max=innerWidth>innerHeight?9:8;all.forEach((c,i)=>c.classList.toggle('orbit-overflow',i>=max));cards=all.slice(0,max);
     if(!cards.length){geom=null;return}
     geom=geometry(cards);step=360/cards.length;
