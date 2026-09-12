@@ -13,14 +13,11 @@
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
 
-  /* Final V4.1 state/runtime assets. */
-  if(!document.querySelector('link[data-jarvis-final]')){
-    const css=document.createElement('link');css.rel='stylesheet';css.href='final-pass.css?v=432';css.dataset.jarvisFinal='432';document.head.appendChild(css)
-  }
-  if(!document.querySelector('link[data-jarvis-pulse]')){
-    const pulse=document.createElement('link');pulse.rel='stylesheet';pulse.href='final-pulse.css?v=432';pulse.dataset.jarvisPulse='432';document.head.appendChild(pulse)
-  }
-  if(!document.querySelector('script[data-jarvis-final]')){
-    const js=document.createElement('script');js.src='final-runtime.js?v=432';js.defer=true;js.dataset.jarvisFinal='432';document.head.appendChild(js)
-  }
+  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='434';document.head.appendChild(x)};
+  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='434';document.head.appendChild(x)};
+  addCss('final-pass.css?v=434','final');
+  addCss('final-pulse.css?v=434','pulse');
+  addCss('orbit-pro.css?v=434','orbit');
+  addJs('final-runtime.js?v=434','final');
+  addJs('orbit-pro.js?v=434','orbit');
 })();
