@@ -1,0 +1,13 @@
+/* Contextual HUD motion: cards fade/settle without touching Core positioning. */
+.hudframe .orbit-card{transition:opacity .24s ease,filter .24s ease,box-shadow .24s ease,background .24s ease!important;will-change:opacity,filter}
+.hudframe .orbit-card.off{opacity:0!important;pointer-events:none!important}
+.hudframe .orbit-card:not(.off){opacity:1}
+.hudframe.focus-mode .orbit-card{transition-duration:.18s!important}
+.hudframe .orbit-card.focus-primary{animation:hudFocusIn .26s cubic-bezier(.2,.8,.2,1) both}
+.hudframe .orbit-card.focus-secondary{animation:hudFocusSoft .32s ease both}
+.context-card.active,.event-card.event-active{animation:hudContextIn .28s cubic-bezier(.2,.8,.2,1) both}
+@keyframes hudFocusIn{from{opacity:.25;filter:brightness(.82)}to{opacity:1;filter:brightness(1.12)}}
+@keyframes hudFocusSoft{from{opacity:.25}to{opacity:.66}}
+@keyframes hudContextIn{from{opacity:0;filter:brightness(.8)}to{opacity:1;filter:brightness(1.08)}}
+@media (orientation:landscape){.hudframe .orbit-card[data-slot="1"],.hudframe .orbit-card[data-slot="3"],.hudframe .orbit-card[data-slot="5"],.hudframe .orbit-card[data-slot="7"]{transform-origin:right center}.hudframe .orbit-card[data-slot="2"],.hudframe .orbit-card[data-slot="4"],.hudframe .orbit-card[data-slot="6"],.hudframe .orbit-card[data-slot="8"]{transform-origin:left center}}
+@media(prefers-reduced-motion:reduce){.hudframe .orbit-card,.context-card.active,.event-card.event-active{animation:none!important;transition:none!important}}
