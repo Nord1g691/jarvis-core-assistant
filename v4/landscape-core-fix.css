@@ -1,14 +1,12 @@
-/* JARVIS V4.1 — stable Core anchoring + visible internal state motion. */
+/* JARVIS V4.1 — stable Core anchoring + clearly visible internal motion. */
 :root{--jarvis-core-scale:1;--jarvis-motion:1}
 .core{transform-origin:50% 50%!important}
 .hudframe .core{scale:var(--jarvis-core-scale)}
 
-/* Idle stays alive without moving the Core container. */
+/* Portrait / global state life. */
 body:not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking):not(.jarvis-booting) .reactor-hub{animation-duration:calc(2.1s / var(--jarvis-motion))!important}
 body:not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking):not(.jarvis-booting) .core-sweep{animation-duration:calc(9s / var(--jarvis-motion))!important;opacity:.5!important}
 body:not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking):not(.jarvis-booting) .reactor-segments{animation-duration:calc(34s / var(--jarvis-motion))!important}
-
-/* State-specific life: only internal layers move. */
 body.jarvis-listening .reactor-hub{animation:jHubListen calc(.82s / var(--jarvis-motion)) ease-in-out infinite!important}
 body.jarvis-listening .reactor-crown{animation:deepSpin calc(8s / var(--jarvis-motion)) linear infinite!important}
 body.jarvis-listening .tick:nth-child(3n){opacity:1!important;filter:drop-shadow(0 0 4px #2cff87)}
@@ -21,7 +19,7 @@ body.jarvis-speaking .reactor-hub{animation:jHubSpeak calc(.42s / var(--jarvis-m
 body.jarvis-speaking .reactor-pulse{animation:pulseRing calc(1.05s / var(--jarvis-motion)) ease-out infinite!important}
 body.jarvis-speaking .tick:nth-child(2n){animation:jLedSpeak calc(.6s / var(--jarvis-motion)) ease-in-out infinite alternate!important}
 
-/* LANDSCAPE: outer Core locked, inner machinery deliberately animated. */
+/* LANDSCAPE: outer chassis fixed, inner reactor deliberately animated and obvious. */
 @media (orientation:landscape){
   .hudframe .core,
   body.jarvis-listening .hudframe .core,
@@ -29,50 +27,36 @@ body.jarvis-speaking .tick:nth-child(2n){animation:jLedSpeak calc(.6s / var(--ja
   body.jarvis-searching .hudframe .core,
   body.jarvis-speaking .hudframe .core,
   body.jarvis-booting .hudframe .core{
-    left:50%!important;
-    top:50%!important;
-    scale:1!important;
+    left:50%!important;top:50%!important;scale:1!important;
     transform:translate(-50%,-50%) scale(calc(var(--jarvis-core-scale) * .92))!important;
-    transform-origin:50% 50%!important;
-    animation:none!important;
-    transition:filter .22s ease!important;
+    transform-origin:50% 50%!important;animation:none!important;
   }
 
-  /* Idle: subtle but clearly visible motion. */
-  body:not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking):not(.jarvis-booting) .reactor-crown{animation:jInnerSpinCW calc(14s / var(--jarvis-motion)) linear infinite!important}
-  body:not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking):not(.jarvis-booting) .reactor-segments{animation:jInnerSpinCCW calc(22s / var(--jarvis-motion)) linear infinite!important}
-  body:not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking):not(.jarvis-booting) .core-sweep{animation:jSweepLand calc(5.8s / var(--jarvis-motion)) linear infinite!important;opacity:.72!important}
-  body:not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking):not(.jarvis-booting) .reactor-hub{animation:jHubIdleLand calc(2.2s / var(--jarvis-motion)) ease-in-out infinite!important}
+  /* Always-moving machinery in landscape, even at idle. */
+  .hudframe .core .reactor-depth{animation:jLandSpinSlow 16s linear infinite!important;opacity:.95!important}
+  .hudframe .core .reactor-crown{animation:jLandSpinFast 8s linear infinite reverse!important;opacity:1!important}
+  .hudframe .core .reactor-segments{animation:jLandSpinFast 11s linear infinite!important;opacity:.95!important}
+  .hudframe .core .reactor-scale{animation:jLandSpinSlow 20s linear infinite reverse!important;opacity:.9!important}
+  .hudframe .core .core-sweep{animation:jLandSweep 3.8s linear infinite!important;opacity:.9!important}
+  .hudframe .core .reactor-hub{animation:jLandBreathe 1.9s ease-in-out infinite!important}
+  .hudframe .core .reactor-glass{animation:jLandGlass 4.5s ease-in-out infinite!important}
 
-  /* Listening: green pulse + crown rotation + LED ripple. */
-  body.jarvis-listening .reactor-hub{animation:jHubListenLand calc(.8s / var(--jarvis-motion)) ease-in-out infinite!important}
-  body.jarvis-listening .reactor-crown{animation:jInnerSpinCW calc(4.2s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-listening .reactor-segments{animation:jInnerSpinCCW calc(7s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-listening .core-sweep{animation:jSweepLand calc(2.8s / var(--jarvis-motion)) linear infinite!important;opacity:.82!important}
-  body.jarvis-listening .tick:nth-child(3n){animation:jLedListen .72s ease-in-out infinite alternate!important}
+  /* States override speed / rhythm but never move the outer Core. */
+  body.jarvis-listening .hudframe .core .reactor-crown{animation:jLandSpinFast 4.2s linear infinite!important}
+  body.jarvis-listening .hudframe .core .reactor-hub{animation:jLandListen .72s ease-in-out infinite!important}
+  body.jarvis-listening .hudframe .core .tick:nth-child(3n){animation:jLandLedGreen .55s ease-in-out infinite alternate!important}
 
-  /* Thinking: counter-rotating rings + breathing grid. */
-  body.jarvis-thinking .reactor-crown{animation:jInnerSpinCW calc(2.9s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-thinking .reactor-segments{animation:jInnerSpinCCW calc(4.3s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-thinking .reactor-scale{animation:jInnerSpinCW calc(8s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-thinking .reactor-grid{animation:jGridThink calc(1.05s / var(--jarvis-motion)) ease-in-out infinite!important}
+  body.jarvis-thinking .hudframe .core .reactor-crown{animation:jLandSpinFast 2.7s linear infinite!important}
+  body.jarvis-thinking .hudframe .core .reactor-segments{animation:jLandSpinFast 3.7s linear infinite reverse!important}
+  body.jarvis-thinking .hudframe .core .reactor-grid{animation:jGridThink .95s ease-in-out infinite!important}
 
-  /* Searching: obvious radar sweep, but outer circle remains fixed. */
-  body.jarvis-searching .core-sweep{animation:jSweepLand calc(1.05s / var(--jarvis-motion)) linear infinite!important;opacity:1!important}
-  body.jarvis-searching .reactor-scale{animation:jInnerSpinCW calc(3.2s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-searching .reactor-crown{animation:jInnerSpinCCW calc(5.2s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-searching .tick:nth-child(4n){animation:jLedSearch .5s ease-in-out infinite alternate!important}
+  body.jarvis-searching .hudframe .core .core-sweep{animation:jLandSweep .8s linear infinite!important;opacity:1!important}
+  body.jarvis-searching .hudframe .core .reactor-scale{animation:jLandSpinFast 3.4s linear infinite!important}
+  body.jarvis-searching .hudframe .core .reactor-depth{animation:jLandSpinSlow 7s linear infinite reverse!important}
 
-  /* Speaking: visible rhythmic nucleus + LEDs; no container wobble. */
-  body.jarvis-speaking .reactor-hub{animation:jHubSpeakLand calc(.4s / var(--jarvis-motion)) ease-in-out infinite!important}
-  body.jarvis-speaking .reactor-pulse{animation:pulseRing calc(.86s / var(--jarvis-motion)) ease-out infinite!important}
-  body.jarvis-speaking .reactor-crown{animation:jInnerSpinCW calc(3.5s / var(--jarvis-motion)) linear infinite!important}
-  body.jarvis-speaking .tick:nth-child(2n){animation:jLedSpeak calc(.42s / var(--jarvis-motion)) ease-in-out infinite alternate!important}
-
-  body.jarvis-listening .hudframe .core{filter:drop-shadow(0 0 18px #2cff8744)!important}
-  body.jarvis-thinking .hudframe .core{filter:drop-shadow(0 0 18px #ff9a2f44)!important}
-  body.jarvis-searching .hudframe .core{filter:drop-shadow(0 0 21px #00dfff55)!important}
-  body.jarvis-speaking .hudframe .core{filter:drop-shadow(0 0 22px #a94cff55)!important}
+  body.jarvis-speaking .hudframe .core .reactor-hub{animation:jLandSpeak .38s ease-in-out infinite!important}
+  body.jarvis-speaking .hudframe .core .reactor-pulse{animation:pulseRing .75s ease-out infinite!important}
+  body.jarvis-speaking .hudframe .core .tick:nth-child(2n){animation:jLedSpeak .42s ease-in-out infinite alternate!important}
 }
 
 /* Boot construction. */
@@ -88,23 +72,22 @@ body.jarvis-booting .reactor-depth,body.jarvis-booting .reactor-grid,body.jarvis
 body.jarvis-booting .reactor-hub,body.jarvis-booting .reactor-glass{opacity:0;animation:jBuildHub .55s cubic-bezier(.2,.9,.2,1.25) forwards!important;animation-delay:1.45s!important}
 body.jarvis-booting .state{opacity:0;animation:jBuildState .4s ease forwards;animation-delay:1.82s}
 
+@keyframes jLandSpinSlow{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes jLandSpinFast{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes jLandSweep{to{transform:rotate(360deg)}}
+@keyframes jLandBreathe{0%,100%{transform:translate(-50%,-50%) scale(.96);filter:brightness(.95)}50%{transform:translate(-50%,-50%) scale(1.08);filter:brightness(1.25)}}
+@keyframes jLandGlass{0%,100%{opacity:.45}50%{opacity:.95}}
+@keyframes jLandListen{0%,100%{transform:translate(-50%,-50%) scale(.93)}50%{transform:translate(-50%,-50%) scale(1.12)}}
+@keyframes jLandSpeak{0%,100%{transform:translate(-50%,-50%) scale(.9)}50%{transform:translate(-50%,-50%) scale(1.15)}}
+@keyframes jLandLedGreen{from{opacity:.35}to{opacity:1;filter:drop-shadow(0 0 6px #2cff87)}}
 @keyframes jBuildRing{from{opacity:0;filter:blur(5px);transform:scale(.72)}to{opacity:1;filter:blur(0);transform:scale(1)}}
 @keyframes jBuildLed{from{opacity:0;filter:brightness(2) blur(2px)}to{opacity:.92;filter:none}}
 @keyframes jBuildCenter{from{opacity:0;scale:.7;filter:blur(8px)}to{opacity:1;scale:1;filter:blur(0)}}
 @keyframes jBuildHub{0%{opacity:0;scale:.15;filter:brightness(2)}70%{opacity:1;scale:1.18}100%{opacity:1;scale:1}}
 @keyframes jBuildState{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes jHubListen{0%,100%{transform:translate(-50%,-50%) scale(.92)}50%{transform:translate(-50%,-50%) scale(1.13)}}
-@keyframes jHubListenLand{0%,100%{transform:translate(-50%,-50%) scale(.93)}50%{transform:translate(-50%,-50%) scale(1.11)}}
-@keyframes jHubIdleLand{0%,100%{transform:translate(-50%,-50%) scale(.97);filter:brightness(.94)}50%{transform:translate(-50%,-50%) scale(1.045);filter:brightness(1.16)}}
-@keyframes jGridThink{0%,100%{opacity:.42;filter:drop-shadow(0 0 3px #ff9a2f33)}50%{opacity:1;filter:drop-shadow(0 0 15px #ff9a2f88)}}
+@keyframes jGridThink{0%,100%{opacity:.48;filter:drop-shadow(0 0 3px #ff9a2f33)}50%{opacity:1;filter:drop-shadow(0 0 13px #ff9a2f77)}}
 @keyframes jSearchSweep{to{transform:rotate(360deg)}}
-@keyframes jSweepLand{to{transform:rotate(360deg)}}
-@keyframes jInnerSpinCW{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes jInnerSpinCCW{from{transform:translate(-50%,-50%) rotate(360deg)}to{transform:translate(-50%,-50%) rotate(0deg)}}
 @keyframes jHubSpeak{0%,100%{transform:translate(-50%,-50%) scale(.9)}50%{transform:translate(-50%,-50%) scale(1.18)}}
-@keyframes jHubSpeakLand{0%,100%{transform:translate(-50%,-50%) scale(.91)}50%{transform:translate(-50%,-50%) scale(1.13)}}
-@keyframes jLedSpeak{from{opacity:.25;filter:none}to{opacity:1;filter:drop-shadow(0 0 7px #a94cff)}}
-@keyframes jLedListen{from{opacity:.35;filter:none}to{opacity:1;filter:drop-shadow(0 0 7px #2cff87)}}
-@keyframes jLedSearch{from{opacity:.3;filter:none}to{opacity:1;filter:drop-shadow(0 0 7px #00dfff)}}
-
+@keyframes jLedSpeak{from{opacity:.35}to{opacity:1;filter:drop-shadow(0 0 5px #a94cff)}}
 @media(prefers-reduced-motion:reduce){:root{--jarvis-motion:.2}body.jarvis-booting *{animation-duration:.01ms!important;animation-delay:0ms!important}}
