@@ -1,5 +1,5 @@
-/* JARVIS V4.1 build 446 — calmer idle, visibly active thinking state. */
-/* Loaded last so resting luminance and cognitive motion are unambiguous. */
+/* JARVIS V4.1 build 450 — calmer idle, visibly active thinking state. */
+/* Rest stays quiet; active cognitive states wake the internal machinery. */
 
 /* REST — substantially darker than active states. */
 body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .hudframe .core{
@@ -17,6 +17,8 @@ body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarv
 body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .reactor-glass{opacity:.30!important}
 body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .tick{opacity:.38!important;filter:none!important}
 body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .core-sweep{opacity:.18!important}
+/* The lock pieces built during boot remain as faint permanent mechanics instead of disappearing at handoff. */
+body:not(.jarvis-booting) .core .reactor-lock i{opacity:.12!important;filter:brightness(.64);transition:opacity .35s ease,filter .35s ease!important}
 
 /* THINKING — no chassis wobble; the machinery itself becomes busy. */
 body.jarvis-thinking .hudframe .core{
@@ -38,6 +40,9 @@ body.jarvis-thinking .core .tick:nth-child(4n+1){animation:thinkingTick .34s eas
 body.jarvis-thinking .core .tick:nth-child(4n+2){animation:thinkingTick .48s .08s ease-in-out infinite alternate!important}
 body.jarvis-thinking .core .tick:nth-child(4n+3){animation:thinkingTick .62s .16s ease-in-out infinite alternate!important}
 body.jarvis-thinking .core .tick:nth-child(4n){animation:thinkingTick .76s .24s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .reactor-lock i{opacity:.26!important;animation:thinkingLock .62s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .reactor-lock i:nth-child(2n){animation-delay:.18s!important}
+body.jarvis-thinking .core .reactor-lock i:nth-child(3n){animation-delay:.31s!important}
 
 @keyframes thinkingCrown{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 @keyframes thinkingReverse{from{transform:translate(-50%,-50%) rotate(360deg)}to{transform:translate(-50%,-50%) rotate(0deg)}}
@@ -50,9 +55,11 @@ body.jarvis-thinking .core .tick:nth-child(4n){animation:thinkingTick .76s .24s 
 @keyframes thinkingRingB{from{opacity:.24;filter:brightness(.76)}to{opacity:.92;filter:brightness(1.32)}}
 @keyframes thinkingArt{from{filter:brightness(.92) saturate(.92) drop-shadow(0 0 5px rgba(255,152,47,.22))}to{filter:brightness(1.22) saturate(1.12) drop-shadow(0 0 15px rgba(255,152,47,.58))}}
 @keyframes thinkingTick{from{opacity:.18;filter:none}to{opacity:1;filter:drop-shadow(0 0 7px #ff982f)}}
+@keyframes thinkingLock{from{filter:brightness(.75) drop-shadow(0 0 1px rgba(255,152,47,.10))}to{filter:brightness(1.55) drop-shadow(0 0 6px rgba(255,152,47,.55))}}
 
 @media(prefers-reduced-motion:reduce){
   body.jarvis-thinking .core .reactor-crown{animation-duration:3.2s!important}
   body.jarvis-thinking .core .reactor-segments{animation-duration:4.2s!important}
   body.jarvis-thinking .core .reactor-hub{animation-duration:1.15s!important}
+  body.jarvis-thinking .core .reactor-lock i{animation-duration:1.4s!important}
 }
