@@ -14,22 +14,41 @@
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
 
-  /* Dedicated fabrication model: it is not the finished Core being faded in.
-     It is a temporary mechanical assembly made from independent pieces at the
-     exact final Core coordinates, then it hands off to the real Core. */
+  /* Dedicated fabrication model: independent mechanical pieces, all aligned to the
+     exact final Core coordinates. This avoids revealing the finished SVG as a shortcut. */
   if(core&&!core.querySelector('.jarvis-fabrication')){
     const fab=document.createElement('div');fab.className='jarvis-fabrication';fab.setAttribute('aria-hidden','true');
     fab.innerHTML='<div class="fab-wave"></div><div class="fab-seed"></div><div class="fab-lock"></div><div class="fab-spokes"></div><div class="fab-rings"><i class="fr1"></i><i class="fr2"></i><i class="fr3"></i><i class="fr4"></i><i class="fr5"></i><i class="fr6"></i></div><div class="fab-arcs"></div><div class="fab-led"></div><div class="fab-scan"></div>';
     const lock=fab.querySelector('.fab-lock');
-    for(let i=0;i<8;i++){const h=document.createElement('i');h.style.setProperty('--pair',Math.floor(i/2));lock.appendChild(h)}
+    const lockRot=[-18,18,-7,7,7,-7,18,-18];
+    for(let i=0;i<8;i++){
+      const h=document.createElement('i');
+      h.style.setProperty('--d',(0.44+Math.floor(i/2)*0.18).toFixed(2)+'s');
+      h.style.setProperty('--rot',lockRot[i]+'deg');
+      lock.appendChild(h)
+    }
     const spokes=fab.querySelector('.fab-spokes');
-    for(let i=0;i<16;i++){const s=document.createElement('i');s.style.setProperty('--i',i);spokes.appendChild(s)}
+    for(let i=0;i<16;i++){
+      const s=document.createElement('i');
+      s.style.setProperty('--d',(0.82+i*0.032).toFixed(3)+'s');
+      s.style.setProperty('--rot',(i*22.5)+'deg');
+      spokes.appendChild(s)
+    }
     const arcs=fab.querySelector('.fab-arcs');
-    for(let i=0;i<12;i++){const a=document.createElement('i');a.style.setProperty('--i',i);arcs.appendChild(a)}
+    for(let i=0;i<12;i++){
+      const a=document.createElement('i');
+      a.style.setProperty('--d',(1.70+i*0.105).toFixed(3)+'s');
+      a.style.setProperty('--rot',(i*30)+'deg');
+      arcs.appendChild(a)
+    }
     const leds=fab.querySelector('.fab-led');
     for(let i=0;i<72;i++){
       const d=document.createElement('i'),deg=-90+i*5,rad=deg*Math.PI/180,r=47.1;
-      d.style.left=(50+r*Math.cos(rad))+'%';d.style.top=(50+r*Math.sin(rad))+'%';d.style.transform=`translate(-50%,-50%) rotate(${deg+90}deg)`;d.style.setProperty('--i',i);leds.appendChild(d)
+      d.style.left=(50+r*Math.cos(rad))+'%';
+      d.style.top=(50+r*Math.sin(rad))+'%';
+      d.style.transform=`translate(-50%,-50%) rotate(${deg+90}deg)`;
+      d.style.setProperty('--d',(3.34+i*0.0105).toFixed(3)+'s');
+      leds.appendChild(d)
     }
     core.appendChild(fab)
   }
@@ -53,12 +72,13 @@
 
   const boot=addCss('boot-master.css?v=451','bootmaster');
   const fabrication=addCss('boot-fabrication.css?v=451','bootfabrication');
+  const fabricationFix=addCss('boot-fabrication-fix.css?v=451','bootfabricationfix');
   let started=false;
   const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=451','boot')};
   const ready=link=>new Promise(resolve=>{
     if(link.sheet){resolve();return}
     const done=()=>resolve();link.addEventListener('load',done,{once:true});link.addEventListener('error',done,{once:true})
   });
-  Promise.all([ready(boot),ready(fabrication)]).then(()=>requestAnimationFrame(startBoot));
-  setTimeout(startBoot,1000);
+  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix)]).then(()=>requestAnimationFrame(startBoot));
+  setTimeout(startBoot,1200);
 })();
