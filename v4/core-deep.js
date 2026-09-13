@@ -55,30 +55,31 @@
 
   const addCss=(href,key)=>{
     const found=document.querySelector(`link[data-jarvis-${key}]`);if(found)return found;
-    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='451';document.head.appendChild(x);return x
+    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='452';document.head.appendChild(x);return x
   };
   const addJs=(src,key)=>{
     if(document.querySelector(`script[data-jarvis-${key}]`))return;
-    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='451';document.head.appendChild(x)
+    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='452';document.head.appendChild(x)
   };
 
-  addCss('final-pass.css?v=451','final');
-  addCss('final-pulse.css?v=451','pulse');
-  addCss('orbit-pro.css?v=451','orbit');
-  addCss('orbit-hotfix.css?v=451','orbithotfix');
-  addCss('state-tuning.css?v=451','statetuning');
-  addJs('final-runtime.js?v=451','final');
-  addJs('orbit-pro.js?v=451','orbit');
+  addCss('final-pass.css?v=452','final');
+  addCss('final-pulse.css?v=452','pulse');
+  addCss('orbit-pro.css?v=452','orbit');
+  addCss('orbit-hotfix.css?v=452','orbithotfix');
+  addCss('state-tuning.css?v=452','statetuning');
+  addJs('final-runtime.js?v=452','final');
+  addJs('orbit-pro.js?v=452','orbit');
 
-  const boot=addCss('boot-master.css?v=451','bootmaster');
-  const fabrication=addCss('boot-fabrication.css?v=451','bootfabrication');
-  const fabricationFix=addCss('boot-fabrication-fix.css?v=451','bootfabricationfix');
+  const boot=addCss('boot-master.css?v=452','bootmaster');
+  const fabrication=addCss('boot-fabrication.css?v=452','bootfabrication');
+  const fabricationFix=addCss('boot-fabrication-fix.css?v=452','bootfabricationfix');
+  const finalContinuation=addCss('boot-final-continuous.css?v=452','bootfinalcontinuous');
   let started=false;
-  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=451','boot')};
+  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=452','boot')};
   const ready=link=>new Promise(resolve=>{
     if(link.sheet){resolve();return}
     const done=()=>resolve();link.addEventListener('load',done,{once:true});link.addEventListener('error',done,{once:true})
   });
-  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix)]).then(()=>requestAnimationFrame(startBoot));
+  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix),ready(finalContinuation)]).then(()=>requestAnimationFrame(startBoot));
   setTimeout(startBoot,1200);
 })();
