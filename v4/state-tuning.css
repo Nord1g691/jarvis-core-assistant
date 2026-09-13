@@ -1,0 +1,58 @@
+/* JARVIS V4.1 build 446 — calmer idle, visibly active thinking state. */
+/* Loaded last so resting luminance and cognitive motion are unambiguous. */
+
+/* REST — substantially darker than active states. */
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .hudframe .core{
+  filter:brightness(.60) saturate(.78) drop-shadow(0 0 9px rgba(0,234,255,.08)) drop-shadow(0 20px 40px rgba(0,0,0,.78))!important;
+  transition:filter .55s ease!important;
+}
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .core-art{
+  opacity:.48!important;
+  filter:brightness(.70) saturate(.78) drop-shadow(0 0 3px rgba(0,234,255,.08))!important;
+}
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .reactor-hub{
+  opacity:.72!important;
+  filter:brightness(.68) saturate(.82)!important;
+}
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .reactor-glass{opacity:.30!important}
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .tick{opacity:.38!important;filter:none!important}
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .core-sweep{opacity:.18!important}
+
+/* THINKING — no chassis wobble; the machinery itself becomes busy. */
+body.jarvis-thinking .hudframe .core{
+  filter:brightness(1.02) saturate(1.08) drop-shadow(0 0 26px rgba(255,152,47,.22)) drop-shadow(0 22px 44px rgba(0,0,0,.72))!important;
+  transition:filter .22s ease!important;
+}
+body.jarvis-thinking .core .reactor-crown{animation:thinkingCrown 1.65s linear infinite!important}
+body.jarvis-thinking .core .reactor-segments{animation:thinkingReverse 2.15s linear infinite!important}
+body.jarvis-thinking .core .reactor-scale{animation:thinkingScale 3.1s linear infinite!important}
+body.jarvis-thinking .core .reactor-depth{animation:thinkingReverse 5.2s linear infinite!important}
+body.jarvis-thinking .core .reactor-grid{animation:thinkingGrid .78s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .reactor-radials{animation:thinkingRadials 1.05s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .reactor-hub{animation:thinkingHub .62s ease-in-out infinite!important}
+body.jarvis-thinking .core .core-sweep{animation:thinkingSweep 1.15s linear infinite!important;opacity:.90!important}
+body.jarvis-thinking .core .r3{animation:thinkingRingA .70s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .r4{animation:thinkingRingB .96s ease-in-out infinite alternate-reverse!important}
+body.jarvis-thinking .core .core-art{animation:thinkingArt .85s ease-in-out infinite alternate!important;opacity:.94!important}
+body.jarvis-thinking .core .tick:nth-child(4n+1){animation:thinkingTick .34s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .tick:nth-child(4n+2){animation:thinkingTick .48s .08s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .tick:nth-child(4n+3){animation:thinkingTick .62s .16s ease-in-out infinite alternate!important}
+body.jarvis-thinking .core .tick:nth-child(4n){animation:thinkingTick .76s .24s ease-in-out infinite alternate!important}
+
+@keyframes thinkingCrown{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes thinkingReverse{from{transform:translate(-50%,-50%) rotate(360deg)}to{transform:translate(-50%,-50%) rotate(0deg)}}
+@keyframes thinkingScale{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes thinkingGrid{from{opacity:.38;filter:brightness(.82) drop-shadow(0 0 2px rgba(255,152,47,.18))}to{opacity:1;filter:brightness(1.45) drop-shadow(0 0 15px rgba(255,152,47,.72))}}
+@keyframes thinkingRadials{from{opacity:.42;filter:brightness(.85)}to{opacity:1;filter:brightness(1.48) drop-shadow(0 0 10px rgba(255,152,47,.58))}}
+@keyframes thinkingHub{0%,100%{transform:translate(-50%,-50%) scale(.90);filter:brightness(.95) saturate(1)}50%{transform:translate(-50%,-50%) scale(1.16);filter:brightness(1.55) saturate(1.2)}}
+@keyframes thinkingSweep{from{transform:rotate(0deg);filter:drop-shadow(0 0 4px rgba(255,152,47,.35))}to{transform:rotate(360deg);filter:drop-shadow(0 0 11px rgba(255,152,47,.70))}}
+@keyframes thinkingRingA{from{opacity:.32;filter:brightness(.78)}to{opacity:1;filter:brightness(1.52) drop-shadow(0 0 8px rgba(255,152,47,.58))}}
+@keyframes thinkingRingB{from{opacity:.24;filter:brightness(.76)}to{opacity:.92;filter:brightness(1.32)}}
+@keyframes thinkingArt{from{filter:brightness(.92) saturate(.92) drop-shadow(0 0 5px rgba(255,152,47,.22))}to{filter:brightness(1.22) saturate(1.12) drop-shadow(0 0 15px rgba(255,152,47,.58))}}
+@keyframes thinkingTick{from{opacity:.18;filter:none}to{opacity:1;filter:drop-shadow(0 0 7px #ff982f)}}
+
+@media(prefers-reduced-motion:reduce){
+  body.jarvis-thinking .core .reactor-crown{animation-duration:3.2s!important}
+  body.jarvis-thinking .core .reactor-segments{animation-duration:4.2s!important}
+  body.jarvis-thinking .core .reactor-hub{animation-duration:1.15s!important}
+}
