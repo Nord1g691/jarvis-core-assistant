@@ -12,24 +12,23 @@
     {t:430,p:11,label:'DÉVERROUILLAGE MÉCANIQUE',state:'CONSTRUCTION',mods:['core']},
     {t:1050,p:24,label:'ASSEMBLAGE INTERNE',state:'CONSTRUCTION',mods:['core']},
     {t:1650,p:39,label:'STRUCTURE RADIALE',state:'CONSTRUCTION',mods:['core']},
-    {t:2300,p:54,label:'ANNEAUX EXTÉRIEURS',state:'CONSTRUCTION',mods:['core']},
-    {t:2950,p:67,label:'CHÂSSIS VERROUILLÉ',state:'STRUCTURE OK',mods:['core']},
-    {t:3400,p:78,label:'MISE SOUS TENSION',state:'CHARGE COULEUR',mods:['core','color']},
-    {t:3900,p:87,label:'MATRICE 72 LED',state:'MATRICE 72/72',mods:['core','color','led']},
-    {t:4300,p:92,label:'TRACÉ DES ORBITES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
-    {t:4750,p:95,label:'ANCRAGE DES MODULES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
-    {t:5000,p:96,label:'IDENTITÉ JARVIS',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:5350,p:97,label:'LIAISON TEMPS RÉEL',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:5700,p:98,label:'TÉLÉMÉTRIE HUD',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:6050,p:98,label:'DIAGNOSTIC CORE',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:6350,p:99,label:'DONNÉES MAISON',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:6650,p:99,label:'COMMANDES JARVIS',state:'FINALISATION',mods:['core','color','led','orbit']},
-    {t:6850,p:100,label:'STABILISATION',state:'EN LIGNE',mods:['core','color','led','orbit']}
+    {t:2300,p:53,label:'ANNEAUX STRUCTURELS',state:'CONSTRUCTION',mods:['core']},
+    {t:2950,p:64,label:'CHÂSSIS EXTERNE',state:'CONSTRUCTION',mods:['core']},
+    {t:3450,p:73,label:'VERROUILLAGE PÉRIPHÉRIQUE',state:'CONSTRUCTION',mods:['core']},
+    {t:3950,p:81,label:'MICRO-MÉCANIQUE',state:'CONSTRUCTION',mods:['core']},
+    {t:4400,p:87,label:'MISE SOUS TENSION',state:'CHARGE COULEUR',mods:['core','color']},
+    {t:4850,p:92,label:'MATRICE 72 LED',state:'MATRICE 72/72',mods:['core','color','led']},
+    {t:5200,p:95,label:'TRACÉ DES ORBITES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
+    {t:5500,p:96,label:'IDENTITÉ JARVIS',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:5750,p:97,label:'LIAISON TEMPS RÉEL',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:6000,p:98,label:'TÉLÉMÉTRIE HUD',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:6250,p:99,label:'DIAGNOSTIC CORE',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:6500,p:99,label:'DONNÉES MAISON',state:'FINALISATION',mods:['core','color','led','orbit']},
+    {t:6800,p:100,label:'STABILISATION',state:'EN LIGNE',mods:['core','color','led','orbit']}
   ];
 
   body.classList.remove('jarvis-boot-ready','jarvis-boot-settling');
   body.classList.add('jarvis-booting');
-  /* Critical prepaint gate is removed only after boot CSS is loaded and the real Core exists. */
   body.classList.remove('jarvis-prepaint');
 
   const start=performance.now(),endAt=start+7000;let current=-1,raf=0,orbitPaused=false;
