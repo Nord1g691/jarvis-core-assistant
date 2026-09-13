@@ -14,8 +14,6 @@
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
 
-  /* Dedicated fabrication model: independent mechanical pieces, all aligned to the
-     exact final Core coordinates. This avoids revealing the finished SVG as a shortcut. */
   if(core&&!core.querySelector('.jarvis-fabrication')){
     const fab=document.createElement('div');fab.className='jarvis-fabrication';fab.setAttribute('aria-hidden','true');
     fab.innerHTML='<div class="fab-wave"></div><div class="fab-seed"></div><div class="fab-lock"></div><div class="fab-spokes"></div><div class="fab-rings"><i class="fr1"></i><i class="fr2"></i><i class="fr3"></i><i class="fr4"></i><i class="fr5"></i><i class="fr6"></i></div><div class="fab-arcs"></div><div class="fab-led"></div><div class="fab-scan"></div>';
@@ -55,31 +53,32 @@
 
   const addCss=(href,key)=>{
     const found=document.querySelector(`link[data-jarvis-${key}]`);if(found)return found;
-    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='452';document.head.appendChild(x);return x
+    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='453';document.head.appendChild(x);return x
   };
   const addJs=(src,key)=>{
     if(document.querySelector(`script[data-jarvis-${key}]`))return;
-    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='452';document.head.appendChild(x)
+    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='453';document.head.appendChild(x)
   };
 
-  addCss('final-pass.css?v=452','final');
-  addCss('final-pulse.css?v=452','pulse');
-  addCss('orbit-pro.css?v=452','orbit');
-  addCss('orbit-hotfix.css?v=452','orbithotfix');
-  addCss('state-tuning.css?v=452','statetuning');
-  addJs('final-runtime.js?v=452','final');
-  addJs('orbit-pro.js?v=452','orbit');
+  addCss('final-pass.css?v=453','final');
+  addCss('final-pulse.css?v=453','pulse');
+  addCss('orbit-pro.css?v=453','orbit');
+  addCss('orbit-hotfix.css?v=453','orbithotfix');
+  addCss('state-tuning.css?v=453','statetuning');
+  addJs('final-runtime.js?v=453','final');
+  addJs('orbit-pro.js?v=453','orbit');
 
-  const boot=addCss('boot-master.css?v=452','bootmaster');
-  const fabrication=addCss('boot-fabrication.css?v=452','bootfabrication');
-  const fabricationFix=addCss('boot-fabrication-fix.css?v=452','bootfabricationfix');
-  const finalContinuation=addCss('boot-final-continuous.css?v=452','bootfinalcontinuous');
+  const boot=addCss('boot-master.css?v=453','bootmaster');
+  const fabrication=addCss('boot-fabrication.css?v=453','bootfabrication');
+  const fabricationFix=addCss('boot-fabrication-fix.css?v=453','bootfabricationfix');
+  const finalContinuation=addCss('boot-final-continuous.css?v=453','bootfinalcontinuous');
+  const singleMachine=addCss('boot-single-machine.css?v=453','bootsinglemachine');
   let started=false;
-  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=452','boot')};
+  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=453','boot')};
   const ready=link=>new Promise(resolve=>{
     if(link.sheet){resolve();return}
     const done=()=>resolve();link.addEventListener('load',done,{once:true});link.addEventListener('error',done,{once:true})
   });
-  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix),ready(finalContinuation)]).then(()=>requestAnimationFrame(startBoot));
+  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix),ready(finalContinuation),ready(singleMachine)]).then(()=>requestAnimationFrame(startBoot));
   setTimeout(startBoot,1200);
 })();
