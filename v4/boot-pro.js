@@ -7,33 +7,32 @@
   const modules=[...hud.querySelectorAll('[data-boot-module]')];
   const phases=[
     {t:0,p:2,label:'NOYAU JARVIS',state:'INITIALISATION',mods:[]},
-    {t:650,p:10,label:'STABILISATION DU NOYAU',state:'STABILISATION',mods:['core']},
-    {t:1400,p:24,label:'MÉCANIQUE INTERNE',state:'CONSTRUCTION',mods:['core']},
-    {t:2350,p:42,label:'ARCHITECTURE RADIALE',state:'CONSTRUCTION',mods:['core']},
-    {t:3400,p:58,label:'CHÂSSIS VERROUILLÉ',state:'STRUCTURE OK',mods:['core']},
-    {t:4000,p:68,label:'INJECTION CHROMATIQUE · NOYAU',state:'CHARGE COULEUR',mods:['core','color']},
-    {t:4550,p:78,label:'PROPAGATION COULEUR · ANNEAUX',state:'CHARGE COULEUR',mods:['core','color']},
-    {t:5150,p:88,label:'MATRICE LUMINEUSE · 72/72',state:'MATRICE 72/72',mods:['core','color','led']},
-    {t:5750,p:92,label:'CONSTRUCTION DES ORBITES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
-    {t:6500,p:94,label:'ANCRAGE DES MODULES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
-    {t:7300,p:95,label:'IDENTITÉ JARVIS',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:7900,p:96,label:'LIAISON TEMPS RÉEL',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:8500,p:96,label:'TÉLÉMÉTRIE HUD',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:9200,p:97,label:'DIAGNOSTIC CORE',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:10300,p:98,label:'DONNÉES SYSTÈME',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:11300,p:98,label:'MODULES ÉNERGIE · MAISON',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:12200,p:99,label:'ASSISTANT JARVIS EN LIGNE',state:'FINALISATION',mods:['core','color','led','orbit']},
-    {t:12800,p:99,label:'COMMANDES INTERFACE',state:'FINALISATION',mods:['core','color','led','orbit']},
-    {t:13400,p:100,label:'SYSTÈME OPÉRATIONNEL',state:'EN LIGNE',mods:['core','color','led','orbit']},
-    {t:13700,p:100,label:'LUMINANCE NOMINALE',state:'EN LIGNE',mods:['core','color','led','orbit']}
+    {t:350,p:10,label:'STABILISATION DU NOYAU',state:'STABILISATION',mods:['core']},
+    {t:800,p:24,label:'MÉCANIQUE INTERNE',state:'CONSTRUCTION',mods:['core']},
+    {t:1300,p:42,label:'ARCHITECTURE RADIALE',state:'CONSTRUCTION',mods:['core']},
+    {t:1900,p:58,label:'CHÂSSIS VERROUILLÉ',state:'STRUCTURE OK',mods:['core']},
+    {t:2450,p:68,label:'INJECTION CHROMATIQUE · NOYAU',state:'CHARGE COULEUR',mods:['core','color']},
+    {t:2900,p:78,label:'PROPAGATION COULEUR · ANNEAUX',state:'CHARGE COULEUR',mods:['core','color']},
+    {t:3350,p:88,label:'MATRICE LUMINEUSE · 72/72',state:'MATRICE 72/72',mods:['core','color','led']},
+    {t:3750,p:92,label:'CONSTRUCTION DES ORBITES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
+    {t:4250,p:94,label:'ANCRAGE DES MODULES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
+    {t:4900,p:95,label:'IDENTITÉ JARVIS',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:5350,p:96,label:'LIAISON TEMPS RÉEL',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:5750,p:96,label:'TÉLÉMÉTRIE HUD',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:6250,p:97,label:'DIAGNOSTIC CORE',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:6850,p:98,label:'DONNÉES SYSTÈME',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:7350,p:98,label:'MODULES ÉNERGIE · MAISON',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:7850,p:99,label:'ASSISTANT JARVIS EN LIGNE',state:'FINALISATION',mods:['core','color','led','orbit']},
+    {t:8200,p:99,label:'COMMANDES INTERFACE',state:'FINALISATION',mods:['core','color','led','orbit']},
+    {t:8550,p:100,label:'LUMINANCE NOMINALE',state:'EN LIGNE',mods:['core','color','led','orbit']}
   ];
-  const start=performance.now(),endAt=start+14900;let current=-1,watch=0,orbitPaused=false;
+  const start=performance.now(),endAt=start+8950;let current=-1,watch=0,orbitPaused=false;
   body.classList.add('jarvis-booting');body.classList.remove('jarvis-boot-ready','jarvis-boot-settling');
   function applyPhase(i){
     const ph=phases[i];if(!ph)return;current=i;
     [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));
     body.classList.add('jarvis-boot-phase-'+i);body.dataset.jarvisBootPhase=String(i);
-    if(i>=19)body.classList.add('jarvis-boot-settling');
+    if(i>=17)body.classList.add('jarvis-boot-settling');
     step.textContent=ph.label;pct.textContent=String(ph.p).padStart(2,'0')+'%';bar.style.setProperty('--boot-progress',ph.p+'%');if(state)state.textContent=ph.state;
     modules.forEach(m=>m.classList.toggle('on',ph.mods.includes(m.dataset.bootModule)));
   }
@@ -41,7 +40,7 @@
   function frame(now){
     const elapsed=now-start;let idx=0;for(let i=0;i<phases.length;i++)if(elapsed>=phases[i].t)idx=i;if(idx!==current)applyPhase(idx);
     if(now<endAt&&!body.classList.contains('jarvis-booting'))body.classList.add('jarvis-booting');
-    if(!orbitPaused&&window.jarvisOrbitPro?.pause){window.jarvisOrbitPro.pause(15100);orbitPaused=true}
+    if(!orbitPaused&&window.jarvisOrbitPro?.pause){window.jarvisOrbitPro.pause(9200);orbitPaused=true}
     if(now<endAt){watch=requestAnimationFrame(frame);return}
     body.classList.remove('jarvis-booting','jarvis-boot-settling','jarvis-boot-ready');
     [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));delete body.dataset.jarvisBootPhase;
