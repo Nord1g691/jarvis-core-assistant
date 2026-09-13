@@ -14,30 +14,26 @@
     {t:4000,p:68,label:'INJECTION CHROMATIQUE · NOYAU',state:'CHARGE COULEUR',mods:['core','color']},
     {t:4550,p:78,label:'PROPAGATION COULEUR · ANNEAUX',state:'CHARGE COULEUR',mods:['core','color']},
     {t:5150,p:88,label:'MATRICE LUMINEUSE · 72/72',state:'MATRICE 72/72',mods:['core','color','led']},
-    {t:5750,p:94,label:'SYNCHRONISATION ORBITALE',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
-    {t:6350,p:98,label:'LIAISON SENTINEL · PIPELINE',state:'LIAISON SENTINEL',mods:['core','color','led','orbit']},
-    {t:6950,p:100,label:'SYSTÈME OPÉRATIONNEL',state:'EN LIGNE',mods:['core','color','led','orbit']}
+    {t:5750,p:94,label:'CONSTRUCTION DES ORBITES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
+    {t:6600,p:96,label:'ANCRAGE DES MODULES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
+    {t:7700,p:97,label:'STRUCTURATION INTERFACE',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:8700,p:98,label:'DIAGNOSTIC CORE',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:9500,p:99,label:'DONNÉES SYSTÈME',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:10350,p:99,label:'MODULES OPÉRATIONNELS',state:'FINALISATION',mods:['core','color','led','orbit']},
+    {t:11200,p:100,label:'SYSTÈME OPÉRATIONNEL',state:'EN LIGNE',mods:['core','color','led','orbit']}
   ];
-  const start=performance.now(),endAt=start+7300;let current=-1,watch=0,orbitPaused=false;
+  const start=performance.now(),endAt=start+11850;let current=-1,watch=0,orbitPaused=false;
   body.classList.add('jarvis-booting');body.classList.remove('jarvis-boot-ready');
-  function applyPhase(i){
-    const ph=phases[i];if(!ph)return;current=i;
-    [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));
-    body.classList.add('jarvis-boot-phase-'+i);body.dataset.jarvisBootPhase=String(i);
-    step.textContent=ph.label;pct.textContent=String(ph.p).padStart(2,'0')+'%';bar.style.setProperty('--boot-progress',ph.p+'%');if(state)state.textContent=ph.state;
-    modules.forEach(m=>m.classList.toggle('on',ph.mods.includes(m.dataset.bootModule)));
-  }
+  function applyPhase(i){const ph=phases[i];if(!ph)return;current=i;[...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));body.classList.add('jarvis-boot-phase-'+i);body.dataset.jarvisBootPhase=String(i);step.textContent=ph.label;pct.textContent=String(ph.p).padStart(2,'0')+'%';bar.style.setProperty('--boot-progress',ph.p+'%');if(state)state.textContent=ph.state;modules.forEach(m=>m.classList.toggle('on',ph.mods.includes(m.dataset.bootModule)))}
   applyPhase(0);
   function frame(now){
-    const elapsed=now-start;
-    let idx=0;for(let i=0;i<phases.length;i++)if(elapsed>=phases[i].t)idx=i;if(idx!==current)applyPhase(idx);
+    const elapsed=now-start;let idx=0;for(let i=0;i<phases.length;i++)if(elapsed>=phases[i].t)idx=i;if(idx!==current)applyPhase(idx);
     if(now<endAt&&!body.classList.contains('jarvis-booting'))body.classList.add('jarvis-booting');
-    if(!orbitPaused&&window.jarvisOrbitPro?.pause){window.jarvisOrbitPro.pause(7600);orbitPaused=true}
+    if(!orbitPaused&&window.jarvisOrbitPro?.pause){window.jarvisOrbitPro.pause(12100);orbitPaused=true}
     if(now<endAt){watch=requestAnimationFrame(frame);return}
-    body.classList.remove('jarvis-booting');body.classList.add('jarvis-boot-ready');
-    [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));delete body.dataset.jarvisBootPhase;
+    body.classList.remove('jarvis-booting');body.classList.add('jarvis-boot-ready');[...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));delete body.dataset.jarvisBootPhase;
     if(state)state.textContent='EN LIGNE';bar.style.setProperty('--boot-progress','100%');pct.textContent='100%';step.textContent='SYSTÈME OPÉRATIONNEL';
-    setTimeout(()=>{hud.style.opacity='0';setTimeout(()=>hud.remove(),280)},320);setTimeout(()=>body.classList.remove('jarvis-boot-ready'),900)
+    setTimeout(()=>{hud.style.opacity='0';setTimeout(()=>hud.remove(),280)},180);setTimeout(()=>body.classList.remove('jarvis-boot-ready'),900)
   }
   watch=requestAnimationFrame(frame);
   window.jarvisRunCinematicBoot=()=>{cancelAnimationFrame(watch);hud.remove();window.__jarvisBootPro=false;location.reload()};

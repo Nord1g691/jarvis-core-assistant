@@ -1,103 +1,21 @@
-/* Build 440 — slow mechanical birth, then a deliberate colour-fill phase. */
-
-/* The first act stays focused on the nucleus; telemetry arrives later. */
+/* JARVIS V4.1 build 441 — continuous construction, chromatic fill, then progressive UI assembly. */
 body.jarvis-booting .jarvis-boot-console{opacity:0!important;animation:originConsoleIn .42s 1.18s ease forwards!important}
 body.jarvis-booting .jarvis-boot-grid{opacity:0;animation:originTextIn .40s 2.10s ease forwards!important}
-
-/* During construction the machine is deliberately cold / almost monochrome. */
-body.jarvis-booting .core{
-  transition:filter .58s cubic-bezier(.2,.75,.2,1)!important;
-  filter:grayscale(1) saturate(.08) brightness(.72) drop-shadow(0 0 18px rgba(170,225,235,.12)) drop-shadow(0 28px 54px #000c)!important;
-}
+body.jarvis-booting .core{transition:filter .58s cubic-bezier(.2,.75,.2,1)!important;filter:grayscale(1) saturate(.08) brightness(.72) drop-shadow(0 0 18px rgba(170,225,235,.12)) drop-shadow(0 28px 54px #000c)!important}
 body.jarvis-booting.jarvis-boot-phase-3 .core{filter:grayscale(1) saturate(.08) brightness(.79) drop-shadow(0 0 22px rgba(180,235,245,.15)) drop-shadow(0 28px 54px #000c)!important}
 body.jarvis-booting.jarvis-boot-phase-4 .core{filter:grayscale(.92) saturate(.16) brightness(.86) drop-shadow(0 0 25px rgba(180,235,245,.18)) drop-shadow(0 28px 54px #000c)!important}
-
-/* ACT I — nucleus -> mechanics -> skeleton. Slower and easier to read. */
-body.jarvis-booting .core .reactor-radials{animation-delay:.72s!important;animation-duration:.70s!important}
-body.jarvis-booting .core .reactor-crown{animation-delay:.90s!important;animation-duration:.76s!important}
-body.jarvis-booting .core .reactor-axis{animation-delay:1.08s!important;animation-duration:.72s!important}
-body.jarvis-booting .core .reactor-scale{animation-delay:1.27s!important;animation-duration:.74s!important}
-body.jarvis-booting .core .reactor-grid{animation-delay:1.47s!important;animation-duration:.78s!important}
-body.jarvis-booting .core .reactor-segments{animation-delay:1.68s!important;animation-duration:.82s!important}
-body.jarvis-booting .core .reactor-depth{animation-delay:1.91s!important;animation-duration:.84s!important}
-
-body.jarvis-booting .core .r5{animation-delay:1.30s!important;animation-duration:.65s!important}
-body.jarvis-booting .core .r4{animation-delay:1.52s!important;animation-duration:.68s!important}
-body.jarvis-booting .core .arcbit{animation-delay:1.73s!important;animation-duration:.64s!important}
-body.jarvis-booting .core .r3{animation-delay:1.92s!important;animation-duration:.70s!important}
-body.jarvis-booting .core .micro2{animation-delay:2.10s!important;animation-duration:.68s!important}
-body.jarvis-booting .core .r2{animation-delay:2.28s!important;animation-duration:.72s!important}
-body.jarvis-booting .core .coreplate{animation-delay:2.43s!important;animation-duration:.68s!important}
-body.jarvis-booting .core .seg{animation-delay:2.58s!important;animation-duration:.70s!important}
-body.jarvis-booting .core .micro{animation-delay:2.72s!important;animation-duration:.72s!important}
-body.jarvis-booting .core .r1{animation-delay:2.86s!important;animation-duration:.74s!important}
-body.jarvis-booting .core .r0{animation-delay:3.02s!important;animation-duration:.76s!important}
-body.jarvis-booting .core .tech-ring{animation-delay:3.18s!important;animation-duration:.72s!important}
-body.jarvis-booting .core .core-art{animation-delay:3.12s!important;animation-duration:.76s!important}
-body.jarvis-booting .core .core-sweep{animation-delay:3.34s!important;animation-duration:.86s!important}
-body.jarvis-booting .core .label,body.jarvis-booting .core .coreword{animation-delay:3.44s!important;animation-duration:.48s!important}
-body.jarvis-booting .core .state{animation-delay:3.62s!important;animation-duration:.46s!important}
-
-/* LEDs wait: they are part of the colour payoff, not the structural build. */
+body.jarvis-booting .core .reactor-radials{animation-delay:.72s!important;animation-duration:.70s!important}body.jarvis-booting .core .reactor-crown{animation-delay:.90s!important;animation-duration:.76s!important}body.jarvis-booting .core .reactor-axis{animation-delay:1.08s!important;animation-duration:.72s!important}body.jarvis-booting .core .reactor-scale{animation-delay:1.27s!important;animation-duration:.74s!important}body.jarvis-booting .core .reactor-grid{animation-delay:1.47s!important;animation-duration:.78s!important}body.jarvis-booting .core .reactor-segments{animation-delay:1.68s!important;animation-duration:.82s!important}body.jarvis-booting .core .reactor-depth{animation-delay:1.91s!important;animation-duration:.84s!important}
+body.jarvis-booting .core .r5{animation-delay:1.30s!important;animation-duration:.65s!important}body.jarvis-booting .core .r4{animation-delay:1.52s!important;animation-duration:.68s!important}body.jarvis-booting .core .arcbit{animation-delay:1.73s!important;animation-duration:.64s!important}body.jarvis-booting .core .r3{animation-delay:1.92s!important;animation-duration:.70s!important}body.jarvis-booting .core .micro2{animation-delay:2.10s!important;animation-duration:.68s!important}body.jarvis-booting .core .r2{animation-delay:2.28s!important;animation-duration:.72s!important}body.jarvis-booting .core .coreplate{animation-delay:2.43s!important;animation-duration:.68s!important}body.jarvis-booting .core .seg{animation-delay:2.58s!important;animation-duration:.70s!important}body.jarvis-booting .core .micro{animation-delay:2.72s!important;animation-duration:.72s!important}body.jarvis-booting .core .r1{animation-delay:2.86s!important;animation-duration:.74s!important}body.jarvis-booting .core .r0{animation-delay:3.02s!important;animation-duration:.76s!important}body.jarvis-booting .core .tech-ring{animation-delay:3.18s!important;animation-duration:.72s!important}body.jarvis-booting .core .core-art{animation-delay:3.12s!important;animation-duration:.76s!important}body.jarvis-booting .core .core-sweep{animation-delay:3.34s!important;animation-duration:.86s!important}body.jarvis-booting .core .label,body.jarvis-booting .core .coreword{animation-delay:3.44s!important;animation-duration:.48s!important}body.jarvis-booting .core .state{animation-delay:3.62s!important;animation-duration:.46s!important}
+body.jarvis-booting.jarvis-boot-phase-5 .core{filter:grayscale(.56) saturate(.62) brightness(.98) drop-shadow(0 0 31px rgba(0,234,255,.24)) drop-shadow(0 28px 54px #000c)!important}body.jarvis-booting.jarvis-boot-phase-6 .core{filter:grayscale(.22) saturate(.92) brightness(1.04) drop-shadow(0 0 38px rgba(0,234,255,.31)) drop-shadow(0 28px 54px #000c)!important}body.jarvis-booting.jarvis-boot-phase-7 .core,body.jarvis-booting.jarvis-boot-phase-8 .core,body.jarvis-booting.jarvis-boot-phase-9 .core,body.jarvis-booting.jarvis-boot-phase-10 .core,body.jarvis-booting.jarvis-boot-phase-11 .core,body.jarvis-booting.jarvis-boot-phase-12 .core,body.jarvis-booting.jarvis-boot-phase-13 .core,body.jarvis-booting.jarvis-boot-phase-14 .core{filter:grayscale(0) saturate(1.10) brightness(1.06) drop-shadow(0 0 43px rgba(0,234,255,.34)) drop-shadow(0 28px 54px #000c)!important}
+body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-hub{animation:bootColourHeart .88s ease-in-out both!important}body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-glass{animation:bootColourGlass .92s ease-in-out both!important}body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-crown,body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-radials{animation:bootColourInner .98s ease-out both!important}body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-pulse{animation:bootColourWave 1.12s ease-out both!important}
+body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-grid,body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-scale,body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-segments,body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-depth,body.jarvis-booting.jarvis-boot-phase-6 .core .r5,body.jarvis-booting.jarvis-boot-phase-6 .core .r4,body.jarvis-booting.jarvis-boot-phase-6 .core .r3{animation:bootColourMid 1.02s ease-out both!important}body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-pulse{animation:bootColourWave2 1.10s ease-out both!important}
+body.jarvis-booting.jarvis-boot-phase-7 .core .r2,body.jarvis-booting.jarvis-boot-phase-7 .core .r1,body.jarvis-booting.jarvis-boot-phase-7 .core .r0,body.jarvis-booting.jarvis-boot-phase-7 .core .micro,body.jarvis-booting.jarvis-boot-phase-7 .core .micro2,body.jarvis-booting.jarvis-boot-phase-7 .core .seg,body.jarvis-booting.jarvis-boot-phase-7 .core .tech-ring{animation:bootColourOuter 1.08s ease-out both!important}body.jarvis-booting.jarvis-boot-phase-7 .core .reactor-pulse{animation:bootColourWave3 1.22s ease-out both!important}
+@keyframes bootColourHeart{0%{filter:grayscale(.92) saturate(.24) brightness(.92)}48%{filter:grayscale(.34) saturate(.82) brightness(1.18);box-shadow:0 0 16px #fff9,0 0 34px var(--a),0 0 58px color-mix(in srgb,var(--a) 55%,transparent)}100%{filter:grayscale(0) saturate(1.18) brightness(1.10);box-shadow:0 0 12px #fff9,0 0 28px var(--a),0 0 52px color-mix(in srgb,var(--a) 48%,transparent)}}@keyframes bootColourGlass{0%{filter:grayscale(.9) saturate(.3) brightness(.92)}55%{filter:grayscale(.24) saturate(.95) brightness(1.18)}100%{filter:grayscale(0) saturate(1.08) brightness(1.04)}}@keyframes bootColourInner{0%{filter:grayscale(.92) saturate(.24) brightness(.88)}55%{filter:grayscale(.30) saturate(.92) brightness(1.18)}100%{filter:grayscale(0) saturate(1.08) brightness(1.04)}}@keyframes bootColourMid{0%{filter:grayscale(.88) saturate(.28) brightness(.90)}52%{filter:grayscale(.34) saturate(.86) brightness(1.15)}100%{filter:grayscale(0) saturate(1.06) brightness(1.04)}}@keyframes bootColourOuter{0%{filter:grayscale(.82) saturate(.34) brightness(.92)}52%{filter:grayscale(.28) saturate(.92) brightness(1.16)}100%{filter:grayscale(0) saturate(1.08) brightness(1.04)}}
+@keyframes bootColourWave{0%{opacity:.92;transform:translate(-50%,-50%) scale(.22);border-color:#fff;box-shadow:0 0 26px #fff,0 0 55px #00eaff}100%{opacity:0;transform:translate(-50%,-50%) scale(1.42);border-color:transparent;box-shadow:none}}@keyframes bootColourWave2{0%{opacity:.84;transform:translate(-50%,-50%) scale(.46);border-color:#c8ffff;box-shadow:0 0 22px #00eaff}100%{opacity:0;transform:translate(-50%,-50%) scale(1.82);border-color:transparent;box-shadow:none}}@keyframes bootColourWave3{0%{opacity:.76;transform:translate(-50%,-50%) scale(.74);border-color:#8ff8ff;box-shadow:0 0 18px #00eaff}100%{opacity:0;transform:translate(-50%,-50%) scale(2.18);border-color:transparent;box-shadow:none}}
 body.jarvis-booting .core .tick:nth-child(12n+1){animation-delay:5.02s!important}body.jarvis-booting .core .tick:nth-child(12n+2){animation-delay:5.08s!important}body.jarvis-booting .core .tick:nth-child(12n+3){animation-delay:5.14s!important}body.jarvis-booting .core .tick:nth-child(12n+4){animation-delay:5.20s!important}body.jarvis-booting .core .tick:nth-child(12n+5){animation-delay:5.26s!important}body.jarvis-booting .core .tick:nth-child(12n+6){animation-delay:5.32s!important}body.jarvis-booting .core .tick:nth-child(12n+7){animation-delay:5.38s!important}body.jarvis-booting .core .tick:nth-child(12n+8){animation-delay:5.44s!important}body.jarvis-booting .core .tick:nth-child(12n+9){animation-delay:5.50s!important}body.jarvis-booting .core .tick:nth-child(12n+10){animation-delay:5.56s!important}body.jarvis-booting .core .tick:nth-child(12n+11){animation-delay:5.62s!important}body.jarvis-booting .core .tick:nth-child(12n){animation-delay:5.68s!important}
-
-/* ACT II — colour is injected at the centre and propagates outward in three visible beats. */
-body.jarvis-booting.jarvis-boot-phase-5 .core{
-  filter:grayscale(.56) saturate(.62) brightness(.98) drop-shadow(0 0 31px rgba(0,234,255,.24)) drop-shadow(0 28px 54px #000c)!important;
-}
-body.jarvis-booting.jarvis-boot-phase-6 .core{
-  filter:grayscale(.22) saturate(.92) brightness(1.04) drop-shadow(0 0 38px rgba(0,234,255,.31)) drop-shadow(0 28px 54px #000c)!important;
-}
-body.jarvis-booting.jarvis-boot-phase-7 .core,
-body.jarvis-booting.jarvis-boot-phase-8 .core,
-body.jarvis-booting.jarvis-boot-phase-9 .core,
-body.jarvis-booting.jarvis-boot-phase-10 .core{
-  filter:grayscale(0) saturate(1.10) brightness(1.06) drop-shadow(0 0 43px rgba(0,234,255,.34)) drop-shadow(0 28px 54px #000c)!important;
-}
-
-/* Inner colour charge. */
-body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-hub{animation:bootColourHeart .78s ease-in-out both!important}
-body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-glass{animation:bootColourGlass .86s ease-in-out both!important}
-body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-crown,
-body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-radials{animation:bootColourInner .92s ease-out both!important}
-body.jarvis-booting.jarvis-boot-phase-5 .core .reactor-pulse{animation:bootColourWave 1.05s ease-out both!important}
-
-/* Mid-rings receive colour next. */
-body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-grid,
-body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-scale,
-body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-segments,
-body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-depth,
-body.jarvis-booting.jarvis-boot-phase-6 .core .r5,
-body.jarvis-booting.jarvis-boot-phase-6 .core .r4,
-body.jarvis-booting.jarvis-boot-phase-6 .core .r3{animation:bootColourMid .95s ease-out both!important}
-body.jarvis-booting.jarvis-boot-phase-6 .core .reactor-pulse{animation:bootColourWave2 1.05s ease-out both!important}
-
-/* Outer frame + LEDs complete the chromatic fill. */
-body.jarvis-booting.jarvis-boot-phase-7 .core .r2,
-body.jarvis-booting.jarvis-boot-phase-7 .core .r1,
-body.jarvis-booting.jarvis-boot-phase-7 .core .r0,
-body.jarvis-booting.jarvis-boot-phase-7 .core .micro,
-body.jarvis-booting.jarvis-boot-phase-7 .core .micro2,
-body.jarvis-booting.jarvis-boot-phase-7 .core .seg,
-body.jarvis-booting.jarvis-boot-phase-7 .core .tech-ring{animation:bootColourOuter 1.02s ease-out both!important}
-body.jarvis-booting.jarvis-boot-phase-7 .core .reactor-pulse{animation:bootColourWave3 1.18s ease-out both!important}
-
-/* Orbit and cards only arrive after the colour sequence has had time to breathe. */
-body.jarvis-booting .jarvis-orbit-stage::before{animation-delay:5.72s!important;animation-duration:.78s!important}
-body.jarvis-booting .jarvis-orbit-stage::after{animation-delay:5.90s!important;animation-duration:.78s!important}
-body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="0"]{animation-delay:5.98s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="1"]{animation-delay:6.10s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="2"]{animation-delay:6.22s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="3"]{animation-delay:6.34s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="4"]{animation-delay:6.46s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="5"]{animation-delay:6.58s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="6"]{animation-delay:6.70s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="7"]{animation-delay:6.82s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="8"]{animation-delay:6.94s!important}
-
-/* App chrome is the very last layer. */
-body.jarvis-booting .header,body.jarvis-booting .online,body.jarvis-booting .hudstrip,body.jarvis-booting .realtime-strip{animation-delay:6.18s!important;animation-duration:.60s!important}
-body.jarvis-booting .system,body.jarvis-booting .diagnostic,body.jarvis-booting .datagrid,body.jarvis-booting .metrics,body.jarvis-booting .quote{animation-delay:6.48s!important;animation-duration:.62s!important}
-
-@keyframes bootColourHeart{0%{filter:grayscale(1) brightness(.75);transform:translate(-50%,-50%) scale(.94)}40%{filter:grayscale(.35) saturate(.8) brightness(1.55);transform:translate(-50%,-50%) scale(1.16)}100%{filter:grayscale(0) saturate(1.2) brightness(1.12);transform:translate(-50%,-50%) scale(1)}}
-@keyframes bootColourGlass{0%{opacity:.35;filter:grayscale(1)}55%{opacity:1;filter:grayscale(.2) saturate(1.1) brightness(1.35)}100%{opacity:.88;filter:none}}
-@keyframes bootColourInner{0%{filter:grayscale(1) brightness(.72);opacity:.55}55%{filter:grayscale(.28) saturate(1.2) brightness(1.4);opacity:1}100%{filter:none;opacity:1}}
-@keyframes bootColourMid{0%{filter:grayscale(1) brightness(.72);opacity:.58}45%{filter:grayscale(.45) saturate(.75) brightness(1.28);opacity:.92}100%{filter:grayscale(0) saturate(1.06) brightness(1.05);opacity:1}}
-@keyframes bootColourOuter{0%{filter:grayscale(1) brightness(.68);opacity:.48}45%{filter:grayscale(.38) saturate(.9) brightness(1.35);opacity:.94}100%{filter:grayscale(0) saturate(1.08) brightness(1.04);opacity:1}}
-@keyframes bootColourWave{0%{opacity:.95;transform:translate(-50%,-50%) scale(.18);border-color:#fff;box-shadow:0 0 26px #fff,0 0 55px #00eaff}100%{opacity:0;transform:translate(-50%,-50%) scale(1.42);border-color:#00eaff00;box-shadow:none}}
-@keyframes bootColourWave2{0%{opacity:.86;transform:translate(-50%,-50%) scale(.42);border-color:#c8ffff;box-shadow:0 0 22px #00eaff}100%{opacity:0;transform:translate(-50%,-50%) scale(1.82);border-color:transparent;box-shadow:none}}
-@keyframes bootColourWave3{0%{opacity:.78;transform:translate(-50%,-50%) scale(.72);border-color:#8ff8ff;box-shadow:0 0 18px #00eaff}100%{opacity:0;transform:translate(-50%,-50%) scale(2.18);border-color:transparent;box-shadow:none}}
-
+body.jarvis-booting .jarvis-orbit-stage::before{animation-delay:5.78s!important;animation-duration:.86s!important}body.jarvis-booting .jarvis-orbit-stage::after{animation-delay:5.98s!important;animation-duration:.82s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="0"]{animation-delay:6.12s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="1"]{animation-delay:6.28s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="2"]{animation-delay:6.44s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="3"]{animation-delay:6.60s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="4"]{animation-delay:6.76s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="5"]{animation-delay:6.92s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="6"]{animation-delay:7.08s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="7"]{animation-delay:7.24s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="8"]{animation-delay:7.40s!important}
+body.jarvis-booting .header{opacity:0!important;animation:continuityReveal .52s 7.72s ease forwards!important}body.jarvis-booting .online{opacity:0!important;animation:continuityReveal .42s 8.02s ease forwards!important}body.jarvis-booting .realtime-strip{opacity:0!important;animation:continuityLine .48s 8.26s ease forwards!important}body.jarvis-booting .hudstrip{opacity:0!important;animation:continuityLine .54s 8.52s ease forwards!important}body.jarvis-booting .system{opacity:0!important;animation:continuityPanel .50s 8.82s ease forwards!important}
+body.jarvis-booting .diagnostic{opacity:1!important;animation:none!important}body.jarvis-booting .diagnostic .diagmain{opacity:0;animation:continuityPanel .50s 9.08s ease forwards!important}body.jarvis-booting .diagnostic .diagstat{opacity:0;animation:continuityPanel .50s 9.32s ease forwards!important}body.jarvis-booting .datagrid{opacity:1!important;animation:none!important}body.jarvis-booting .datagrid .dataunit{opacity:0;animation:continuityCell .42s ease forwards!important}body.jarvis-booting .datagrid .dataunit:nth-child(1){animation-delay:9.55s!important}body.jarvis-booting .datagrid .dataunit:nth-child(2){animation-delay:9.70s!important}body.jarvis-booting .datagrid .dataunit:nth-child(3){animation-delay:9.85s!important}body.jarvis-booting .datagrid .dataunit:nth-child(4){animation-delay:10s!important}
+body.jarvis-booting .metrics{opacity:1!important;animation:none!important}body.jarvis-booting .metrics .metric{opacity:0;animation:continuityCell .46s ease forwards!important}body.jarvis-booting .metrics .metric:nth-child(1){animation-delay:10.15s!important}body.jarvis-booting .metrics .metric:nth-child(2){animation-delay:10.30s!important}body.jarvis-booting .metrics .metric:nth-child(3){animation-delay:10.45s!important}body.jarvis-booting .metrics .metric:nth-child(4){animation-delay:10.60s!important}body.jarvis-booting .quote{opacity:0!important;animation:continuityPanel .48s 10.78s ease forwards!important}body.jarvis-booting .dock{opacity:0!important;animation:continuityDock .52s 10.98s ease forwards!important}body.jarvis-booting.jarvis-boot-phase-14 .jarvis-boot-console{animation:continuityConsoleOut .42s ease forwards!important}
+@keyframes continuityReveal{0%{opacity:0;filter:blur(5px) brightness(1.55)}100%{opacity:1;filter:none}}@keyframes continuityLine{0%{opacity:0;clip-path:inset(0 50% 0 50%);filter:brightness(1.65)}100%{opacity:1;clip-path:inset(0);filter:none}}@keyframes continuityPanel{0%{opacity:0;clip-path:inset(50% 0 50% 0);filter:blur(3px) brightness(1.45)}100%{opacity:1;clip-path:inset(0);filter:none}}@keyframes continuityCell{0%{opacity:0;clip-path:inset(0 100% 0 0);filter:brightness(1.55)}72%{opacity:1;filter:brightness(1.15)}100%{opacity:1;clip-path:inset(0);filter:none}}@keyframes continuityDock{0%{opacity:0;filter:blur(5px) brightness(1.45)}100%{opacity:1;filter:none}}@keyframes continuityConsoleOut{0%{opacity:1}100%{opacity:0;filter:blur(4px)}}
 @media(orientation:landscape){body.jarvis-booting .jarvis-boot-console{animation-name:originConsoleInLand!important}}
