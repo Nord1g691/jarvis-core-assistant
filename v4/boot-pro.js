@@ -24,21 +24,30 @@
     {t:13000,p:98,label:'MODULES ÉNERGIE · MAISON',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
     {t:14100,p:99,label:'ASSISTANT JARVIS EN LIGNE',state:'FINALISATION',mods:['core','color','led','orbit']},
     {t:14800,p:99,label:'COMMANDES INTERFACE',state:'FINALISATION',mods:['core','color','led','orbit']},
-    {t:15600,p:100,label:'SYSTÈME OPÉRATIONNEL',state:'EN LIGNE',mods:['core','color','led','orbit']}
+    {t:15600,p:100,label:'SYSTÈME OPÉRATIONNEL',state:'EN LIGNE',mods:['core','color','led','orbit']},
+    {t:16250,p:100,label:'LUMINANCE NOMINALE',state:'EN LIGNE',mods:['core','color','led','orbit']}
   ];
-  const start=performance.now(),endAt=start+16250;let current=-1,watch=0,orbitPaused=false;
-  body.classList.add('jarvis-booting');body.classList.remove('jarvis-boot-ready');
-  function applyPhase(i){const ph=phases[i];if(!ph)return;current=i;[...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));body.classList.add('jarvis-boot-phase-'+i);body.dataset.jarvisBootPhase=String(i);step.textContent=ph.label;pct.textContent=String(ph.p).padStart(2,'0')+'%';bar.style.setProperty('--boot-progress',ph.p+'%');if(state)state.textContent=ph.state;modules.forEach(m=>m.classList.toggle('on',ph.mods.includes(m.dataset.bootModule)))}
+  const start=performance.now(),endAt=start+18250;let current=-1,watch=0,orbitPaused=false;
+  body.classList.add('jarvis-booting');body.classList.remove('jarvis-boot-ready','jarvis-boot-settling');
+  function applyPhase(i){
+    const ph=phases[i];if(!ph)return;current=i;
+    [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));
+    body.classList.add('jarvis-boot-phase-'+i);body.dataset.jarvisBootPhase=String(i);
+    if(i>=19)body.classList.add('jarvis-boot-settling');
+    step.textContent=ph.label;pct.textContent=String(ph.p).padStart(2,'0')+'%';bar.style.setProperty('--boot-progress',ph.p+'%');if(state)state.textContent=ph.state;
+    modules.forEach(m=>m.classList.toggle('on',ph.mods.includes(m.dataset.bootModule)));
+  }
   applyPhase(0);
   function frame(now){
     const elapsed=now-start;let idx=0;for(let i=0;i<phases.length;i++)if(elapsed>=phases[i].t)idx=i;if(idx!==current)applyPhase(idx);
     if(now<endAt&&!body.classList.contains('jarvis-booting'))body.classList.add('jarvis-booting');
-    if(!orbitPaused&&window.jarvisOrbitPro?.pause){window.jarvisOrbitPro.pause(16500);orbitPaused=true}
+    if(!orbitPaused&&window.jarvisOrbitPro?.pause){window.jarvisOrbitPro.pause(18500);orbitPaused=true}
     if(now<endAt){watch=requestAnimationFrame(frame);return}
-    body.classList.remove('jarvis-booting');body.classList.add('jarvis-boot-ready');[...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));delete body.dataset.jarvisBootPhase;
+    body.classList.remove('jarvis-booting','jarvis-boot-settling','jarvis-boot-ready');
+    [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));delete body.dataset.jarvisBootPhase;
     if(state)state.textContent='EN LIGNE';bar.style.setProperty('--boot-progress','100%');pct.textContent='100%';step.textContent='SYSTÈME OPÉRATIONNEL';
-    setTimeout(()=>{hud.style.opacity='0';setTimeout(()=>hud.remove(),300)},160);setTimeout(()=>body.classList.remove('jarvis-boot-ready'),950)
+    hud.remove();
   }
   watch=requestAnimationFrame(frame);
-  window.jarvisRunCinematicBoot=()=>{cancelAnimationFrame(watch);hud.remove();window.__jarvisBootPro=false;location.reload()};
+  window.jarvisRunCinematicBoot=()=>{cancelAnimationFrame(watch);hud.remove();body.classList.remove('jarvis-booting','jarvis-boot-settling','jarvis-boot-ready');window.__jarvisBootPro=false;location.reload()};
 })();
