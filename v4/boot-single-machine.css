@@ -1,0 +1,243 @@
+/* JARVIS V4.1 build 453 — one machine from fabrication to idle.
+   Fixes the architectural break between the nice fabricated shell and the old finished Core.
+   The fabricated mechanics now remain part of the final Core; the SVG is only a faint detail layer. */
+
+/* The fabricated skeleton must NEVER vanish at handoff. */
+body.jarvis-booting .jarvis-fabrication{
+  display:block!important;
+  opacity:1!important;
+  animation:fabPower 1.30s 3.02s ease forwards!important;
+}
+body.jarvis-booting.jarvis-boot-phase-13 .jarvis-fabrication{opacity:.88!important;transition:opacity .35s ease!important}
+body.jarvis-booting.jarvis-boot-phase-14 .jarvis-fabrication{opacity:.68!important;transition:opacity .35s ease!important}
+body.jarvis-booting.jarvis-boot-phase-15 .jarvis-fabrication{opacity:.48!important;transition:opacity .28s ease!important}
+body.jarvis-booting.jarvis-boot-phase-16 .jarvis-fabrication{opacity:.34!important;transition:opacity .20s ease!important}
+body:not(.jarvis-booting) .jarvis-fabrication{
+  display:block!important;
+  opacity:.34!important;
+  animation:none!important;
+  filter:grayscale(.18) saturate(.78) brightness(.72)!important;
+  transition:opacity .25s ease,filter .25s ease!important;
+}
+
+/* Freeze the construction pieces in their completed positions after boot. */
+body:not(.jarvis-booting) .jarvis-fabrication .fab-wave{opacity:0!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-seed{opacity:.72!important;transform:translate(-50%,-50%) scale(1)!important;filter:none!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-lock i{opacity:.46!important;clip-path:inset(0)!important;filter:none!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-lock i:nth-child(odd),body:not(.jarvis-booting) .jarvis-fabrication .fab-lock i:nth-child(even){transform:rotate(var(--rot))!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-spokes i{opacity:.30!important;transform:rotate(var(--rot)) scaleX(1)!important;filter:none!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-rings i{opacity:.46!important;clip-path:inset(0)!important;filter:none!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-arcs i{opacity:.36!important;transform:rotate(var(--rot)) scale(1)!important;filter:none!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-led i{opacity:.34!important;filter:none!important}
+body:not(.jarvis-booting) .jarvis-fabrication .fab-scan{opacity:.12!important}
+
+/* During the whole boot the old finished Core is subordinate to the fabricated machine. */
+body.jarvis-booting .core>.r,
+body.jarvis-booting .core>.micro,
+body.jarvis-booting .core>.micro2,
+body.jarvis-booting .core>.seg,
+body.jarvis-booting .core>.arcbit,
+body.jarvis-booting .core>.coreplate,
+body.jarvis-booting .core>.cross,
+body.jarvis-booting .core>.tech-ring,
+body.jarvis-booting .core>.ticks,
+body.jarvis-booting .core>.core-art,
+body.jarvis-booting .core>.orb,
+body.jarvis-booting .core>.label,
+body.jarvis-booting .core>.coreword,
+body.jarvis-booting .core>.state,
+body.jarvis-booting .core>.core-sweep,
+body.jarvis-booting .core>.core-sparks,
+body.jarvis-booting .core>.reactor-depth,
+body.jarvis-booting .core>.reactor-grid,
+body.jarvis-booting .core>.reactor-segments,
+body.jarvis-booting .core>.reactor-scale,
+body.jarvis-booting .core>.reactor-axis,
+body.jarvis-booting .core>.reactor-crown,
+body.jarvis-booting .core>.reactor-radials,
+body.jarvis-booting .core>.reactor-lock,
+body.jarvis-booting .core>.reactor-hub,
+body.jarvis-booting .core>.reactor-glass,
+body.jarvis-booting .core>.reactor-pulse{
+  opacity:0!important;
+  animation:none!important;
+  transition:opacity .28s linear,filter .28s ease!important;
+}
+
+/* 4.30 s: only the real nucleus is allowed to merge under the already-built shell. */
+body.jarvis-booting.jarvis-boot-phase-8 .core>.reactor-hub{opacity:.10!important}
+body.jarvis-booting.jarvis-boot-phase-8 .core>.reactor-glass{opacity:.08!important}
+body.jarvis-booting.jarvis-boot-phase-8 .core>.r5{opacity:.05!important}
+
+/* 4.75 s: inner machine becomes real, but there is still NO final SVG image. */
+body.jarvis-booting.jarvis-boot-phase-9 .core>.reactor-hub{opacity:.28!important}
+body.jarvis-booting.jarvis-boot-phase-9 .core>.reactor-glass{opacity:.22!important}
+body.jarvis-booting.jarvis-boot-phase-9 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-9 .core>.reactor-radials{opacity:.22!important}
+body.jarvis-booting.jarvis-boot-phase-9 .core>.r5{opacity:.18!important}
+body.jarvis-booting.jarvis-boot-phase-9 .core>.r4{opacity:.10!important}
+
+/* 5.00 s: first physical ring group locks in. */
+body.jarvis-booting.jarvis-boot-phase-10 .core>.reactor-hub{opacity:.46!important}
+body.jarvis-booting.jarvis-boot-phase-10 .core>.reactor-glass{opacity:.34!important}
+body.jarvis-booting.jarvis-boot-phase-10 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-10 .core>.reactor-radials{opacity:.40!important}
+body.jarvis-booting.jarvis-boot-phase-10 .core>.reactor-grid{opacity:.18!important}
+body.jarvis-booting.jarvis-boot-phase-10 .core>.r5{opacity:.44!important}
+body.jarvis-booting.jarvis-boot-phase-10 .core>.r4{opacity:.32!important}
+body.jarvis-booting.jarvis-boot-phase-10 .core>.r3{opacity:.22!important}
+body.jarvis-booting.jarvis-boot-phase-10 .core>.micro2{opacity:.14!important}
+
+/* 5.35 s: radial chassis grows outward. */
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-hub{opacity:.62!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-glass{opacity:.44!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-radials,
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-segments,
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-scale{opacity:.56!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-grid{opacity:.34!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.reactor-depth{opacity:.46!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.r5,
+body.jarvis-booting.jarvis-boot-phase-11 .core>.r4,
+body.jarvis-booting.jarvis-boot-phase-11 .core>.r3{opacity:.66!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.r2,
+body.jarvis-booting.jarvis-boot-phase-11 .core>.micro2,
+body.jarvis-booting.jarvis-boot-phase-11 .core>.arcbit{opacity:.42!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.coreplate{opacity:.24!important}
+body.jarvis-booting.jarvis-boot-phase-11 .core>.ticks{opacity:.12!important}
+
+/* 5.70 s: outer chassis and fine mechanics are physically present. */
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-hub{opacity:.72!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-glass{opacity:.50!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-radials,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-segments,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-scale{opacity:.74!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-grid{opacity:.48!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-depth{opacity:.68!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.reactor-axis{opacity:.14!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.r5,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.r4,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.r3,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.r2{opacity:.82!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.r1,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.micro,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.micro2,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.seg,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.arcbit,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.coreplate{opacity:.58!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.r0,
+body.jarvis-booting.jarvis-boot-phase-12 .core>.tech-ring{opacity:.34!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core>.ticks{opacity:.22!important}
+
+/* 6.05 s: completed mechanics. SVG remains almost invisible; it is not the reveal. */
+body.jarvis-booting.jarvis-boot-phase-13 .core>.r,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.micro,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.micro2,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.seg,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.arcbit,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.coreplate,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.cross,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.tech-ring{opacity:.86!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-hub{opacity:.78!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-glass{opacity:.52!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-depth,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-segments,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-scale,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-radials{opacity:.86!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-grid{opacity:.58!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.reactor-axis{opacity:.18!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.ticks{opacity:.32!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.core-art{opacity:.04!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.core-sweep{opacity:.12!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core>.core-sparks{opacity:.10!important}
+
+/* 6.35 s: only fine engraving is added now. */
+body.jarvis-booting.jarvis-boot-phase-14 .core>.r,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.micro,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.micro2,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.seg,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.arcbit,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.coreplate,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.cross,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.tech-ring{opacity:.94!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-hub{opacity:.76!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-glass{opacity:.46!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-depth,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-segments,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-scale,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-radials{opacity:.94!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-grid{opacity:.64!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.reactor-axis{opacity:.20!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.ticks{opacity:.38!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.core-art{opacity:.10!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.label,
+body.jarvis-booting.jarvis-boot-phase-14 .core>.coreword{opacity:.24!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.state{opacity:.20!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.core-sweep{opacity:.16!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core>.core-sparks{opacity:.14!important}
+
+/* 6.65 s: final readable detail, still built from the same machine. */
+body.jarvis-booting.jarvis-boot-phase-15 .core>.r,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.micro,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.micro2,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.seg,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.arcbit,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.coreplate,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.cross,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.tech-ring{opacity:1!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-depth,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-segments,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-scale,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-radials{opacity:1!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-grid{opacity:.68!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-axis{opacity:.22!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-hub{opacity:.72!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.reactor-glass{opacity:.38!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.ticks{opacity:.40!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.core-art{opacity:.18!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.label,
+body.jarvis-booting.jarvis-boot-phase-15 .core>.coreword{opacity:.68!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.state{opacity:.64!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.core-sweep{opacity:.18!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core>.core-sparks{opacity:.18!important}
+
+/* 6.85 s and idle use IDENTICAL exposure: removing jarvis-booting cannot create a pop. */
+body.jarvis-booting.jarvis-boot-phase-16 .core>.r,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.micro,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.micro2,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.seg,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.arcbit,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.coreplate,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.cross,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.tech-ring{opacity:1!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-depth,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-segments,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-scale,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-crown,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-radials{opacity:1!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-grid{opacity:.68!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-axis{opacity:.22!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-hub{opacity:.72!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.reactor-glass{opacity:.30!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.ticks{opacity:.38!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.core-art{opacity:.22!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.label,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.coreword,
+body.jarvis-booting.jarvis-boot-phase-16 .core>.state{opacity:1!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.core-sweep{opacity:.18!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.core-sparks{opacity:.18!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core>.orb{opacity:.10!important}
+
+/* Match the non-boot idle state to the exact last construction frame. */
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .core-art{opacity:.22!important;filter:brightness(.68) saturate(.74) drop-shadow(0 0 2px rgba(0,234,255,.06))!important}
+body:not(.jarvis-booting):not(.jarvis-listening):not(.jarvis-thinking):not(.jarvis-searching):not(.jarvis-speaking) .core .tick{opacity:.38!important}
+
+/* Active cognitive states can still overpower the faint engraving normally. */
+body.jarvis-thinking .jarvis-fabrication{opacity:.22!important;filter:hue-rotate(145deg) saturate(.82) brightness(.86)!important}
+body.jarvis-listening .jarvis-fabrication,body.jarvis-searching .jarvis-fabrication,body.jarvis-speaking .jarvis-fabrication{opacity:.20!important}
+
+@media(prefers-reduced-motion:reduce){body:not(.jarvis-booting) .jarvis-fabrication{opacity:.20!important}}
