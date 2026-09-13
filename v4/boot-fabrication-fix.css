@@ -1,0 +1,12 @@
+/* Build 451 fabrication compatibility fix: no unsupported CSS multiplication.
+   All rotations and delays are computed once in JS, then consumed as concrete values. */
+.fab-lock i:nth-child(odd){animation:fabHookL451 .36s var(--d) ease-out forwards!important}
+.fab-lock i:nth-child(even){animation:fabHookR451 .36s var(--d) ease-out forwards!important}
+.fab-spokes i{animation:fabSpoke451 .30s var(--d) ease-out forwards!important}
+.fab-arcs i{transform:rotate(var(--rot)) scale(.64)!important;animation:fabArc451 .30s var(--d) ease-out forwards!important}
+.fab-led i{animation:fabLed .18s var(--d) ease-out forwards!important}
+
+@keyframes fabHookL451{0%{opacity:0;clip-path:inset(0 0 0 100%);transform:rotate(var(--rot));filter:blur(2px)}100%{opacity:.82;clip-path:inset(0);transform:rotate(var(--rot));filter:none}}
+@keyframes fabHookR451{0%{opacity:0;clip-path:inset(0 100% 0 0);transform:rotate(var(--rot));filter:blur(2px)}100%{opacity:.82;clip-path:inset(0);transform:rotate(var(--rot));filter:none}}
+@keyframes fabSpoke451{0%{opacity:0;transform:rotate(var(--rot)) scaleX(.04);filter:blur(2px)}100%{opacity:.52;transform:rotate(var(--rot)) scaleX(1);filter:none}}
+@keyframes fabArc451{0%{opacity:0;transform:rotate(var(--rot)) scale(.64);filter:blur(2px)}100%{opacity:.64;transform:rotate(var(--rot)) scale(1);filter:none}}
