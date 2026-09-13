@@ -12,19 +12,20 @@
     });
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
-  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='445';document.head.appendChild(x)};
-  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='445';document.head.appendChild(x)};
-  addCss('final-pass.css?v=445','final');
-  addCss('final-pulse.css?v=445','pulse');
-  addCss('orbit-pro.css?v=445','orbit');
-  addCss('orbit-hotfix.css?v=445','orbithotfix');
-  addCss('boot-pro.css?v=445','boot');
-  addCss('boot-origin.css?v=445','bootorigin');
-  addCss('boot-flow.css?v=445','bootflow');
-  addCss('boot-finale.css?v=445','bootfinale');
-  addCss('boot-exposure.css?v=445','bootexposure');
-  addCss('boot-10s.css?v=445','boot10');
-  addJs('final-runtime.js?v=445','final');
-  addJs('orbit-pro.js?v=445','orbit');
-  addJs('boot-pro.js?v=445','boot');
+  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='446';document.head.appendChild(x)};
+  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='446';document.head.appendChild(x)};
+  addCss('final-pass.css?v=446','final');
+  addCss('final-pulse.css?v=446','pulse');
+  addCss('orbit-pro.css?v=446','orbit');
+  addCss('orbit-hotfix.css?v=446','orbithotfix');
+  addCss('boot-pro.css?v=446','boot');
+  addCss('boot-origin.css?v=446','bootorigin');
+  addCss('boot-flow.css?v=446','bootflow');
+  addCss('boot-finale.css?v=446','bootfinale');
+  addCss('boot-exposure.css?v=446','bootexposure');
+  addCss('boot-10s.css?v=446','boot10');
+  addCss('state-tuning.css?v=446','statetuning');
+  addJs('final-runtime.js?v=446','final');
+  addJs('orbit-pro.js?v=446','orbit');
+  addJs('boot-pro.js?v=446','boot');
 })();
