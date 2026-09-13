@@ -1,0 +1,44 @@
+/* Build 439 — phase 2 continues directly from the nucleus instead of revealing the Core too quickly. */
+body.jarvis-booting .jarvis-boot-console{opacity:0!important;animation:originConsoleIn .34s 1.75s ease forwards!important}
+body.jarvis-booting .jarvis-boot-grid{opacity:0;animation:originTextIn .32s 2.35s ease forwards!important}
+
+/* Keep the centre dominant for the first beat. */
+body.jarvis-booting .core .reactor-radials{animation-delay:.62s!important}
+body.jarvis-booting .core .reactor-crown{animation-delay:.78s!important}
+body.jarvis-booting .core .reactor-axis{animation-delay:.94s!important}
+body.jarvis-booting .core .reactor-scale{animation-delay:1.08s!important}
+body.jarvis-booting .core .reactor-grid{animation-delay:1.22s!important}
+body.jarvis-booting .core .reactor-segments{animation-delay:1.36s!important}
+body.jarvis-booting .core .reactor-depth{animation-delay:1.50s!important}
+
+/* Then the physical rings genuinely grow outward, one radius at a time. */
+body.jarvis-booting .core .r5{animation-delay:1.08s!important}
+body.jarvis-booting .core .r4{animation-delay:1.25s!important}
+body.jarvis-booting .core .arcbit{animation-delay:1.40s!important}
+body.jarvis-booting .core .r3{animation-delay:1.53s!important}
+body.jarvis-booting .core .micro2{animation-delay:1.66s!important}
+body.jarvis-booting .core .r2{animation-delay:1.79s!important}
+body.jarvis-booting .core .coreplate{animation-delay:1.90s!important}
+body.jarvis-booting .core .seg{animation-delay:2.00s!important}
+body.jarvis-booting .core .micro{animation-delay:2.11s!important}
+body.jarvis-booting .core .r1{animation-delay:2.23s!important}
+body.jarvis-booting .core .r0{animation-delay:2.38s!important}
+body.jarvis-booting .core .tech-ring{animation-delay:2.50s!important}
+
+/* No finished artwork before the chassis is actually there. */
+body.jarvis-booting .core .core-art{animation-delay:2.42s!important}
+body.jarvis-booting .core .core-sweep{animation-delay:2.58s!important}
+body.jarvis-booting .core .label,body.jarvis-booting .core .coreword{animation-delay:2.80s!important}
+body.jarvis-booting .core .state{animation-delay:3.02s!important}
+
+/* 72 LEDs become the payoff after the outer shell locks. */
+body.jarvis-booting .core .tick:nth-child(12n+1){animation-delay:2.20s!important}body.jarvis-booting .core .tick:nth-child(12n+2){animation-delay:2.25s!important}body.jarvis-booting .core .tick:nth-child(12n+3){animation-delay:2.30s!important}body.jarvis-booting .core .tick:nth-child(12n+4){animation-delay:2.35s!important}body.jarvis-booting .core .tick:nth-child(12n+5){animation-delay:2.40s!important}body.jarvis-booting .core .tick:nth-child(12n+6){animation-delay:2.45s!important}body.jarvis-booting .core .tick:nth-child(12n+7){animation-delay:2.50s!important}body.jarvis-booting .core .tick:nth-child(12n+8){animation-delay:2.55s!important}body.jarvis-booting .core .tick:nth-child(12n+9){animation-delay:2.60s!important}body.jarvis-booting .core .tick:nth-child(12n+10){animation-delay:2.65s!important}body.jarvis-booting .core .tick:nth-child(12n+11){animation-delay:2.70s!important}body.jarvis-booting .core .tick:nth-child(12n){animation-delay:2.75s!important}
+
+/* Orbit is now the final machine layer. */
+body.jarvis-booting .jarvis-orbit-stage::before{animation-delay:3.08s!important}
+body.jarvis-booting .jarvis-orbit-stage::after{animation-delay:3.22s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="0"]{animation-delay:3.30s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="1"]{animation-delay:3.40s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="2"]{animation-delay:3.50s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="3"]{animation-delay:3.60s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="4"]{animation-delay:3.70s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="5"]{animation-delay:3.80s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="6"]{animation-delay:3.90s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="7"]{animation-delay:4.00s!important}body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="8"]{animation-delay:4.10s!important}
+
+/* The app chrome comes last, so the eye stays on the construction. */
+body.jarvis-booting .header,body.jarvis-booting .online,body.jarvis-booting .hudstrip,body.jarvis-booting .realtime-strip{animation-delay:3.55s!important}
+body.jarvis-booting .system,body.jarvis-booting .diagnostic,body.jarvis-booting .datagrid,body.jarvis-booting .metrics,body.jarvis-booting .quote{animation-delay:3.86s!important}
