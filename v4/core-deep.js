@@ -12,17 +12,18 @@
     });
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
-  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='442';document.head.appendChild(x)};
-  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='442';document.head.appendChild(x)};
-  addCss('final-pass.css?v=442','final');
-  addCss('final-pulse.css?v=442','pulse');
-  addCss('orbit-pro.css?v=442','orbit');
-  addCss('orbit-hotfix.css?v=442','orbithotfix');
-  addCss('boot-pro.css?v=442','boot');
-  addCss('boot-origin.css?v=442','bootorigin');
-  addCss('boot-flow.css?v=442','bootflow');
-  addCss('boot-finale.css?v=442','bootfinale');
-  addJs('final-runtime.js?v=442','final');
-  addJs('orbit-pro.js?v=442','orbit');
-  addJs('boot-pro.js?v=442','boot');
+  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='443';document.head.appendChild(x)};
+  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='443';document.head.appendChild(x)};
+  addCss('final-pass.css?v=443','final');
+  addCss('final-pulse.css?v=443','pulse');
+  addCss('orbit-pro.css?v=443','orbit');
+  addCss('orbit-hotfix.css?v=443','orbithotfix');
+  addCss('boot-pro.css?v=443','boot');
+  addCss('boot-origin.css?v=443','bootorigin');
+  addCss('boot-flow.css?v=443','bootflow');
+  addCss('boot-finale.css?v=443','bootfinale');
+  addCss('boot-exposure.css?v=443','bootexposure');
+  addJs('final-runtime.js?v=443','final');
+  addJs('orbit-pro.js?v=443','orbit');
+  addJs('boot-pro.js?v=443','boot');
 })();
