@@ -1,0 +1,67 @@
+/* JARVIS V4.1 build 442 — slower progressive finale. Loaded after boot-flow.css. */
+/* Nothing is removed or rebuilt here: the finished Core stays in place while the interface grows around it. */
+
+/* Identity layer. */
+body.jarvis-booting .header{opacity:0!important;animation:finalReveal .64s 7.72s ease forwards!important}
+body.jarvis-booting .online{opacity:0!important;animation:finalReveal .48s 8.18s ease forwards!important}
+body.jarvis-booting .realtime-strip{opacity:0!important;animation:finalLine .52s 8.58s ease forwards!important}
+
+/* HUD is assembled cell by cell rather than appearing as one block. */
+body.jarvis-booting .hudstrip{opacity:1!important;animation:none!important}
+body.jarvis-booting .hudstrip .hudmini{opacity:0;animation:finalCell .48s ease forwards!important}
+body.jarvis-booting .hudstrip .hudmini:nth-child(1){animation-delay:8.94s!important}
+body.jarvis-booting .hudstrip .hudmini:nth-child(2){animation-delay:9.30s!important}
+body.jarvis-booting .hudstrip .hudmini:nth-child(3){animation-delay:9.66s!important}
+body.jarvis-booting .system{opacity:0!important;animation:finalLine .56s 10.04s ease forwards!important}
+
+/* Diagnostics grow in layers, then each rail is energised. */
+body.jarvis-booting .diagnostic{opacity:1!important;animation:none!important}
+body.jarvis-booting .diagnostic .diagmain{opacity:0;animation:finalPanel .56s 10.42s ease forwards!important}
+body.jarvis-booting .diagnostic .diagmain .bar{opacity:0;animation:finalBar .50s ease forwards!important}
+body.jarvis-booting .diagnostic .diagmain .bar:nth-child(1){animation-delay:10.78s!important}
+body.jarvis-booting .diagnostic .diagmain .bar:nth-child(2){animation-delay:11.10s!important}
+body.jarvis-booting .diagnostic .diagmain .bar:nth-child(3){animation-delay:11.42s!important}
+body.jarvis-booting .diagnostic .diagstat{opacity:0;animation:finalPanel .54s 11.76s ease forwards!important}
+
+/* System cells are deliberately separated so the end never collapses into one flash. */
+body.jarvis-booting .datagrid{opacity:1!important;animation:none!important}
+body.jarvis-booting .datagrid .dataunit{opacity:0;animation:finalCell .46s ease forwards!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(1){animation-delay:12.12s!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(2){animation-delay:12.40s!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(3){animation-delay:12.68s!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(4){animation-delay:12.96s!important}
+
+/* Home/energy modules follow one by one. */
+body.jarvis-booting .metrics{opacity:1!important;animation:none!important}
+body.jarvis-booting .metrics .metric{opacity:0;animation:finalCell .50s ease forwards!important}
+body.jarvis-booting .metrics .metric:nth-child(1){animation-delay:13.30s!important}
+body.jarvis-booting .metrics .metric:nth-child(2){animation-delay:13.60s!important}
+body.jarvis-booting .metrics .metric:nth-child(3){animation-delay:13.90s!important}
+body.jarvis-booting .metrics .metric:nth-child(4){animation-delay:14.20s!important}
+
+/* JARVIS speaks last, then controls dock into place button by button. */
+body.jarvis-booting .quote{opacity:0!important;animation:finalPanel .56s 14.58s ease forwards!important}
+body.jarvis-booting .dock{opacity:0!important;animation:finalDockShell .54s 14.98s ease forwards!important}
+body.jarvis-booting .dock button{opacity:0;animation:finalDockButton .42s ease forwards!important}
+body.jarvis-booting .dock button:nth-child(1){animation-delay:15.18s!important}
+body.jarvis-booting .dock button:nth-child(2){animation-delay:15.38s!important}
+body.jarvis-booting .dock button:nth-child(3){animation-delay:15.58s!important}
+body.jarvis-booting .dock button:nth-child(4){animation-delay:15.78s!important}
+
+/* Console leaves only when every visual layer is already present. */
+body.jarvis-booting.jarvis-boot-phase-18 .jarvis-boot-console{animation:finalConsoleOut .50s ease forwards!important}
+
+@keyframes finalReveal{0%{opacity:0;filter:blur(5px) brightness(1.45)}100%{opacity:1;filter:none}}
+@keyframes finalLine{0%{opacity:0;clip-path:inset(0 50% 0 50%);filter:brightness(1.55)}100%{opacity:1;clip-path:inset(0);filter:none}}
+@keyframes finalPanel{0%{opacity:0;clip-path:inset(48% 0 48% 0);filter:blur(3px) brightness(1.35)}100%{opacity:1;clip-path:inset(0);filter:none}}
+@keyframes finalCell{0%{opacity:0;clip-path:inset(0 100% 0 0);filter:brightness(1.45)}70%{opacity:1;filter:brightness(1.10)}100%{opacity:1;clip-path:inset(0);filter:none}}
+@keyframes finalBar{0%{opacity:0;transform:translateX(-7px);filter:brightness(1.45)}100%{opacity:1;transform:none;filter:none}}
+@keyframes finalDockShell{0%{opacity:0;filter:blur(5px)}100%{opacity:1;filter:none}}
+@keyframes finalDockButton{0%{opacity:0;transform:translateY(6px);filter:brightness(1.35)}100%{opacity:1;transform:none;filter:none}}
+@keyframes finalConsoleOut{0%{opacity:1}100%{opacity:0;filter:blur(4px)}}
+
+@media(orientation:landscape){
+ body.jarvis-booting .hudstrip .hudmini:nth-child(1){animation-delay:8.88s!important}
+ body.jarvis-booting .hudstrip .hudmini:nth-child(2){animation-delay:9.18s!important}
+ body.jarvis-booting .hudstrip .hudmini:nth-child(3){animation-delay:9.48s!important}
+}
