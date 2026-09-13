@@ -1,0 +1,162 @@
+/* JARVIS V4.1 build 447 — 7s total boot. Core grows from a luminous seed, unlocks left/right, then UI finishes in the last 2s. */
+
+/* --- ACT I 0.0–5.0s : nucleus -> lock mechanics -> full Core --- */
+body.jarvis-booting .core .reactor-hub{
+  opacity:0!important;
+  animation:lockSeed .52s .04s cubic-bezier(.12,.9,.18,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-glass{
+  opacity:0!important;
+  animation:lockGlass .42s .28s ease-out forwards!important;
+}
+body.jarvis-booting .core .reactor-pulse{
+  opacity:0!important;
+  animation:lockSeedWave .72s .24s ease-out forwards!important;
+}
+
+/* Mechanical lock arms open symmetrically from the luminous centre. */
+body.jarvis-booting .core .reactor-lock{opacity:1!important}
+body.jarvis-booting .core .reactor-lock i{
+  opacity:0!important;
+  transform:scaleX(.02)!important;
+  animation:lockHook .48s cubic-bezier(.18,.88,.2,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-lock i:nth-child(1),body.jarvis-booting .core .reactor-lock i:nth-child(2){animation-delay:.54s!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(3),body.jarvis-booting .core .reactor-lock i:nth-child(4){animation-delay:.72s!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(5),body.jarvis-booting .core .reactor-lock i:nth-child(6){animation-delay:.90s!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(7),body.jarvis-booting .core .reactor-lock i:nth-child(8){animation-delay:1.08s!important}
+
+/* Inner mechanism begins while the lock is opening. */
+body.jarvis-booting .core .reactor-radials{animation-delay:.72s!important;animation-duration:.44s!important}
+body.jarvis-booting .core .reactor-crown{animation-delay:.86s!important;animation-duration:.46s!important}
+body.jarvis-booting .core .reactor-axis{animation-delay:1.00s!important;animation-duration:.44s!important}
+body.jarvis-booting .core .reactor-scale{animation-delay:1.14s!important;animation-duration:.46s!important}
+body.jarvis-booting .core .reactor-grid{animation-delay:1.28s!important;animation-duration:.48s!important}
+body.jarvis-booting .core .reactor-segments{animation-delay:1.42s!important;animation-duration:.50s!important}
+body.jarvis-booting .core .reactor-depth{animation-delay:1.56s!important;animation-duration:.52s!important}
+
+/* Structural rings keep spreading from centre to perimeter. */
+body.jarvis-booting .core .r5{animation-delay:1.08s!important;animation-duration:.44s!important}
+body.jarvis-booting .core .r4{animation-delay:1.24s!important;animation-duration:.46s!important}
+body.jarvis-booting .core .arcbit{animation-delay:1.38s!important;animation-duration:.44s!important}
+body.jarvis-booting .core .r3{animation-delay:1.52s!important;animation-duration:.46s!important}
+body.jarvis-booting .core .micro2{animation-delay:1.66s!important;animation-duration:.44s!important}
+body.jarvis-booting .core .r2{animation-delay:1.80s!important;animation-duration:.48s!important}
+body.jarvis-booting .core .coreplate{animation-delay:1.92s!important;animation-duration:.44s!important}
+body.jarvis-booting .core .seg{animation-delay:2.04s!important;animation-duration:.46s!important}
+body.jarvis-booting .core .micro{animation-delay:2.16s!important;animation-duration:.46s!important}
+body.jarvis-booting .core .r1{animation-delay:2.28s!important;animation-duration:.48s!important}
+body.jarvis-booting .core .r0{animation-delay:2.42s!important;animation-duration:.50s!important}
+body.jarvis-booting .core .tech-ring{animation-delay:2.56s!important;animation-duration:.48s!important}
+
+/* Artwork is not dropped in as a finished image: it unzips from the centre to both sides. */
+body.jarvis-booting .core .core-art{
+  opacity:0!important;
+  clip-path:inset(0 50% 0 50%)!important;
+  animation:lockArtSpread 1.55s 1.30s cubic-bezier(.18,.78,.18,1) forwards!important;
+}
+
+/* Colour energises an already-built structure. */
+body.jarvis-booting .core{transition:filter .34s ease!important}
+body.jarvis-booting.jarvis-boot-phase-0 .core,
+body.jarvis-booting.jarvis-boot-phase-1 .core,
+body.jarvis-booting.jarvis-boot-phase-2 .core,
+body.jarvis-booting.jarvis-boot-phase-3 .core{filter:grayscale(1) saturate(.06) brightness(.66) drop-shadow(0 0 10px rgba(180,235,245,.08)) drop-shadow(0 22px 44px #000c)!important}
+body.jarvis-booting.jarvis-boot-phase-4 .core{filter:grayscale(.82) saturate(.30) brightness(.75) drop-shadow(0 0 15px rgba(0,234,255,.12)) drop-shadow(0 22px 44px #000c)!important}
+body.jarvis-booting.jarvis-boot-phase-5 .core{filter:grayscale(.48) saturate(.58) brightness(.84) drop-shadow(0 0 20px rgba(0,234,255,.16)) drop-shadow(0 22px 44px #000c)!important}
+body.jarvis-booting.jarvis-boot-phase-6 .core{filter:grayscale(.18) saturate(.84) brightness(.92) drop-shadow(0 0 25px rgba(0,234,255,.20)) drop-shadow(0 22px 44px #000c)!important}
+body.jarvis-booting.jarvis-boot-phase-7 .core,
+body.jarvis-booting.jarvis-boot-phase-8 .core,
+body.jarvis-booting.jarvis-boot-phase-9 .core{filter:grayscale(0) saturate(.98) brightness(.96) drop-shadow(0 0 27px rgba(0,234,255,.22)) drop-shadow(0 22px 44px #000c)!important}
+
+/* 72 LEDs light in a tight travelling wave after the frame exists. */
+body.jarvis-booting .core .tick:nth-child(12n+1){animation-delay:3.04s!important}
+body.jarvis-booting .core .tick:nth-child(12n+2){animation-delay:3.08s!important}
+body.jarvis-booting .core .tick:nth-child(12n+3){animation-delay:3.12s!important}
+body.jarvis-booting .core .tick:nth-child(12n+4){animation-delay:3.16s!important}
+body.jarvis-booting .core .tick:nth-child(12n+5){animation-delay:3.20s!important}
+body.jarvis-booting .core .tick:nth-child(12n+6){animation-delay:3.24s!important}
+body.jarvis-booting .core .tick:nth-child(12n+7){animation-delay:3.28s!important}
+body.jarvis-booting .core .tick:nth-child(12n+8){animation-delay:3.32s!important}
+body.jarvis-booting .core .tick:nth-child(12n+9){animation-delay:3.36s!important}
+body.jarvis-booting .core .tick:nth-child(12n+10){animation-delay:3.40s!important}
+body.jarvis-booting .core .tick:nth-child(12n+11){animation-delay:3.44s!important}
+body.jarvis-booting .core .tick:nth-child(12n){animation-delay:3.48s!important}
+
+/* Orbit infrastructure is complete before the 2s finale starts. */
+body.jarvis-booting .jarvis-orbit-stage::before{animation-delay:3.56s!important;animation-duration:.42s!important}
+body.jarvis-booting .jarvis-orbit-stage::after{animation-delay:3.70s!important;animation-duration:.42s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="0"]{animation-delay:3.84s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="1"]{animation-delay:3.96s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="2"]{animation-delay:4.08s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="3"]{animation-delay:4.20s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="4"]{animation-delay:4.32s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="5"]{animation-delay:4.44s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="6"]{animation-delay:4.56s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="7"]{animation-delay:4.68s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="8"]{animation-delay:4.80s!important}
+
+/* --- ACT II 5.0–7.0s : exactly two seconds for the final interface assembly --- */
+body.jarvis-booting .header{opacity:0!important;animation:lockUiReveal .28s 5.00s ease forwards!important}
+body.jarvis-booting .online{opacity:0!important;animation:lockUiReveal .24s 5.22s ease forwards!important}
+body.jarvis-booting .realtime-strip{opacity:0!important;animation:lockUiLine .26s 5.40s ease forwards!important}
+body.jarvis-booting .hudstrip{opacity:1!important;animation:none!important}
+body.jarvis-booting .hudstrip .hudmini{opacity:0;animation:lockUiCell .24s ease forwards!important}
+body.jarvis-booting .hudstrip .hudmini:nth-child(1){animation-delay:5.58s!important}
+body.jarvis-booting .hudstrip .hudmini:nth-child(2){animation-delay:5.72s!important}
+body.jarvis-booting .hudstrip .hudmini:nth-child(3){animation-delay:5.86s!important}
+body.jarvis-booting .system{opacity:0!important;animation:lockUiLine .26s 6.00s ease forwards!important}
+body.jarvis-booting .diagnostic{opacity:1!important;animation:none!important}
+body.jarvis-booting .diagnostic .diagmain{opacity:0;animation:lockUiPanel .28s 6.12s ease forwards!important}
+body.jarvis-booting .diagnostic .diagstat{opacity:0;animation:lockUiPanel .26s 6.28s ease forwards!important}
+body.jarvis-booting .datagrid{opacity:1!important;animation:none!important}
+body.jarvis-booting .datagrid .dataunit{opacity:0;animation:lockUiCell .22s ease forwards!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(1){animation-delay:6.34s!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(2){animation-delay:6.42s!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(3){animation-delay:6.50s!important}
+body.jarvis-booting .datagrid .dataunit:nth-child(4){animation-delay:6.58s!important}
+body.jarvis-booting .metrics{opacity:1!important;animation:none!important}
+body.jarvis-booting .metrics .metric{opacity:0;animation:lockUiCell .22s ease forwards!important}
+body.jarvis-booting .metrics .metric:nth-child(1){animation-delay:6.48s!important}
+body.jarvis-booting .metrics .metric:nth-child(2){animation-delay:6.56s!important}
+body.jarvis-booting .metrics .metric:nth-child(3){animation-delay:6.64s!important}
+body.jarvis-booting .metrics .metric:nth-child(4){animation-delay:6.72s!important}
+body.jarvis-booting .quote{opacity:0!important;animation:lockUiPanel .22s 6.74s ease forwards!important}
+body.jarvis-booting .dock{opacity:0!important;animation:lockDock .20s 6.80s ease forwards!important}
+body.jarvis-booting .dock button{opacity:0;animation:lockDockButton .16s ease forwards!important}
+body.jarvis-booting .dock button:nth-child(1){animation-delay:6.82s!important}
+body.jarvis-booting .dock button:nth-child(2){animation-delay:6.86s!important}
+body.jarvis-booting .dock button:nth-child(3){animation-delay:6.90s!important}
+body.jarvis-booting .dock button:nth-child(4){animation-delay:6.94s!important}
+
+/* Handoff lands directly on the dim idle exposure: no final white/cyan jump. */
+body.jarvis-booting.jarvis-boot-settling .core{
+  filter:brightness(.60) saturate(.78) drop-shadow(0 0 9px rgba(0,234,255,.08)) drop-shadow(0 20px 40px rgba(0,0,0,.78))!important;
+  transition:filter .34s ease!important;
+}
+body.jarvis-booting.jarvis-boot-settling .jarvis-boot-hud{opacity:0!important;transition:opacity .28s ease!important}
+
+/* Lock geometry. Four mirrored pairs, each extending out from the core like a picked lock. */
+.core .reactor-lock{position:absolute;left:50%;top:50%;width:48%;height:48%;transform:translate(-50%,-50%);z-index:16;pointer-events:none}
+.core .reactor-lock i{position:absolute;top:50%;width:28%;height:2px;background:linear-gradient(90deg,rgba(0,234,255,.08),rgba(135,250,255,.95));box-shadow:0 0 7px rgba(0,234,255,.50);transform-origin:100% 50%}
+.core .reactor-lock i::after{content:"";position:absolute;right:0;top:-5px;width:7px;height:7px;border-top:1px solid rgba(190,255,255,.95);border-right:1px solid rgba(190,255,255,.95);border-radius:0 2px 0 0}
+.core .reactor-lock i:nth-child(odd){right:50%}
+.core .reactor-lock i:nth-child(even){left:50%;transform-origin:0 50%;background:linear-gradient(90deg,rgba(135,250,255,.95),rgba(0,234,255,.08))}
+.core .reactor-lock i:nth-child(even)::after{left:0;right:auto;transform:scaleX(-1)}
+.core .reactor-lock i:nth-child(1),.core .reactor-lock i:nth-child(2){top:28%;transform:rotate(18deg) scaleX(.02)}
+.core .reactor-lock i:nth-child(3),.core .reactor-lock i:nth-child(4){top:41%;transform:rotate(7deg) scaleX(.02)}
+.core .reactor-lock i:nth-child(5),.core .reactor-lock i:nth-child(6){top:59%;transform:rotate(-7deg) scaleX(.02)}
+.core .reactor-lock i:nth-child(7),.core .reactor-lock i:nth-child(8){top:72%;transform:rotate(-18deg) scaleX(.02)}
+.core .reactor-lock i:nth-child(even){transform:scaleX(-.02)}
+
+@keyframes lockSeed{0%{opacity:0;transform:translate(-50%,-50%) scale(.02);filter:blur(5px) brightness(4)}26%{opacity:1;transform:translate(-50%,-50%) scale(.34);filter:blur(0) brightness(3)}70%{transform:translate(-50%,-50%) scale(1.12);filter:brightness(1.55)}100%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:brightness(1)}}
+@keyframes lockGlass{from{opacity:0;transform:translate(-50%,-50%) scale(.18)}to{opacity:.86;transform:translate(-50%,-50%) scale(1)}}
+@keyframes lockSeedWave{0%{opacity:.95;transform:translate(-50%,-50%) scale(.08);border-color:#efffff;box-shadow:0 0 22px #fff,0 0 44px var(--a)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.34);border-color:transparent;box-shadow:none}}
+@keyframes lockHook{0%{opacity:0;filter:blur(3px) brightness(2);transform:scaleX(.02)}58%{opacity:1;filter:blur(0) brightness(1.35);transform:scaleX(1.06)}100%{opacity:.88;filter:none;transform:scaleX(1)}}
+@keyframes lockArtSpread{0%{opacity:0;clip-path:inset(0 50% 0 50%);filter:grayscale(1) brightness(.62) blur(2px)}25%{opacity:.28;clip-path:inset(0 38% 0 38%);filter:grayscale(.92) brightness(.72)}58%{opacity:.58;clip-path:inset(0 18% 0 18%);filter:grayscale(.68) brightness(.84)}100%{opacity:.86;clip-path:inset(0 0 0 0);filter:grayscale(.30) brightness(.94) drop-shadow(0 0 5px rgba(0,234,255,.14))}}
+@keyframes lockUiReveal{from{opacity:0;filter:blur(3px)}to{opacity:1;filter:none}}
+@keyframes lockUiLine{from{opacity:0;clip-path:inset(0 50% 0 50%)}to{opacity:1;clip-path:inset(0)}}
+@keyframes lockUiPanel{from{opacity:0;clip-path:inset(45% 0 45% 0);filter:blur(2px)}to{opacity:1;clip-path:inset(0);filter:none}}
+@keyframes lockUiCell{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0)}}
+@keyframes lockDock{from{opacity:0;filter:blur(3px)}to{opacity:1;filter:none}}
+@keyframes lockDockButton{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
