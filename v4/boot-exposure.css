@@ -1,28 +1,28 @@
-/* JARVIS V4.1 build 443 — optical handoff: no final flash, no brightness jump. */
+/* JARVIS V4.1 build 444 — optical handoff: smooth, shorter, no final flash. */
 /* The last boot beat keeps the finished interface intact and only normalises exposure. */
 body.jarvis-booting.jarvis-boot-settling .jarvis-boot-hud{
   opacity:0!important;
-  transition:opacity 1.85s cubic-bezier(.22,.72,.18,1)!important;
+  transition:opacity 1.15s cubic-bezier(.22,.72,.18,1)!important;
 }
 body.jarvis-booting.jarvis-boot-settling .jarvis-boot-hud::before,
 body.jarvis-booting.jarvis-boot-settling .jarvis-boot-hud::after{
   opacity:0!important;
-  transition:opacity 1.35s ease!important;
+  transition:opacity .95s ease!important;
 }
 
-/* Bring the chromatic activation down to the normal operating exposure gradually. */
+/* Bring the chromatic activation down to normal operating exposure without a brightness jump. */
 body.jarvis-booting.jarvis-boot-settling .core{
   filter:saturate(1.02) brightness(.98) drop-shadow(0 0 26px rgba(0,234,255,.22)) drop-shadow(0 24px 48px rgba(0,0,0,.68))!important;
-  transition:filter 1.75s cubic-bezier(.22,.72,.18,1)!important;
+  transition:filter 1.12s cubic-bezier(.22,.72,.18,1)!important;
 }
 body.jarvis-booting.jarvis-boot-settling .core .core-art,
 body.jarvis-booting.jarvis-boot-settling .core .reactor-hub,
 body.jarvis-booting.jarvis-boot-settling .core .reactor-glass,
 body.jarvis-booting.jarvis-boot-settling .core .tick{
-  transition:filter 1.45s ease,opacity 1.45s ease!important;
+  transition:filter .95s ease,opacity .95s ease!important;
 }
 
-/* Reduce the activation peak before the handoff; it still glows, but never flashes white. */
+/* Reduce the activation peak before handoff; no white flash. */
 body.jarvis-booting.jarvis-boot-phase-16 .core,
 body.jarvis-booting.jarvis-boot-phase-17 .core,
 body.jarvis-booting.jarvis-boot-phase-18 .core,
@@ -30,7 +30,7 @@ body.jarvis-booting.jarvis-boot-phase-19 .core{
   filter:grayscale(0) saturate(1.04) brightness(1.00) drop-shadow(0 0 34px rgba(0,234,255,.27)) drop-shadow(0 24px 50px rgba(0,0,0,.72))!important;
 }
 
-/* Do not use the old bright 'ready' punch on the final frame. */
+/* Do not use the old bright ready punch on the final frame. */
 body.jarvis-boot-ready .core{animation:none!important}
 body.jarvis-boot-ready .jarvis-orbit-stage::before{animation:none!important}
 
