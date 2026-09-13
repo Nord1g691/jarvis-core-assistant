@@ -1,0 +1,12 @@
+/* Build 448 — make the lock arms visibly pick open from the centre without transform conflicts. */
+body.jarvis-booting .core .reactor-lock i{transform:rotate(var(--lock-angle,0deg)) scaleX(1)!important;opacity:0!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(1){--lock-angle:-18deg;animation:lockHookLeft .48s .54s cubic-bezier(.18,.88,.2,1) forwards!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(2){--lock-angle:18deg;animation:lockHookRight .48s .54s cubic-bezier(.18,.88,.2,1) forwards!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(3){--lock-angle:-7deg;animation:lockHookLeft .48s .72s cubic-bezier(.18,.88,.2,1) forwards!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(4){--lock-angle:7deg;animation:lockHookRight .48s .72s cubic-bezier(.18,.88,.2,1) forwards!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(5){--lock-angle:7deg;animation:lockHookLeft .48s .90s cubic-bezier(.18,.88,.2,1) forwards!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(6){--lock-angle:-7deg;animation:lockHookRight .48s .90s cubic-bezier(.18,.88,.2,1) forwards!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(7){--lock-angle:18deg;animation:lockHookLeft .48s 1.08s cubic-bezier(.18,.88,.2,1) forwards!important}
+body.jarvis-booting .core .reactor-lock i:nth-child(8){--lock-angle:-18deg;animation:lockHookRight .48s 1.08s cubic-bezier(.18,.88,.2,1) forwards!important}
+@keyframes lockHookLeft{0%{opacity:0;clip-path:inset(0 0 0 100%);filter:blur(3px) brightness(2.1)}58%{opacity:1;filter:blur(0) brightness(1.35)}100%{opacity:.88;clip-path:inset(0);filter:none}}
+@keyframes lockHookRight{0%{opacity:0;clip-path:inset(0 100% 0 0);filter:blur(3px) brightness(2.1)}58%{opacity:1;filter:blur(0) brightness(1.35)}100%{opacity:.88;clip-path:inset(0);filter:none}}
