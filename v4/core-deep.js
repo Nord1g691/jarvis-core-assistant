@@ -13,16 +13,16 @@
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
 
-  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='439';document.head.appendChild(x)};
-  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='439';document.head.appendChild(x)};
-  addCss('final-pass.css?v=439','final');
-  addCss('final-pulse.css?v=439','pulse');
-  addCss('orbit-pro.css?v=439','orbit');
-  addCss('orbit-hotfix.css?v=439','orbithotfix');
-  addCss('boot-pro.css?v=439','boot');
-  addCss('boot-origin.css?v=439','bootorigin');
-  addCss('boot-flow.css?v=439','bootflow');
-  addJs('final-runtime.js?v=439','final');
-  addJs('orbit-pro.js?v=439','orbit');
-  addJs('boot-pro.js?v=439','boot');
+  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='440';document.head.appendChild(x)};
+  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='440';document.head.appendChild(x)};
+  addCss('final-pass.css?v=440','final');
+  addCss('final-pulse.css?v=440','pulse');
+  addCss('orbit-pro.css?v=440','orbit');
+  addCss('orbit-hotfix.css?v=440','orbithotfix');
+  addCss('boot-pro.css?v=440','boot');
+  addCss('boot-origin.css?v=440','bootorigin');
+  addCss('boot-flow.css?v=440','bootflow');
+  addJs('final-runtime.js?v=440','final');
+  addJs('orbit-pro.js?v=440','orbit');
+  addJs('boot-pro.js?v=440','boot');
 })();
