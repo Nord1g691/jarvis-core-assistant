@@ -13,23 +13,30 @@
     });
     const art=core.querySelector('.core-art');if(art)core.insertBefore(host,art);else core.appendChild(host)
   }
-  const addCss=(href,key)=>{if(document.querySelector(`link[data-jarvis-${key}]`))return;const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='449';document.head.appendChild(x)};
-  const addJs=(src,key)=>{if(document.querySelector(`script[data-jarvis-${key}]`))return;const x=document.createElement('script');x.src=src;x.defer=true;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='449';document.head.appendChild(x)};
-  addCss('final-pass.css?v=449','final');
-  addCss('final-pulse.css?v=449','pulse');
-  addCss('orbit-pro.css?v=449','orbit');
-  addCss('orbit-hotfix.css?v=449','orbithotfix');
-  addCss('boot-pro.css?v=449','boot');
-  addCss('boot-origin.css?v=449','bootorigin');
-  addCss('boot-flow.css?v=449','bootflow');
-  addCss('boot-finale.css?v=449','bootfinale');
-  addCss('boot-exposure.css?v=449','bootexposure');
-  addCss('boot-10s.css?v=449','boot10');
-  addCss('state-tuning.css?v=449','statetuning');
-  addCss('boot-lock-7s.css?v=449','bootlock7');
-  addCss('boot-lock-fix.css?v=449','bootlockfix');
-  addCss('boot-piecewise.css?v=449','bootpiecewise');
-  addJs('final-runtime.js?v=449','final');
-  addJs('orbit-pro.js?v=449','orbit');
-  addJs('boot-pro.js?v=449','boot');
+
+  const addCss=(href,key)=>{
+    const found=document.querySelector(`link[data-jarvis-${key}]`);if(found)return found;
+    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='450';document.head.appendChild(x);return x
+  };
+  const addJs=(src,key)=>{
+    if(document.querySelector(`script[data-jarvis-${key}]`))return;
+    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='450';document.head.appendChild(x)
+  };
+
+  addCss('final-pass.css?v=450','final');
+  addCss('final-pulse.css?v=450','pulse');
+  addCss('orbit-pro.css?v=450','orbit');
+  addCss('orbit-hotfix.css?v=450','orbithotfix');
+  addCss('state-tuning.css?v=450','statetuning');
+  addJs('final-runtime.js?v=450','final');
+  addJs('orbit-pro.js?v=450','orbit');
+
+  /* Boot is intentionally a single stylesheet now. Do not start the clock until it is ready. */
+  const boot=addCss('boot-master.css?v=450','bootmaster');
+  let started=false;
+  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=450','boot')};
+  if(boot.sheet)requestAnimationFrame(startBoot);
+  else boot.addEventListener('load',startBoot,{once:true});
+  boot.addEventListener('error',startBoot,{once:true});
+  setTimeout(startBoot,700);
 })();
