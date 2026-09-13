@@ -1,0 +1,186 @@
+/* JARVIS V4.1 — nucleus-first construction. Loaded after boot-pro.css. */
+/* The boot now starts from a single luminous seed and builds every layer outward. */
+
+body.jarvis-booting .header,
+body.jarvis-booting .online,
+body.jarvis-booting .hudstrip,
+body.jarvis-booting .realtime-strip{
+  opacity:0;
+  animation:originHeaderIn .48s 2.55s ease forwards!important;
+}
+body.jarvis-booting .system,
+body.jarvis-booting .diagnostic,
+body.jarvis-booting .datagrid,
+body.jarvis-booting .metrics,
+body.jarvis-booting .quote{
+  opacity:0;
+  animation:originUiIn .46s 2.82s ease forwards!important;
+}
+
+/* Suppress anything that would reveal the finished Core too early. */
+body.jarvis-booting .core::before,
+body.jarvis-booting .core::after{
+  opacity:0!important;
+  animation:originAtmosphere .8s 1.72s ease forwards!important;
+}
+body.jarvis-booting .core .core-art{
+  opacity:0!important;
+  animation:originArtReveal .66s 1.62s ease forwards!important;
+}
+body.jarvis-booting .core .orb{
+  opacity:0!important;
+  animation:originOrbIn .55s .16s ease forwards!important;
+}
+body.jarvis-booting .core .label,
+body.jarvis-booting .core .coreword{
+  opacity:0!important;
+  animation:originTextIn .42s 2.10s ease forwards!important;
+}
+body.jarvis-booting .core .state{
+  opacity:0!important;
+  animation:originStateIn .44s 2.42s ease forwards!important;
+}
+
+/* 0 — BIM: only the nucleus exists. */
+body.jarvis-booting .core .reactor-hub{
+  opacity:0;
+  animation:originSeed .86s .02s cubic-bezier(.14,.92,.18,1.08) forwards!important;
+  z-index:18!important;
+}
+body.jarvis-booting .core .reactor-glass{
+  opacity:0;
+  animation:originGlass .62s .34s ease forwards!important;
+  z-index:17!important;
+}
+body.jarvis-booting .core .reactor-pulse{
+  opacity:0;
+  animation:originFirstWave .95s .34s ease-out forwards!important;
+}
+
+/* 1 — tiny mechanics form immediately around the seed. */
+body.jarvis-booting .core .reactor-radials{
+  opacity:0;
+  animation:originInnerBuild .50s .42s cubic-bezier(.18,.86,.2,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-crown{
+  opacity:0;
+  animation:originInnerBuild .52s .54s cubic-bezier(.18,.86,.2,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-axis{
+  opacity:0;
+  animation:originInnerBuild .48s .64s cubic-bezier(.18,.86,.2,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-scale{
+  opacity:0;
+  animation:originInnerBuild .50s .74s cubic-bezier(.18,.86,.2,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-grid{
+  opacity:0;
+  animation:originInnerBuild .55s .84s cubic-bezier(.18,.86,.2,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-segments{
+  opacity:0;
+  animation:originInnerBuild .58s .96s cubic-bezier(.18,.86,.2,1) forwards!important;
+}
+body.jarvis-booting .core .reactor-depth{
+  opacity:0;
+  animation:originInnerBuild .60s 1.08s cubic-bezier(.18,.86,.2,1) forwards!important;
+}
+
+/* 2 — real structural rings grow from the centre toward the outside. */
+body.jarvis-booting .core .r5{opacity:0;animation:originRingOut .48s .68s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .r4{opacity:0;animation:originRingOut .50s .82s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .arcbit{opacity:0;animation:originRingOut .48s .91s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .r3{opacity:0;animation:originRingOut .52s .98s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .micro2{opacity:0;animation:originRingOut .52s 1.08s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .r2{opacity:0;animation:originRingOut .54s 1.16s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .seg{opacity:0;animation:originRingOut .54s 1.25s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .micro{opacity:0;animation:originRingOut .56s 1.34s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .r1{opacity:0;animation:originRingOut .58s 1.43s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .r0{opacity:0;animation:originOuterLock .64s 1.56s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .coreplate{opacity:0;animation:originRingOut .52s 1.28s cubic-bezier(.16,.84,.2,1) forwards!important}
+body.jarvis-booting .core .tech-ring{opacity:0;animation:originOuterLock .58s 1.70s cubic-bezier(.16,.84,.2,1) forwards!important}
+
+/* 3 — 72 LEDs fire only once the chassis exists: true centre-to-perimeter payoff. */
+body.jarvis-booting .core .tick{opacity:0!important;animation:originLedFire .30s ease forwards!important}
+body.jarvis-booting .core .tick:nth-child(12n+1){animation-delay:1.48s!important}
+body.jarvis-booting .core .tick:nth-child(12n+2){animation-delay:1.53s!important}
+body.jarvis-booting .core .tick:nth-child(12n+3){animation-delay:1.58s!important}
+body.jarvis-booting .core .tick:nth-child(12n+4){animation-delay:1.63s!important}
+body.jarvis-booting .core .tick:nth-child(12n+5){animation-delay:1.68s!important}
+body.jarvis-booting .core .tick:nth-child(12n+6){animation-delay:1.73s!important}
+body.jarvis-booting .core .tick:nth-child(12n+7){animation-delay:1.78s!important}
+body.jarvis-booting .core .tick:nth-child(12n+8){animation-delay:1.83s!important}
+body.jarvis-booting .core .tick:nth-child(12n+9){animation-delay:1.88s!important}
+body.jarvis-booting .core .tick:nth-child(12n+10){animation-delay:1.93s!important}
+body.jarvis-booting .core .tick:nth-child(12n+11){animation-delay:1.98s!important}
+body.jarvis-booting .core .tick:nth-child(12n){animation-delay:2.03s!important}
+body.jarvis-booting .core .core-sweep{
+  opacity:0;
+  animation:originSweep .72s 1.94s linear forwards!important;
+}
+
+/* 4 — orbital infrastructure draws itself, then cards dock on it. */
+body.jarvis-booting .jarvis-orbit-stage::before{
+  opacity:0!important;
+  animation:originOrbitDraw .58s 2.12s cubic-bezier(.18,.82,.18,1) forwards!important;
+}
+body.jarvis-booting .jarvis-orbit-stage::after{
+  opacity:0!important;
+  animation:originOrbitDraw .58s 2.24s cubic-bezier(.18,.82,.18,1) forwards!important;
+}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card{
+  opacity:0!important;
+  filter:blur(7px) brightness(1.35)!important;
+  animation:originCardDock .44s cubic-bezier(.16,.88,.2,1) forwards!important;
+}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="0"]{animation-delay:2.26s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="1"]{animation-delay:2.36s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="2"]{animation-delay:2.46s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="3"]{animation-delay:2.56s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="4"]{animation-delay:2.66s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="5"]{animation-delay:2.76s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="6"]{animation-delay:2.86s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="7"]{animation-delay:2.96s!important}
+body.jarvis-booting .jarvis-orbit-stage .orbit-card[data-orbit-index="8"]{animation-delay:3.06s!important}
+
+/* Console waits until the seed has actually ignited. */
+body.jarvis-booting .jarvis-boot-console{
+  opacity:0;
+  animation:originConsoleIn .38s .46s ease forwards!important;
+}
+
+@keyframes originSeed{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.015);filter:brightness(4) blur(5px)}
+  16%{opacity:1;transform:translate(-50%,-50%) scale(.20);filter:brightness(3.2) blur(0)}
+  35%{opacity:1;transform:translate(-50%,-50%) scale(.34);filter:brightness(2.5)}
+  63%{opacity:1;transform:translate(-50%,-50%) scale(.64);filter:brightness(1.8)}
+  82%{opacity:1;transform:translate(-50%,-50%) scale(1.10);filter:brightness(1.42)}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1);filter:brightness(1)}
+}
+@keyframes originGlass{from{opacity:0;transform:translate(-50%,-50%) scale(.22)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes originFirstWave{0%{opacity:.96;transform:translate(-50%,-50%) scale(.10);border-color:#efffff;box-shadow:0 0 26px #fff,0 0 48px var(--a)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.46);border-color:transparent;box-shadow:0 0 0 transparent}}
+@keyframes originInnerBuild{0%{opacity:0;transform:translate(-50%,-50%) scale(.12) rotate(-95deg);filter:blur(7px) brightness(2.1)}72%{opacity:1;filter:blur(0) brightness(1.28)}100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0);filter:none}}
+@keyframes originRingOut{0%{opacity:0;transform:scale(.10);filter:blur(6px) brightness(2.2)}70%{opacity:1;filter:blur(0) brightness(1.22)}100%{opacity:1;transform:scale(1);filter:none}}
+@keyframes originOuterLock{0%{opacity:0;transform:scale(.12);filter:blur(7px) brightness(2.4)}68%{opacity:1;transform:scale(1.045);filter:blur(0) brightness(1.35)}100%{opacity:1;transform:scale(1);filter:none}}
+@keyframes originLedFire{0%{opacity:0;filter:brightness(3) blur(3px);scale:.35}52%{opacity:1;filter:brightness(2.4) drop-shadow(0 0 11px var(--a));scale:1.28}100%{opacity:.94;filter:drop-shadow(0 0 5px var(--a));scale:1}}
+@keyframes originSweep{0%{opacity:0;transform:rotate(-210deg)}16%{opacity:1}100%{opacity:.72;transform:rotate(360deg)}}
+@keyframes originArtReveal{from{opacity:0;filter:blur(4px) brightness(1.8)}to{opacity:.9;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--a) 34%,transparent)) contrast(1.1) saturate(1.08)}}
+@keyframes originOrbIn{0%{opacity:0;transform:scale(.05)}45%{opacity:.22;transform:scale(.6)}100%{opacity:.16;transform:scale(1)}}
+@keyframes originAtmosphere{from{opacity:0}to{opacity:1}}
+@keyframes originTextIn{from{opacity:0;filter:blur(4px)}to{opacity:1;filter:none}}
+@keyframes originStateIn{from{opacity:0;transform:translateX(-50%) translateY(8px);filter:blur(4px)}to{opacity:1;transform:translateX(-50%) translateY(0);filter:none}}
+@keyframes originOrbitDraw{0%{opacity:0;scale:.30;filter:blur(3px) brightness(2)}72%{opacity:.9;scale:1.025;filter:blur(0) brightness(1.35)}100%{opacity:.82;scale:1;filter:none}}
+@keyframes originCardDock{0%{opacity:0;filter:blur(8px) brightness(1.65);scale:.42}68%{opacity:1;filter:blur(0) brightness(1.25);scale:1.08}100%{opacity:1;filter:none;scale:1}}
+@keyframes originHeaderIn{from{opacity:0;transform:translateY(-5px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes originUiIn{from{opacity:0;transform:translateY(10px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes originConsoleIn{from{opacity:0;transform:translateX(-50%) translateY(7px);filter:blur(4px)}to{opacity:1;transform:translateX(-50%) translateY(0);filter:none}}
+
+@media(orientation:landscape){
+ body.jarvis-booting .jarvis-boot-console{animation-name:originConsoleInLand!important}
+ @keyframes originConsoleInLand{from{opacity:0;transform:translate(-50%,-50%) translateY(7px);filter:blur(4px)}to{opacity:1;transform:translate(-50%,-50%);filter:none}}
+}
+
+@media(prefers-reduced-motion:reduce){
+ body.jarvis-booting .core .reactor-hub{opacity:1!important;animation:none!important}
+}
