@@ -19,15 +19,15 @@
     {t:4400,p:87,label:'MISE SOUS TENSION',state:'CHARGE COULEUR',mods:['core','color']},
     {t:4850,p:92,label:'MATRICE 72 LED',state:'MATRICE 72/72',mods:['core','color','led']},
     {t:5200,p:95,label:'TRACÉ DES ORBITES',state:'SYNCHRONISATION',mods:['core','color','led','orbit']},
-    {t:5500,p:96,label:'IDENTITÉ JARVIS',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:5750,p:97,label:'LIAISON TEMPS RÉEL',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:6000,p:98,label:'TÉLÉMÉTRIE HUD',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:6250,p:99,label:'DIAGNOSTIC CORE',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
-    {t:6500,p:99,label:'DONNÉES MAISON',state:'FINALISATION',mods:['core','color','led','orbit']},
+    {t:5500,p:96,label:'INTÉGRATION DU CORE',state:'ASSEMBLAGE FINAL',mods:['core','color','led','orbit']},
+    {t:5750,p:97,label:'MÉCANIQUE INTERNE',state:'ASSEMBLAGE FINAL',mods:['core','color','led','orbit']},
+    {t:6000,p:98,label:'CHÂSSIS FINAL',state:'ASSEMBLAGE FINAL',mods:['core','color','led','orbit']},
+    {t:6250,p:99,label:'DÉTAILS TECHNIQUES',state:'ASSEMBLAGE INTERFACE',mods:['core','color','led','orbit']},
+    {t:6500,p:99,label:'INTERFACE JARVIS',state:'FINALISATION',mods:['core','color','led','orbit']},
     {t:6800,p:100,label:'STABILISATION',state:'EN LIGNE',mods:['core','color','led','orbit']}
   ];
 
-  body.classList.remove('jarvis-boot-ready','jarvis-boot-settling');
+  body.classList.remove('jarvis-boot-ready','jarvis-boot-settling','jarvis-native-handoff');
   body.classList.add('jarvis-booting');
   body.classList.remove('jarvis-prepaint');
 
@@ -36,6 +36,7 @@
     const ph=phases[i];if(!ph)return;current=i;
     [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));
     body.classList.add('jarvis-boot-phase-'+i);body.dataset.jarvisBootPhase=String(i);
+    body.classList.toggle('jarvis-native-handoff',i>=11);
     body.classList.toggle('jarvis-boot-settling',i>=16);
     step.textContent=ph.label;pct.textContent=String(ph.p).padStart(2,'0')+'%';bar.style.setProperty('--boot-progress',ph.p+'%');
     if(state)state.textContent=ph.state;
@@ -47,11 +48,11 @@
     const elapsed=now-start;let idx=0;for(let i=0;i<phases.length;i++)if(elapsed>=phases[i].t)idx=i;if(idx!==current)applyPhase(idx);
     if(!orbitPaused&&window.jarvisOrbitPro?.pause){window.jarvisOrbitPro.pause(7200);orbitPaused=true}
     if(now<endAt){raf=requestAnimationFrame(frame);return}
-    body.classList.remove('jarvis-booting','jarvis-boot-settling','jarvis-prepaint');
+    body.classList.remove('jarvis-booting','jarvis-boot-settling','jarvis-prepaint','jarvis-native-handoff');
     [...body.classList].filter(c=>c.startsWith('jarvis-boot-phase-')).forEach(c=>body.classList.remove(c));delete body.dataset.jarvisBootPhase;
     if(state)state.textContent='EN LIGNE';hud.remove();
   };
   raf=requestAnimationFrame(frame);
 
-  window.jarvisRunCinematicBoot=()=>{cancelAnimationFrame(raf);hud.remove();body.classList.remove('jarvis-booting','jarvis-boot-settling','jarvis-prepaint');window.__jarvisBootPro=false;location.reload()};
+  window.jarvisRunCinematicBoot=()=>{cancelAnimationFrame(raf);hud.remove();body.classList.remove('jarvis-booting','jarvis-boot-settling','jarvis-prepaint','jarvis-native-handoff');window.__jarvisBootPro=false;location.reload()};
 })();
