@@ -47,7 +47,7 @@
     for(let i=0;i<8;i++){
       const b=document.createElement('i');
       b.style.setProperty('--rot',(i*45-22.5)+'deg');
-      b.style.setProperty('--d',(2.94+i*0.085).toFixed(3)+'s');
+      b.style.setProperty('--d',(3.10+i*0.09).toFixed(3)+'s');
       braces.appendChild(b)
     }
 
@@ -57,7 +57,7 @@
       m.style.left=(50+r*Math.cos(rad))+'%';
       m.style.top=(50+r*Math.sin(rad))+'%';
       m.style.transform=`translate(-50%,-50%) rotate(${deg+90}deg)`;
-      m.style.setProperty('--d',(3.28+i*0.026).toFixed(3)+'s');
+      m.style.setProperty('--d',(3.55+i*0.026).toFixed(3)+'s');
       marks.appendChild(m)
     }
 
@@ -66,7 +66,7 @@
       const n=document.createElement('i'),deg=-90+i*45,rad=deg*Math.PI/180,r=37.4;
       n.style.left=(50+r*Math.cos(rad))+'%';
       n.style.top=(50+r*Math.sin(rad))+'%';
-      n.style.setProperty('--d',(3.72+i*0.062).toFixed(3)+'s');
+      n.style.setProperty('--d',(3.95+i*0.062).toFixed(3)+'s');
       nodes.appendChild(n)
     }
 
@@ -76,7 +76,7 @@
       d.style.left=(50+r*Math.cos(rad))+'%';
       d.style.top=(50+r*Math.sin(rad))+'%';
       d.style.transform=`translate(-50%,-50%) rotate(${deg+90}deg)`;
-      d.style.setProperty('--d',(4.68+i*0.0095).toFixed(3)+'s');
+      d.style.setProperty('--d',(4.82+i*0.0095).toFixed(3)+'s');
       leds.appendChild(d)
     }
     core.appendChild(fab)
@@ -84,34 +84,32 @@
 
   const addCss=(href,key)=>{
     const found=document.querySelector(`link[data-jarvis-${key}]`);if(found)return found;
-    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='455';document.head.appendChild(x);return x
+    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='456';document.head.appendChild(x);return x
   };
   const addJs=(src,key)=>{
     if(document.querySelector(`script[data-jarvis-${key}]`))return;
-    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='455';document.head.appendChild(x)
+    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='456';document.head.appendChild(x)
   };
 
-  addCss('final-pass.css?v=455','final');
-  addCss('final-pulse.css?v=455','pulse');
-  addCss('orbit-pro.css?v=455','orbit');
-  addCss('orbit-hotfix.css?v=455','orbithotfix');
-  addCss('state-tuning.css?v=455','statetuning');
-  addJs('final-runtime.js?v=455','final');
-  addJs('orbit-pro.js?v=455','orbit');
+  addCss('final-pass.css?v=456','final');
+  addCss('final-pulse.css?v=456','pulse');
+  addCss('orbit-pro.css?v=456','orbit');
+  addCss('orbit-hotfix.css?v=456','orbithotfix');
+  addCss('state-tuning.css?v=456','statetuning');
+  addJs('final-runtime.js?v=456','final');
+  addJs('orbit-pro.js?v=456','orbit');
 
-  const boot=addCss('boot-master.css?v=455','bootmaster');
-  const fabrication=addCss('boot-fabrication.css?v=455','bootfabrication');
-  const fabricationFix=addCss('boot-fabrication-fix.css?v=455','bootfabricationfix');
-  const finalContinuation=addCss('boot-final-continuous.css?v=455','bootfinalcontinuous');
-  const singleMachine=addCss('boot-single-machine.css?v=455','bootsinglemachine');
-  const after3=addCss('boot-after3.css?v=455','bootafter3');
-  const after3Hotfix=addCss('boot-after3-hotfix.css?v=455','bootafter3hotfix');
+  /* One boot base + one fabrication model + Safari fix + one stage-2 controller. */
+  const boot=addCss('boot-master.css?v=456','bootmaster');
+  const fabrication=addCss('boot-fabrication.css?v=456','bootfabrication');
+  const fabricationFix=addCss('boot-fabrication-fix.css?v=456','bootfabricationfix');
+  const stage2=addCss('boot-stage2-clean.css?v=456','bootstage2clean');
   let started=false;
-  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=455','boot')};
+  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=456','boot')};
   const ready=link=>new Promise(resolve=>{
     if(link.sheet){resolve();return}
     const done=()=>resolve();link.addEventListener('load',done,{once:true});link.addEventListener('error',done,{once:true})
   });
-  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix),ready(finalContinuation),ready(singleMachine),ready(after3),ready(after3Hotfix)]).then(()=>requestAnimationFrame(startBoot));
-  setTimeout(startBoot,1400);
+  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix),ready(stage2)]).then(()=>requestAnimationFrame(startBoot));
+  setTimeout(startBoot,1200);
 })();
