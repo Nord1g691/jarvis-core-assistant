@@ -1,0 +1,64 @@
+/* JARVIS V4.1 build 455 — hard stop on the premature final Core at ~3s.
+   Keep the good first act, but do NOT let either the native Core or the outer fabricated shell
+   look finished before the second construction act has actually completed. */
+
+/* Absolute guarantee: until phase 11 (~5.5s), only the fabrication model may be visible. */
+body.jarvis-booting:is(.jarvis-boot-phase-0,.jarvis-boot-phase-1,.jarvis-boot-phase-2,.jarvis-boot-phase-3,.jarvis-boot-phase-4,.jarvis-boot-phase-5,.jarvis-boot-phase-6,.jarvis-boot-phase-7,.jarvis-boot-phase-8,.jarvis-boot-phase-9,.jarvis-boot-phase-10) .core > :not(.jarvis-fabrication){
+  opacity:0!important;
+  animation:none!important;
+}
+body.jarvis-booting:is(.jarvis-boot-phase-0,.jarvis-boot-phase-1,.jarvis-boot-phase-2,.jarvis-boot-phase-3,.jarvis-boot-phase-4,.jarvis-boot-phase-5,.jarvis-boot-phase-6,.jarvis-boot-phase-7,.jarvis-boot-phase-8,.jarvis-boot-phase-9,.jarvis-boot-phase-10) .core::before,
+body.jarvis-booting:is(.jarvis-boot-phase-0,.jarvis-boot-phase-1,.jarvis-boot-phase-2,.jarvis-boot-phase-3,.jarvis-boot-phase-4,.jarvis-boot-phase-5,.jarvis-boot-phase-6,.jarvis-boot-phase-7,.jarvis-boot-phase-8,.jarvis-boot-phase-9,.jarvis-boot-phase-10) .core::after{
+  opacity:0!important;
+  animation:none!important;
+}
+
+/* The previous timing completed the outer shell around 3.0s. That was the visual "final Core" pop.
+   Keep the first four rings unchanged, but postpone the two body-closing rings. */
+body.jarvis-booting .jarvis-fabrication .fab-rings .fr5{
+  animation:fabRing .46s 3.18s cubic-bezier(.16,.82,.18,1) forwards!important;
+}
+body.jarvis-booting .jarvis-fabrication .fab-rings .fr6{
+  animation:fabRing .52s 3.72s cubic-bezier(.16,.82,.18,1) forwards!important;
+}
+
+/* Continue physical construction after 3s instead of closing the silhouette immediately. */
+body.jarvis-booting .fab-braces i{animation-delay:var(--d)!important}
+body.jarvis-booting .jarvis-fabrication::before{
+  animation:fabShell454 .62s 4.12s cubic-bezier(.16,.82,.18,1) forwards!important;
+}
+body.jarvis-booting .jarvis-fabrication::after{
+  animation:fabShell454 .60s 4.56s cubic-bezier(.16,.82,.18,1) forwards!important;
+}
+body.jarvis-booting .fab-powerwave{
+  animation:fabPowerWave454 .90s 4.88s ease-out forwards!important;
+}
+body.jarvis-booting .fab-scan{
+  animation:fabScan .72s 4.98s linear forwards!important;
+}
+
+/* LEDs are the last assembly operation, not something that completes the body at 3–4s. */
+body.jarvis-booting .fab-led i{
+  animation:fabLed .18s var(--d) ease-out forwards!important;
+}
+
+/* The final SVG stays forbidden for the ENTIRE boot. It is only a post-boot engraving layer. */
+body.jarvis-booting .core > .core-art{
+  opacity:0!important;
+  animation:none!important;
+  clip-path:none!important;
+}
+
+/* The native atmosphere is also late; otherwise the full circular silhouette appears too early. */
+body.jarvis-booting.jarvis-boot-phase-11 .core::before,
+body.jarvis-booting.jarvis-boot-phase-11 .core::after{opacity:.08!important;animation:none!important}
+body.jarvis-booting.jarvis-boot-phase-12 .core::before,
+body.jarvis-booting.jarvis-boot-phase-12 .core::after{opacity:.14!important;animation:none!important}
+body.jarvis-booting.jarvis-boot-phase-13 .core::before,
+body.jarvis-booting.jarvis-boot-phase-13 .core::after{opacity:.20!important;animation:none!important}
+body.jarvis-booting.jarvis-boot-phase-14 .core::before,
+body.jarvis-booting.jarvis-boot-phase-14 .core::after{opacity:.28!important;animation:none!important}
+body.jarvis-booting.jarvis-boot-phase-15 .core::before,
+body.jarvis-booting.jarvis-boot-phase-15 .core::after{opacity:.36!important;animation:none!important}
+body.jarvis-booting.jarvis-boot-phase-16 .core::before,
+body.jarvis-booting.jarvis-boot-phase-16 .core::after{opacity:.42!important;animation:none!important}
