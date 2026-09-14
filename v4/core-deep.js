@@ -84,33 +84,34 @@
 
   const addCss=(href,key)=>{
     const found=document.querySelector(`link[data-jarvis-${key}]`);if(found)return found;
-    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='454';document.head.appendChild(x);return x
+    const x=document.createElement('link');x.rel='stylesheet';x.href=href;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='455';document.head.appendChild(x);return x
   };
   const addJs=(src,key)=>{
     if(document.querySelector(`script[data-jarvis-${key}]`))return;
-    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='454';document.head.appendChild(x)
+    const x=document.createElement('script');x.src=src;x.async=false;x.dataset[`jarvis${key[0].toUpperCase()+key.slice(1)}`]='455';document.head.appendChild(x)
   };
 
-  addCss('final-pass.css?v=454','final');
-  addCss('final-pulse.css?v=454','pulse');
-  addCss('orbit-pro.css?v=454','orbit');
-  addCss('orbit-hotfix.css?v=454','orbithotfix');
-  addCss('state-tuning.css?v=454','statetuning');
-  addJs('final-runtime.js?v=454','final');
-  addJs('orbit-pro.js?v=454','orbit');
+  addCss('final-pass.css?v=455','final');
+  addCss('final-pulse.css?v=455','pulse');
+  addCss('orbit-pro.css?v=455','orbit');
+  addCss('orbit-hotfix.css?v=455','orbithotfix');
+  addCss('state-tuning.css?v=455','statetuning');
+  addJs('final-runtime.js?v=455','final');
+  addJs('orbit-pro.js?v=455','orbit');
 
-  const boot=addCss('boot-master.css?v=454','bootmaster');
-  const fabrication=addCss('boot-fabrication.css?v=454','bootfabrication');
-  const fabricationFix=addCss('boot-fabrication-fix.css?v=454','bootfabricationfix');
-  const finalContinuation=addCss('boot-final-continuous.css?v=454','bootfinalcontinuous');
-  const singleMachine=addCss('boot-single-machine.css?v=454','bootsinglemachine');
-  const after3=addCss('boot-after3.css?v=454','bootafter3');
+  const boot=addCss('boot-master.css?v=455','bootmaster');
+  const fabrication=addCss('boot-fabrication.css?v=455','bootfabrication');
+  const fabricationFix=addCss('boot-fabrication-fix.css?v=455','bootfabricationfix');
+  const finalContinuation=addCss('boot-final-continuous.css?v=455','bootfinalcontinuous');
+  const singleMachine=addCss('boot-single-machine.css?v=455','bootsinglemachine');
+  const after3=addCss('boot-after3.css?v=455','bootafter3');
+  const after3Hotfix=addCss('boot-after3-hotfix.css?v=455','bootafter3hotfix');
   let started=false;
-  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=454','boot')};
+  const startBoot=()=>{if(started)return;started=true;addJs('boot-pro.js?v=455','boot')};
   const ready=link=>new Promise(resolve=>{
     if(link.sheet){resolve();return}
     const done=()=>resolve();link.addEventListener('load',done,{once:true});link.addEventListener('error',done,{once:true})
   });
-  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix),ready(finalContinuation),ready(singleMachine),ready(after3)]).then(()=>requestAnimationFrame(startBoot));
+  Promise.all([ready(boot),ready(fabrication),ready(fabricationFix),ready(finalContinuation),ready(singleMachine),ready(after3),ready(after3Hotfix)]).then(()=>requestAnimationFrame(startBoot));
   setTimeout(startBoot,1400);
 })();
